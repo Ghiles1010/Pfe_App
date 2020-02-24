@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="5dp"
+
+    >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+
+        <ImageView
+            android:id="@+id/ImageUser"
+            android:layout_width="52dp"
+
+            android:layout_height="50dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="16dp"
+            tools:srcCompat="@drawable/body" />
+
+        <TextView
+            android:id="@+id/UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/ImageUser"
+            android:layout_marginLeft="24dp"
+            android:textColor="@color/Black"
+            android:layout_toRightOf="@+id/ImageUser"
+            android:text="Nom_Utilisateur"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Umessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ImageUser"
+            android:layout_marginLeft="27dp"
+            android:layout_marginBottom="2dp"
+            android:layout_toRightOf="@+id/ImageUser"
+            android:text="Dernier Message"
+
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/uTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_alignBottom="@+id/ImageUser"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="22dp"
+            android:text="3:34 PM"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">PfeApp</string>
+    <string name="j_ai_d_j_un_compte">J\'ai déjà un compte</string>
+    <string name="bienvenue">Bienvenue !</string>
+    <string name="aukid_vous_permet_de_trouver_un_service_en_un_clain_d_oeuil">Aukid vous permet de trouver un service en un clin d’oeuil !</string>
+    <string name="trouver_un_service">Trouver un service</string>
+    <string name="proposer_un_service">Proposer un service</string>
+    <string name="connectez_vous">Connectez vous !</string>
+    <string name="recherche">Recherche</string>
+    <string name="besoin_d_un_service_vous_ne_savez_pas_o_aller_n_nous_allons_vous_aider">Besoin d\'un service? Vous ne savez pas où aller?  Nous allons vous aider!</string>
+    <string name="si_jamais_vous_ne_savez_pas_o_aller_nous_vous_recommendons_les_adresses_suivantes">Si jamais vous ne savez pas où aller, nous vous recommendons les adresses suivantes !</string>
+    <string name="ajouter_un_filtre"> + Ajouter un filtre </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

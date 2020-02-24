@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/imageRest"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/borders"
+                android:scaleY="0.9"
+                android:scaleX="0.9"
+                android:scaleType="fitXY"
+
+                tools:srcCompat="@drawable/rest" />
+
+            <TextView
+                android:id="@+id/titre_rec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageRest"
+                android:layout_alignLeft="@+id/imageRest"
+                android:layout_alignRight="@+id/imageRest"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:text="Restaurant Alger"
+                android:textColor="#000080"
+                android:textSize="13sp" />
+
+
+        </RelativeLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</RelativeLayout>
