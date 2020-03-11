@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/nav_profil_prest"
+        android:icon="@drawable/ic_perm_identity_black_24dp"
+        android:title="profil"
+
+        />
+
+
+    <item
+        android:id="@+id/nav_messagerie_prest"
+        android:icon="@drawable/ic_message_black_24dp"
+        android:title="messagerie"
+
+        />
+
+    <item
+        android:id="@+id/nav_agenda_prest"
+        android:icon="@drawable/ic_today_black_24dp"
+        android:title="agenda"
+
+        />
+    <item
+        android:id="@+id/nav_stats_prest"
+        android:icon="@drawable/ic_trending_up_black_24dp"
+        android:title="statistiques"
+
+        />
+    <item
+        android:id="@+id/nav_param_prest"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="param"
+
+        />
+
+
+</menu>
