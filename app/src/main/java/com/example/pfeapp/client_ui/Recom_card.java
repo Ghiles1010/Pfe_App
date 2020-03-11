@@ -1,4 +1,4 @@
-package com.example.pfeapp;
+package com.example.pfeapp.client_ui;
 
 public class Recom_card {
 

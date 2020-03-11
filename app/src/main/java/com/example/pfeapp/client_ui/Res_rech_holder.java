@@ -1,4 +1,4 @@
-package com.example.pfeapp;
+package com.example.pfeapp.client_ui;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -7,7 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.example.pfeapp.R;
 
 
 public class Res_rech_holder extends RecyclerView.ViewHolder {

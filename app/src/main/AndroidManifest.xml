@@ -15,14 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="ExtraText,GoogleAppIndexingWarning">
+        <activity android:name=".prest_ui.Prestaire_Menu"></activity>
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/map_key"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key" />
 
 
-        <activity android:name=".test"></activity>
-        <activity android:name=".Menu" />
-        <activity android:name=".Connexion" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".client_ui.Menu" />
+        <activity android:name=".client_ui.Connexion" />
+        <activity android:name=".client_ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

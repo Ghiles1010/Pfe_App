@@ -1,4 +1,4 @@
-package com.example.pfeapp;
+package com.example.pfeapp.client_ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.pfeapp.R;
 
 import static com.example.pfeapp.R.layout.connexion;
 

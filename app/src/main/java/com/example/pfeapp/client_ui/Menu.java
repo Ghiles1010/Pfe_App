@@ -1,4 +1,4 @@
-package com.example.pfeapp;
+package com.example.pfeapp.client_ui;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.example.pfeapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Menu extends AppCompatActivity {
@@ -46,7 +47,7 @@ public class Menu extends AppCompatActivity {
 
 
                             titreBar.setText("Recherche");
-                            selectedFragment= new Recherche();
+                            selectedFragment= new Conv_card.Recherche();
 
                             break;
 
@@ -59,6 +60,12 @@ public class Menu extends AppCompatActivity {
                         case R.id.nav_param:
                             titreBar.setText("ResRecherhe");
                             selectedFragment= new ResRech() ;
+                            break;
+
+                        case R.id.nav_profil:
+                            titreBar.setText("Profil");
+                            selectedFragment=new Profil();
+                            break;
 
 
                     }
