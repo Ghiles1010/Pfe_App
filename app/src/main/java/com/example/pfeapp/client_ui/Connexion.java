@@ -14,7 +14,7 @@ import com.example.pfeapp.R;
 import static com.example.pfeapp.R.layout.connexion;
 
 public class Connexion extends AppCompatActivity {
-    private EditText editText;
+    private EditText emailET,pswET;
     private Button conn;
 
 
@@ -23,6 +23,9 @@ public class Connexion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(connexion);
+
+        emailET= (EditText)findViewById(R.id.email);
+        pswET= (EditText)findViewById(R.id.psw);
 
         conn=(Button) findViewById(R.id.connexion);
 
@@ -39,16 +42,16 @@ public class Connexion extends AppCompatActivity {
 
     public void OpenConn(){
 
-        //acceder
-        //si authentifier on fait ca
+        String email= emailET.getText().toString();
+        String psw= pswET.getText().toString();
+        String type="login";
+
+        Connexion_Background background=new Connexion_Background(this);
+        background.execute(type,email,psw);
 
 
-            Intent intent = new Intent(this, Menu.class);
-            startActivity(intent);
 
 
-
-        //sinon 
     }
 
 
