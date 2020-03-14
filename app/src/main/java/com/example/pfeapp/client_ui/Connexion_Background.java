@@ -61,7 +61,7 @@ import java.net.URLEncoder;
 
                     writer.write(data);//write on the buffer
                     writer.flush();
-                    writer.close();
+                    writer.close();//close the buffer
 
                     ops.close();
 
