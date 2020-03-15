@@ -60,7 +60,8 @@ public class Connexion extends AppCompatActivity {
 
             Toast.makeText(Connexion.this, "aucune connexion Internet", Toast.LENGTH_SHORT).show();
 
-            
+
+
             
            }
 
