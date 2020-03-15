@@ -3,20 +3,30 @@ package com.example.pfeapp.client_ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLEncoder;
 
-    public class Connexion_Background extends AsyncTask<String,Void,String> {
+import static android.content.Context.CONNECTIVITY_SERVICE;
+import static androidx.core.content.ContextCompat.getSystemService;
+
+public class Connexion_Background extends AsyncTask<String,Void,String> {
 
         AlertDialog dialog;
         Context context;
@@ -25,16 +35,29 @@ import java.net.URLEncoder;
         }
 
         @Override
+        protected void onPreExecute() {
+            dialog =new AlertDialog.Builder(context).create();
+            dialog.setTitle("");
+
+        }
+
+        @Override
         protected void onPostExecute(String s) {
-            dialog.setMessage(s);
-            if(s =="success"){
-                Intent intent =new Intent(this.context,Menu.class);
-                this.context.startActivity(intent);
+
+            if (s.equals("login success"))
+            {
+                Intent intent = new Intent(context, Menu.class);
+                context.startActivity(intent);
             }
-            else {
+            else
+            {   dialog.setMessage(s);
                 dialog.show();
             }
+
         }
+
+
+
 
         @Override
         protected String doInBackground(String... voids) {
@@ -42,9 +65,9 @@ import java.net.URLEncoder;
 
             String result= ""  ;
             String type=voids[0];
-            String login_url="http:/192.168.1.7/login.php";//go to commend prompt to know your local ip adress
-            if(type.equals("login")) {
 
+            if(type.equals("login")) {
+                String login_url="http:/192.168.1.3/login.php";//go to commend prompt to know your local ip adress
                 try {
                     String email= voids[1];
                     String psw= voids[2];
@@ -86,6 +109,10 @@ import java.net.URLEncoder;
 
             return result;
         }
+
+
+
+
     }
 
 
