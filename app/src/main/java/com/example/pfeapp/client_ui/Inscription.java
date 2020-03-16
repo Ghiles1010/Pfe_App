@@ -1,5 +1,6 @@
 package com.example.pfeapp.client_ui;
 
+<<<<<<< Updated upstream
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,19 +13,30 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pfeapp.R;
 
+=======
+import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+>>>>>>> Stashed changes
 import static com.example.pfeapp.R.layout.inscription;
 
 public class Inscription extends AppCompatActivity {
 
+<<<<<<< Updated upstream
     private EditText nomET ,prenomET ,usernameET;
     private Button continuer;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
+=======
+
+>>>>>>> Stashed changes
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(inscription);
 
+<<<<<<< Updated upstream
         nomET= (EditText)findViewById(R.id.nom);
         prenomET= (EditText)findViewById(R.id.prenom);
         usernameET= (EditText)findViewById(R.id.username);
@@ -49,4 +61,7 @@ public class Inscription extends AppCompatActivity {
     }
 
 
+=======
+    }
+>>>>>>> Stashed changes
 }

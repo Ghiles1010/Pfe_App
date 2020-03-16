@@ -13,16 +13,16 @@ import java.util.ArrayList;
 
 public class Recom_adapter extends RecyclerView.Adapter<Recom_holder>{
 
-    Conv_card.Recherche c;
+    Recherche c;
 
     ArrayList<Recom_card> cards;
 
-    public Recom_adapter(Conv_card.Recherche c, ArrayList<Recom_card> cards ) {
 
+
+    public Recom_adapter(Recherche c, ArrayList<Recom_card> cards) {
         this.c=c;
         this.cards=cards;
     }
-
 
 
     @NonNull

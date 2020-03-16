@@ -20,6 +20,7 @@ public class Comment_holder extends RecyclerView.ViewHolder {
     public Comment_holder(@NonNull View itemView) {
         super(itemView);
 
+
         this.image=itemView.findViewById(R.id.procomm);
         this.text=itemView.findViewById(R.id.crit);
         this.titre=itemView.findViewById(R.id.titrecrit);

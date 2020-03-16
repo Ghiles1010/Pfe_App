@@ -47,7 +47,7 @@ public class Menu extends AppCompatActivity {
 
 
                             titreBar.setText("Recherche");
-                            selectedFragment= new Conv_card.Recherche();
+                            selectedFragment= new Recherche();
 
                             break;
 

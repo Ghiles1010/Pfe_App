@@ -10,11 +10,6 @@ public class Recom_card {
 
 
 
-
-
-
-
-
     //////////////////////////////////////////////////////////
 
     public int getImage() {

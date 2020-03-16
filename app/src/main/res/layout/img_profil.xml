@@ -12,7 +12,6 @@
                 android:id="@+id/imageRestprofil"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@drawable/borders"
                 android:scaleY="1"
                 android:scaleX="1"
                 android:scaleType="fitXY"

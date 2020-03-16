@@ -26,6 +26,7 @@
         <activity android:name=".client_ui.Inscription" />
         <activity android:name=".client_ui.Inscription2" />
         <activity android:name=".client_ui.Connexion" />
+        <activity android:name=".client_ui.Inscription"/>
         <activity android:name=".client_ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

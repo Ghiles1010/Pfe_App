@@ -18,6 +18,9 @@ public class Profil extends Fragment {
     Comment_adapter adapter_comment;
     RecyclerView recview_comment;
 
+    Images_Couv_profil_adapter adapter_images;
+    RecyclerView recview_images;
+
 
 
 
@@ -28,13 +31,18 @@ public class Profil extends Fragment {
         View view=inflater.inflate(R.layout.profile_prest, container, false);
 
         recview_comment=view.findViewById(R.id.Comment_sec_prest);
-
         adapter_comment=new Comment_adapter(this,getList());
-
         recview_comment.setAdapter(adapter_comment);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recview_comment.setLayoutManager(layoutManager);
 
+
+
+        recview_images=view.findViewById(R.id.recImagesServices);
+        adapter_images=new Images_Couv_profil_adapter( this,getListImages());
+        recview_images.setAdapter(adapter_images);
+        RecyclerView.LayoutManager layoutManagerImages = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        recview_images.setLayoutManager(layoutManagerImages);
 
 
         return view;
@@ -105,6 +113,42 @@ public class Profil extends Fragment {
         return cards;
     }
 
+
+
+
+
+    private ArrayList<Images_Couv_profil_card> getListImages(){
+        ArrayList<Images_Couv_profil_card> cards = new ArrayList<>();
+
+        Images_Couv_profil_card c= new Images_Couv_profil_card();
+        c.setImage(R.drawable.rest);
+        cards.add(c);
+
+        c= new Images_Couv_profil_card();
+        c.setImage(R.drawable.rest);
+        cards.add(c);
+
+        c= new Images_Couv_profil_card();
+        c.setImage(R.drawable.rest);
+        cards.add(c);
+
+        c= new Images_Couv_profil_card();
+        c.setImage(R.drawable.rest);
+        cards.add(c);
+
+        c= new Images_Couv_profil_card();
+        c.setImage(R.drawable.rest);
+        cards.add(c);
+
+        c= new Images_Couv_profil_card();
+        c.setImage(R.drawable.rest);
+        cards.add(c);
+
+        c= new Images_Couv_profil_card();
+        c.setImage(R.drawable.rest);
+        cards.add(c);
+        return cards;
+    }
 
 
 
