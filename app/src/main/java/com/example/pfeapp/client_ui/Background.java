@@ -26,11 +26,11 @@ import java.net.URLEncoder;
 import static android.content.Context.CONNECTIVITY_SERVICE;
 import static androidx.core.content.ContextCompat.getSystemService;
 
-public class Connexion_Background extends AsyncTask<String,Void,String> {
+public class Background extends AsyncTask<String,Void,String> {
 
         AlertDialog dialog;
         Context context;
-        public Connexion_Background(Context context){
+        public Background(Context context){
             this.context = context ;
         }
 
@@ -44,14 +44,25 @@ public class Connexion_Background extends AsyncTask<String,Void,String> {
         @Override
         protected void onPostExecute(String s) {
 
-            if (s.equals("login success"))
-            {
-                Intent intent = new Intent(context, Menu.class);
-                context.startActivity(intent);
-            }
-            else
-            {   dialog.setMessage(s);
-                dialog.show();
+
+            switch (s) {
+
+                case ("login success"):
+                 {
+                    Intent intent = new Intent(context, Menu.class);
+                    context.startActivity(intent);
+                    break;
+                 }
+                case ("sign-in success"):
+                {
+
+                }
+
+                default:
+                {
+                    dialog.setMessage(s);
+                    dialog.show();
+                }
             }
 
         }
