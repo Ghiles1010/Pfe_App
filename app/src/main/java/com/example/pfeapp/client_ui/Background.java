@@ -110,8 +110,6 @@ public class Background extends AsyncTask<String, Void, String> {
 
             case "sign-in":
 
-
-
                 try {
 
                     String name = voids[1];
