@@ -1,115 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="308dp"
-        app:layout_constraintGuide_percent="0.25" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="361dp"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="361dp"
-        app:layout_constraintGuide_percent="0.75" />
+    android:fillViewport="true"
+    >
 
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="12dp"
-        android:text="@string/connectez_vous"
-        android:textColor="@color/Navy"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toStartOf="@+id/guideline8" />
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/champs"
-        android:ems="10"
-        android:hint="\@Email"
-        android:inputType="textEmailAddress"
-        android:paddingLeft="20dp"
-        android:textCursorDrawable="@color/Navy"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background">
 
-    <EditText
-        android:id="@+id/psw"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/champs"
-        android:ems="10"
-        android:hint="Mot de passe"
-        android:paddingLeft="20dp"
-        android:inputType="textPassword"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp"
-        app:layout_constraintGuide_percent="0.10" />
+        <Button
+            android:id="@+id/connexion"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/buttons"
+            android:text="Connexion"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/end"
+            app:layout_constraintHorizontal_bias="0.545"
+            app:layout_constraintStart_toStartOf="@+id/start"
+            app:layout_constraintTop_toBottomOf="@+id/psww" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="313dp"
-        app:layout_constraintGuide_percent="0.90" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="Connectez vous!"
+            android:textColor="@color/Navy"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toTopOf="@+id/top"
+            app:layout_constraintEnd_toStartOf="@+id/end"
+            app:layout_constraintHorizontal_bias="0.48"
+            app:layout_constraintStart_toStartOf="@+id/start"
+            />
 
-    <Button
-        android:id="@+id/connexion"
-        android:layout_width="300dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/buttons"
 
-        android:text="Connexion"
-        android:textAllCaps="false"
-        android:textColor="@color/White"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.482"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline7" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mot de passe:"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/Black"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@+id/start"
+            app:layout_constraintTop_toBottomOf="@+id/mail" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="E-mail:"
+            android:textColor="@color/Black"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@+id/start"
+            app:layout_constraintTop_toTopOf="@+id/topdd" />
+
+        <EditText
+            android:id="@+id/mail"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/champs"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/end"
+            app:layout_constraintStart_toStartOf="@+id/start"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <EditText
+            android:id="@+id/psww"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:background="@drawable/champs"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:paddingLeft="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/end"
+            app:layout_constraintStart_toStartOf="@+id/start"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.3" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.55" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            app:layout_constraintGuide_percent="0.90"
+            />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

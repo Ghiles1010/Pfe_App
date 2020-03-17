@@ -17,12 +17,13 @@ public class Recom_adapter extends RecyclerView.Adapter<Recom_holder>{
 
     ArrayList<Recom_card> cards;
 
+    public Recom_adapter(Recherche c, ArrayList<Recom_card> cards ) {
 
-
-    public Recom_adapter(Recherche c, ArrayList<Recom_card> cards) {
         this.c=c;
         this.cards=cards;
     }
+
+
 
 
     @NonNull

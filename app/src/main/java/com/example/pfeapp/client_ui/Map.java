@@ -1,9 +1,6 @@
 package com.example.pfeapp.client_ui;
 
-import android.content.res.Resources;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +14,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class Map extends Fragment implements OnMapReadyCallback {
 
 
     private Button liste;
     private Button mapButton;
-    Location currentLocation;
-
-
 
     private static  String MAPVIEW_BUNDLE_KEY;
     MapView map;
@@ -120,20 +111,6 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap map) {
-
-
-        try {
-            // Customise the styling of the base map using a JSON object defined
-            // in a raw resource file.
-            boolean success = map.setMapStyle(
-                    MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.mapstayle));
-
-            if (!success) {
-                Log.e(TAG, "Style parsing failed.");
-            }
-        } catch (Resources.NotFoundException e) {
-            Log.e(TAG, "Can't find style. Error: ", e);
-        }
 
         map.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
     }

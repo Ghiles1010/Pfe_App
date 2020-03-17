@@ -3,34 +3,24 @@ package com.example.pfeapp.client_ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Socket;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import static android.content.Context.CONNECTIVITY_SERVICE;
-import static androidx.core.content.ContextCompat.getSystemService;
-
-public class Connexion_Background extends AsyncTask<String,Void,String> {
+public class Background extends AsyncTask<String,Void,String> {
 
         AlertDialog dialog;
         Context context;
-        public Connexion_Background(Context context){
+        public Background(Context context){
             this.context = context ;
         }
 
@@ -44,14 +34,25 @@ public class Connexion_Background extends AsyncTask<String,Void,String> {
         @Override
         protected void onPostExecute(String s) {
 
-            if (s.equals("login success"))
-            {
-                Intent intent = new Intent(context, Menu.class);
-                context.startActivity(intent);
-            }
-            else
-            {   dialog.setMessage(s);
-                dialog.show();
+
+            switch (s) {
+
+                case ("login success"):
+                 {
+                    Intent intent = new Intent(context, Menu.class);
+                    context.startActivity(intent);
+                    break;
+                 }
+                case ("sign-in success"):
+                {
+
+                }
+
+                default:
+                {
+                    dialog.setMessage(s);
+                    dialog.show();
+                }
             }
 
         }

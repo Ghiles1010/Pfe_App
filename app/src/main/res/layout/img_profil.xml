@@ -5,19 +5,16 @@
     android:layout_height="wrap_content">
 
 
+    <ImageView
+        android:id="@+id/imageRestprofil"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
 
+        android:scaleType="fitXY"
 
-
-            <ImageView
-                android:id="@+id/imageRestprofil"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:scaleY="1"
-                android:scaleX="1"
-                android:scaleType="fitXY"
-
-                tools:srcCompat="@drawable/rest" />
-
+        android:scaleX="1"
+        android:scaleY="1"
+        tools:srcCompat="@drawable/rest" />
 
 
 </RelativeLayout>

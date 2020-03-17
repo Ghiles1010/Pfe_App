@@ -27,8 +27,8 @@ public class Connexion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(connexion);
 
-        emailET= (EditText)findViewById(R.id.email);
-        pswET= (EditText)findViewById(R.id.psw);
+        emailET= (EditText)findViewById(R.id.mail);
+        pswET= (EditText)findViewById(R.id.psww);
 
         conn=(Button) findViewById(R.id.connexion);
 
@@ -49,15 +49,17 @@ public class Connexion extends AppCompatActivity {
             String email = emailET.getText().toString();
             String psw = pswET.getText().toString();
             String type = "login";
+
+
             background.execute(type, email, psw);
-
-
-
         }
         else{
 
             Toast.makeText(Connexion.this, "aucune connexion Internet", Toast.LENGTH_SHORT).show();
 
+
+
+            
            }
 
 
