@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import com.example.pfeapp.prest_ui.Temporaire;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -39,7 +42,7 @@ public class Background extends AsyncTask<String, Void, String> {
         switch (s) {
 
             case ("success"): {
-                Intent intent = new Intent(context, Menu.class);
+                Intent intent = new Intent(context, Temporaire.class);
                 context.startActivity(intent);
                 break;
             }
@@ -106,6 +109,7 @@ public class Background extends AsyncTask<String, Void, String> {
                     result = e.getMessage();
                 }
 
+
                 break;
 
             case "sign-in":
@@ -157,8 +161,9 @@ public class Background extends AsyncTask<String, Void, String> {
                 }
 
 
+                Log.d("ress",result);
 
-                    break;
+                break;
 
 
 
