@@ -1,18 +1,17 @@
 package com.example.pfeapp.prest_ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.OnConvListener;
-import com.example.pfeapp.client_ui.ResRech;
 
 import java.util.ArrayList;
 
@@ -80,8 +79,7 @@ public class Messagerie_prest extends Fragment implements OnConvListener {
     @Override
     public void onConvClick(int position) {
 
-        FragmentTransaction fr = getFragmentManager().beginTransaction();
-        fr.replace(R.id.Fragment_container_prest, new ResRech());
-        fr.commit();
+        Intent intent =new Intent(getActivity(), Discussion_prest.class);
+        startActivity(intent);
     }
 }
