@@ -47,7 +47,9 @@ public class Prestaire_Menu extends AppCompatActivity {
                             break;
 
                         case R.id.nav_messagerie_prest:
+
                             titreBar.setText("Messagerie");
+                            selectedFragment = new Messagerie_prest();
 
 
                             break;
@@ -70,7 +72,7 @@ public class Prestaire_Menu extends AppCompatActivity {
 
                     }
 
-                    //getSupportFragmentManager().beginTransaction().replace(R.id.Fragment_container, selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.Fragment_container_prest, selectedFragment).commit();
 
                     return true;
                 }

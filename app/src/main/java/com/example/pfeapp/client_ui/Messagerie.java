@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,7 +15,7 @@ import com.example.pfeapp.R;
 import java.util.ArrayList;
 
 
-public class Messagerie extends Fragment {
+public class Messagerie extends Fragment implements OnConvListener {
 
 
     Conv_adapter adapter;
@@ -29,7 +30,7 @@ public class Messagerie extends Fragment {
 
         recview=view.findViewById(R.id.MesRecView);
 
-        adapter=new Conv_adapter(this,getList());
+        adapter=new Conv_adapter(this,getList(),this);
 
         recview.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -165,4 +166,11 @@ public class Messagerie extends Fragment {
         return cards;
     }
 
+    @Override
+    public void onConvClick(int position) {
+
+        FragmentTransaction fr = getFragmentManager().beginTransaction();
+        fr.replace(R.id.Fragment_container, new ResRech());
+        fr.commit();
+    }
 }

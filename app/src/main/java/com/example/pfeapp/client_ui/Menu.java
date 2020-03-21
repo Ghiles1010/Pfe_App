@@ -53,7 +53,7 @@ public class Menu extends AppCompatActivity {
 
                         case R.id.nav_messagerie:
                             titreBar.setText("Messagerie");
-                            selectedFragment= new Messagerie() ;
+                            selectedFragment = new Messagerie();
 
                             break;
 
