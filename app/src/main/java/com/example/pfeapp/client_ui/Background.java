@@ -47,6 +47,12 @@ public class Background extends AsyncTask<String, Void, String> {
                 break;
             }
 
+            case ("message_sent"): {
+
+
+                break;
+            }
+
             default: {
                 dialog.setMessage(s);
                 dialog.show();
@@ -118,9 +124,9 @@ public class Background extends AsyncTask<String, Void, String> {
 
                     String name = voids[1];
                     String surname = voids[2];
-                    String username=voids[3];
-                    String email=voids[4];
-                    String psw=voids[5];
+                    String username = voids[3];
+                    String email = voids[4];
+                    String psw = voids[5];
 
                     URL url = new URL(login_url);
                     HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
@@ -131,9 +137,9 @@ public class Background extends AsyncTask<String, Void, String> {
                     OutputStream ops = URLconn.getOutputStream();
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
                     String data = URLEncoder.encode("name", "UTF8") + "=" + URLEncoder.encode(name, "UTF8") + "&"
-                            + URLEncoder.encode("surname", "UTF8") + "=" + URLEncoder.encode(surname, "UTF8")+ "&"
-                            + URLEncoder.encode("username", "UTF8") + "=" + URLEncoder.encode(username, "UTF8")+ "&"
-                            + URLEncoder.encode("email", "UTF8") + "=" + URLEncoder.encode(email, "UTF8")+ "&"
+                            + URLEncoder.encode("surname", "UTF8") + "=" + URLEncoder.encode(surname, "UTF8") + "&"
+                            + URLEncoder.encode("username", "UTF8") + "=" + URLEncoder.encode(username, "UTF8") + "&"
+                            + URLEncoder.encode("email", "UTF8") + "=" + URLEncoder.encode(email, "UTF8") + "&"
                             + URLEncoder.encode("psw", "UTF8") + "=" + URLEncoder.encode(psw, "UTF8");//encode the string into utf-8 (the recommended web encoding)
 
                     writer.write(data);//write on the buffer
@@ -161,15 +167,52 @@ public class Background extends AsyncTask<String, Void, String> {
                 }
 
 
-                Log.d("ress",result);
+                Log.d("ress", result);
 
                 break;
 
+            case "send_message":
 
+                try {
+                    String message = voids[1];
+                    String conv = voids[2];
+
+                    URL url = new URL(login_url);
+                    HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
+                    URLconn.setRequestMethod("POST");//request to write on the server
+                    URLconn.setDoInput(true);
+                    URLconn.setDoOutput(true);
+
+                    OutputStream ops = URLconn.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
+                    String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8") + "&"
+                            + URLEncoder.encode("message", "UTF8") + "=" + URLEncoder.encode(message, "UTF8");
+                    writer.write(data);//write on the buffer
+                    writer.flush();
+                    writer.close();//close the buffer
+
+                    ops.close();
+
+                    InputStream ips = URLconn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(ips, "ISO-8859-1"));
+                    String line = "";
+                    while ((line = reader.readLine()) != null) {
+                        result += line;
+                    }
+                    reader.close();
+                    ips.close();
+                    URLconn.disconnect();
+                    return result;
+
+
+                } catch (MalformedURLException e) {
+                    result = e.getMessage();
+                } catch (java.io.IOException e) {
+                    result = e.getMessage();
+                }
 
 
         }
-
 
 
         return result;
