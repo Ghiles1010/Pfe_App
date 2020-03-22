@@ -53,6 +53,15 @@ public class Background extends AsyncTask<String, Void, String> {
                 break;
             }
 
+            case ("get_message"): {
+
+                dialog.setMessage(s);
+                dialog.show();
+
+
+                break;
+            }
+
             default: {
                 dialog.setMessage(s);
                 dialog.show();
@@ -210,6 +219,9 @@ public class Background extends AsyncTask<String, Void, String> {
                 } catch (java.io.IOException e) {
                     result = e.getMessage();
                 }
+
+                break;
+
 
 
         }
