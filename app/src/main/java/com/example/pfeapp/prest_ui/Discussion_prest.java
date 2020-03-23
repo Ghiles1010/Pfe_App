@@ -31,6 +31,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Discussion_prest extends AppCompatActivity {
 
@@ -38,6 +40,8 @@ public class Discussion_prest extends AppCompatActivity {
     private ImageButton send;
     private RecyclerView recview;
     Chat_adapter_prest adapter;
+    int number_of_messages;
+    int current_number_of_messages;
     ArrayList<Chat_card> cards = new ArrayList<>();
 
     @Override
@@ -45,7 +49,7 @@ public class Discussion_prest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.discussion);
 
-
+        current_number_of_messages=0;
         getList();
 
 
@@ -55,11 +59,12 @@ public class Discussion_prest extends AppCompatActivity {
         recview=findViewById(R.id.recConvm);
         adapter=new Chat_adapter_prest(this,cards);
 
+
         recview.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recview.setLayoutManager(layoutManager);
 
-
+        recview.smoothScrollToPosition(cards.size());
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,6 +226,25 @@ public class Discussion_prest extends AppCompatActivity {
                 }catch (org.json.JSONException e){
                     e.printStackTrace();
                 }
+
+                String number;
+                String regex="\\d+";
+                Pattern pt= Pattern.compile(regex);
+                Matcher mt=pt.matcher(result);
+
+                mt.find();
+                number=mt.group(0);
+                System.out.println(number);
+                result=result.replaceFirst("\\d+", "");
+                System.out.println(result);
+                try{
+                    number_of_messages=Integer.parseInt(number);
+                }catch (NumberFormatException e)
+                {
+                    number_of_messages=0;
+                    e.printStackTrace();
+                }
+
 
 
 
