@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -44,12 +45,18 @@ public class Discussion_prest extends AppCompatActivity {
     int current_number_of_messages;
     ArrayList<Chat_card> cards = new ArrayList<>();
 
+    private thread looperThread = new thread();
+    private Handler mainHandler=new Handler();
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.discussion);
 
         current_number_of_messages=0;
+
         getList();
 
 
@@ -75,6 +82,9 @@ public class Discussion_prest extends AppCompatActivity {
 
 
         });
+
+        looperThread.start();
+
 
     }
 
@@ -114,11 +124,6 @@ public class Discussion_prest extends AppCompatActivity {
 
     }
 
-
-
-
-
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean InternetAvailable() {
@@ -134,8 +139,6 @@ public class Discussion_prest extends AppCompatActivity {
         return connected;
     }
 
-
-
     private void getList(){
 
         new getData().execute("get_message","conv");
@@ -145,16 +148,6 @@ public class Discussion_prest extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
-
-
-
-
 
     private class getData extends AsyncTask<String, Void, String> {
         String name;
@@ -210,6 +203,29 @@ public class Discussion_prest extends AppCompatActivity {
 
                 }
 
+
+                String number;
+                String regex="\\d+";
+                Pattern pt= Pattern.compile(regex);
+                Matcher mt=pt.matcher(result);
+
+                mt.find();
+                number=mt.group(0);
+                result=result.replaceFirst("\\d+", "");
+
+                try{
+                    number_of_messages=Integer.parseInt(number);
+                }catch (NumberFormatException e)
+                {
+                    number_of_messages=0;
+                    e.printStackTrace();
+                }
+
+
+
+
+
+
                 try {
 
 
@@ -227,23 +243,7 @@ public class Discussion_prest extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                String number;
-                String regex="\\d+";
-                Pattern pt= Pattern.compile(regex);
-                Matcher mt=pt.matcher(result);
 
-                mt.find();
-                number=mt.group(0);
-                System.out.println(number);
-                result=result.replaceFirst("\\d+", "");
-                System.out.println(result);
-                try{
-                    number_of_messages=Integer.parseInt(number);
-                }catch (NumberFormatException e)
-                {
-                    number_of_messages=0;
-                    e.printStackTrace();
-                }
 
 
 
@@ -274,5 +274,49 @@ public class Discussion_prest extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Void... values) {}
     }
+
+
+
+    public class thread extends Thread {
+
+
+        @Override
+        public void run() {
+
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Chat_card d = new Chat_card();
+                    d.setText("je suis new ici!");
+                    cards.add(d);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+
+
+
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
