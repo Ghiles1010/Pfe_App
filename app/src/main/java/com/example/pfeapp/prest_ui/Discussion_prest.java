@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Background;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -165,7 +168,7 @@ public class Discussion_prest extends AppCompatActivity {
                 String result = "";
                 String type = voids[0];
                 String c = type;
-                String login_url = "http:/192.168.1.6/" + type + ".php";//go to commend prompt to know your local ip adress
+                String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
 
 
                 Chat_card cg= new Chat_card();
@@ -198,11 +201,29 @@ public class Discussion_prest extends AppCompatActivity {
                     result += line;
 
 
-                    cg= new Chat_card();
-                    cg.setText(line);
-                    cards.add(cg);
+
 
                 }
+
+                try {
+
+
+
+                JSONArray JA = new JSONArray(result);
+
+                for(int j=0; j<JA.length();j++){
+                    JSONObject JO = (JSONObject) JA.get(j);
+
+                    cg= new Chat_card();
+                    cg.setText(JO.get("text").toString());
+                    cards.add(cg);
+                }
+                }catch (org.json.JSONException e){
+                    e.printStackTrace();
+                }
+
+
+
                 reader.close();
                 ips.close();
                 URLconn.disconnect();
@@ -229,16 +250,5 @@ public class Discussion_prest extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Void... values) {}
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

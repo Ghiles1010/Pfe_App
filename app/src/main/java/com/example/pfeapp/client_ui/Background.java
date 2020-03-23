@@ -79,7 +79,7 @@ public class Background extends AsyncTask<String, Void, String> {
         String type = voids[0];
         String c = type;
 
-        String login_url = "http:/192.168.1.6/" + type + ".php";//go to commend prompt to know your local ip adress
+        String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
 
         switch (c) {
 
