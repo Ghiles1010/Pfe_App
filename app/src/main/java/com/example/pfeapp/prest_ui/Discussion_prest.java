@@ -32,9 +32,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Date;
 
 public class Discussion_prest extends AppCompatActivity {
 
@@ -42,6 +42,10 @@ public class Discussion_prest extends AppCompatActivity {
     private ImageButton send;
     private RecyclerView recview;
     Chat_adapter_prest adapter;
+
+    String last_message_time;
+    String current_last_message_time;
+
     int number_of_messages;
     int current_number_of_messages;
     ArrayList<Chat_card> cards = new ArrayList<>();
@@ -58,6 +62,9 @@ public class Discussion_prest extends AppCompatActivity {
 
         current_number_of_messages=0;
         number_of_messages=0;
+
+        last_message_time="2020-03-24 22:27:28";
+        current_last_message_time="2020-03-24 22:27:28";
 
         message=(EditText)findViewById(R.id.Message_To_send);
         send=(ImageButton)findViewById(R.id.send);
@@ -102,6 +109,14 @@ public class Discussion_prest extends AppCompatActivity {
         Background background=new Background(this);
 
         if(InternetAvailable()) {
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+
+            current_last_message_time=formatter.format(date);
+
+
+
 
             Chat_card c= new Chat_card();
             c.setText(message.getText().toString());
@@ -169,9 +184,7 @@ public class Discussion_prest extends AppCompatActivity {
                 String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
 
 
-                Chat_card cg= new Chat_card();
-                cg.setText("Rdv Sjudutdutd !");
-                cards.add(cg);
+                Chat_card cg;
 
 
                 String conv = voids[1];
@@ -184,7 +197,8 @@ public class Discussion_prest extends AppCompatActivity {
 
                 OutputStream ops = URLconn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
-                String data = URLEncoder.encode("email", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8");
+                String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8")+ "&"
+                        + URLEncoder.encode("time", "UTF8") + "=" + URLEncoder.encode(current_last_message_time, "UTF8");
 
                 writer.write(data);//write on the buffer
                 writer.flush();
@@ -204,24 +218,11 @@ public class Discussion_prest extends AppCompatActivity {
                 }
 
 
-                String number;
-                String regex="\\d+";
-                Pattern pt= Pattern.compile(regex);
-                Matcher mt=pt.matcher(result);
-
-                mt.find();
-                number=mt.group(0);
-                result=result.replaceFirst("\\d+", "");
-
-                try{
-                    current_number_of_messages=Integer.parseInt(number);
-                }catch (NumberFormatException e)
-                {
-
-                    e.printStackTrace();
-                }
 
 
+                current_last_message_time=result.substring(0, 19);
+
+                result=result.replaceFirst("\\d+(-\\d+){2} (\\d+:){2}\\d+", "");
 
 
 
@@ -309,7 +310,7 @@ public class Discussion_prest extends AppCompatActivity {
 
                     OutputStream ops = URLconn.getOutputStream();
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
-                    String data = URLEncoder.encode("email", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8");
+                    String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8");
 
                     writer.write(data);//write on the buffer
                     writer.flush();
@@ -327,12 +328,9 @@ public class Discussion_prest extends AppCompatActivity {
                     }
 
 
-                    try {
-                        number_of_messages = Integer.parseInt(result);
-                    } catch (NumberFormatException e) {
+                    last_message_time=result.substring(0, 19);
 
-                        e.printStackTrace();
-                    }
+                    result=result.replaceFirst("\\d+(-\\d+){2} (\\d+:){2}\\d+", "");
 
 
                     reader.close();
@@ -347,19 +345,24 @@ public class Discussion_prest extends AppCompatActivity {
                 }//fin try-catch
 
 
-                if(number_of_messages>current_number_of_messages){
+                String current;
+                String last;
+
+                current=current_last_message_time.replaceAll("(-|:)"," ");
+                last=last_message_time.replaceAll("(-|:)"," ");
 
 
-                    current_number_of_messages=  number_of_messages;
+                if(isAfter(last,current,4)){ // ne change pas le numero 4, il represente le nombre de chiifre de l'annee
+
+
+                    current_last_message_time=  last_message_time;
 
 
                     mainHandler.post(new Runnable() {
                         @Override
                         public void run() {
 
-                            Chat_card d = new Chat_card();
-                            d.setText("je suis new ici!");
-                            cards.add(d);
+
                             getList();
                             adapter.notifyDataSetChanged();
                             recview.smoothScrollToPosition(cards.size());
@@ -375,9 +378,40 @@ public class Discussion_prest extends AppCompatActivity {
 
 
 
+        }
 
 
 
+        public  boolean isAfter(String d1,String d2, int n){
+
+            int num1, num2;
+            String str1, str2;
+
+
+            str1=d1.substring(0, n);
+
+
+            str2=d2.substring(0, n);
+
+
+            num1=Integer.parseInt(str1);
+            num2=Integer.parseInt(str2);
+
+            if(num1>num2)
+                return true;
+            if(num1<num2)
+                return false;
+            else{
+
+                d1=d1.replaceFirst("\\d+ ?", "");
+                d2=d2.replaceFirst("\\d+ ?", "");
+
+                if(d1.isEmpty())
+                    return false;
+                else
+                    return isAfter(d1,d2,2);
+
+            }
         }
     }
 
