@@ -2,11 +2,8 @@ package com.example.pfeapp.client_ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.example.pfeapp.prest_ui.Temporaire;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -42,8 +39,7 @@ public class Background extends AsyncTask<String, Void, String> {
         switch (s) {
 
             case ("success"): {
-                Intent intent = new Intent(context, Temporaire.class);
-                context.startActivity(intent);
+
                 break;
             }
 

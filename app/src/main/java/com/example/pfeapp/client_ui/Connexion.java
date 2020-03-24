@@ -2,6 +2,7 @@ package com.example.pfeapp.client_ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pfeapp.R;
+import com.example.pfeapp.prest_ui.Temporaire;
 
 import static com.example.pfeapp.R.layout.connexion;
 
@@ -52,6 +54,11 @@ public class Connexion extends AppCompatActivity {
             String res;
 
             res=background.execute(type, email, psw).toString();
+
+            Intent intent = new Intent(this, Temporaire.class);
+            startActivity(intent);
+
+
 
         }
         else{
