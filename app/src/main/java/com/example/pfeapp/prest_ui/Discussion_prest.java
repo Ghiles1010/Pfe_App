@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -56,15 +57,18 @@ public class Discussion_prest extends AppCompatActivity {
         setContentView(R.layout.discussion);
 
         current_number_of_messages=0;
-
-        getList();
-
+        number_of_messages=0;
 
         message=(EditText)findViewById(R.id.Message_To_send);
         send=(ImageButton)findViewById(R.id.send);
 
         recview=findViewById(R.id.recConvm);
+
+        getList();
+
+
         adapter=new Chat_adapter_prest(this,cards);
+
 
 
         recview.setAdapter(adapter);
@@ -142,10 +146,6 @@ public class Discussion_prest extends AppCompatActivity {
     private void getList(){
 
         new getData().execute("get_message","conv");
-        Chat_card c= new Chat_card();
-        c.setText("Rdv Samedi prochain à 13h !");
-        cards.add(c);
-
 
     }
 
@@ -214,10 +214,10 @@ public class Discussion_prest extends AppCompatActivity {
                 result=result.replaceFirst("\\d+", "");
 
                 try{
-                    number_of_messages=Integer.parseInt(number);
+                    current_number_of_messages=Integer.parseInt(number);
                 }catch (NumberFormatException e)
                 {
-                    number_of_messages=0;
+
                     e.printStackTrace();
                 }
 
@@ -283,15 +283,96 @@ public class Discussion_prest extends AppCompatActivity {
         @Override
         public void run() {
 
-            mainHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Chat_card d = new Chat_card();
-                    d.setText("je suis new ici!");
-                    cards.add(d);
-                    adapter.notifyDataSetChanged();
+            while(true){
+
+                SystemClock.sleep(1000);
+                String result = "";
+
+                try {
+
+
+                    String type = "number_messages";
+                    String c = type;
+                    String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
+
+
+                    Chat_card cg;
+
+
+                    String conv = "conv";
+
+                    URL url = new URL(login_url);
+                    HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
+                    URLconn.setRequestMethod("POST");//request to write on the server
+                    URLconn.setDoInput(true);
+                    URLconn.setDoOutput(true);
+
+                    OutputStream ops = URLconn.getOutputStream();
+                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
+                    String data = URLEncoder.encode("email", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8");
+
+                    writer.write(data);//write on the buffer
+                    writer.flush();
+                    writer.close();//close the buffer
+
+                    ops.close();
+
+                    InputStream ips = URLconn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(ips, "ISO-8859-1"));
+                    String line = "";
+                    while ((line = reader.readLine()) != null) {
+                        result += line;
+
+
+                    }
+
+
+                    try {
+                        number_of_messages = Integer.parseInt(result);
+                    } catch (NumberFormatException e) {
+
+                        e.printStackTrace();
+                    }
+
+
+                    reader.close();
+                    ips.close();
+                    URLconn.disconnect();
+
+
+                } catch (MalformedURLException e) {
+                    result = e.getMessage();
+                } catch (java.io.IOException e) {
+                    result = e.getMessage();
+                }//fin try-catch
+
+
+                if(number_of_messages>current_number_of_messages){
+
+
+                    current_number_of_messages=  number_of_messages;
+
+
+                    mainHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Chat_card d = new Chat_card();
+                            d.setText("je suis new ici!");
+                            cards.add(d);
+                            getList();
+                            adapter.notifyDataSetChanged();
+                            recview.smoothScrollToPosition(cards.size());
+
+                        }
+                    });
+
                 }
-            });
+
+
+
+            }//fin while
+
 
 
 
