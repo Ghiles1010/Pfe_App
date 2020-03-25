@@ -1,6 +1,7 @@
 package com.example.pfeapp.prest_ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Background;
 
@@ -32,9 +34,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Discussion_prest extends AppCompatActivity {
 
@@ -42,6 +42,7 @@ public class Discussion_prest extends AppCompatActivity {
     private ImageButton send;
     private RecyclerView recview;
     Chat_adapter_prest adapter;
+    User user;
 
     String last_message_time;
     String current_last_message_time;
@@ -60,18 +61,20 @@ public class Discussion_prest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.discussion);
 
-        current_number_of_messages=0;
-        number_of_messages=0;
+        Intent i = getIntent();
+        user = (User)i.getSerializableExtra("User");
 
-        last_message_time="2020-03-24 22:27:28";
-        current_last_message_time="2020-03-24 22:27:28";
+
+
+        last_message_time="2019-03-24 22:27:28";
+        current_last_message_time="2019-03-24 22:27:28";
 
         message=(EditText)findViewById(R.id.Message_To_send);
         send=(ImageButton)findViewById(R.id.send);
 
         recview=findViewById(R.id.recConvm);
 
-        getList();
+        getList("");
 
 
         adapter=new Chat_adapter_prest(this,cards);
@@ -110,10 +113,7 @@ public class Discussion_prest extends AppCompatActivity {
 
         if(InternetAvailable()) {
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
 
-            current_last_message_time=formatter.format(date);
 
 
 
@@ -158,9 +158,10 @@ public class Discussion_prest extends AppCompatActivity {
         return connected;
     }
 
-    private void getList(){
-
-        new getData().execute("get_message","conv",current_last_message_time);
+    private void getList(String us){
+        //entrez le chaine vide dans us pour afficher tout les user
+        //sinon specifier le ID du user
+        new getData().execute("get_message","conv",current_last_message_time,us);
 
     }
 
@@ -181,6 +182,7 @@ public class Discussion_prest extends AppCompatActivity {
                 String result = "";
                 String type = voids[0];
                 String time=voids[2];
+                String user=voids[3];
                 String c = type;
                 String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
 
@@ -199,7 +201,8 @@ public class Discussion_prest extends AppCompatActivity {
                 OutputStream ops = URLconn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
                 String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8")+ "&"
-                        + URLEncoder.encode("time", "UTF8") + "=" + URLEncoder.encode(time, "UTF8");
+                        + URLEncoder.encode("time", "UTF8") + "=" + URLEncoder.encode(time, "UTF8")+ "&"
+                        + URLEncoder.encode("user", "UTF8") + "=" + URLEncoder.encode(user, "UTF8");
 
                 writer.write(data);//write on the buffer
                 writer.flush();
@@ -364,7 +367,7 @@ public class Discussion_prest extends AppCompatActivity {
                         public void run() {
 
 
-                            getList();
+                            getList(user.getId());
                             current_last_message_time=  last_message_time;
                             adapter.notifyDataSetChanged();
                             recview.smoothScrollToPosition(cards.size());

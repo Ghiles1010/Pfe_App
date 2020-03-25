@@ -7,6 +7,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Menu;
 
@@ -45,13 +46,21 @@ public class Temporaire extends AppCompatActivity {
 
     void goClient(){
 
+        Intent i = getIntent();
+        User user = (User)i.getSerializableExtra("User");
+
         Intent intent =new Intent(this, Menu.class);
+        intent.putExtra("User",  user);
         startActivity(intent);
     }
 
     void goPrest(){
 
+        Intent i = getIntent();
+        User user = (User)i.getSerializableExtra("User");
+
         Intent intent =new Intent(this, Prestaire_Menu.class);
+        intent.putExtra("User",  user);
         startActivity(intent);
     }
 

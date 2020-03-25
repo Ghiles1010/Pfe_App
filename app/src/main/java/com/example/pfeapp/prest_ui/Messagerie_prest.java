@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.OnConvListener;
 
@@ -20,11 +21,15 @@ public class Messagerie_prest extends Fragment implements OnConvListener {
 
     Conv_adapter_prest adapter;
     RecyclerView recview;
+    User user;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+
 
         View view=inflater.inflate(R.layout.fragment_messagerie, container, false);
 
@@ -79,7 +84,11 @@ public class Messagerie_prest extends Fragment implements OnConvListener {
     @Override
     public void onConvClick(int position) {
 
+        Intent i = getActivity().getIntent();
+        user = (User) i.getSerializableExtra("User");
+
         Intent intent =new Intent(getActivity(), Discussion_prest.class);
+        intent.putExtra("User",  user);
         startActivity(intent);
     }
 }

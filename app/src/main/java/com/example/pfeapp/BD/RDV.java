@@ -1,4 +1,4 @@
-package BD;
+package com.example.pfeapp.BD;
 
 import java.util.Date;
 

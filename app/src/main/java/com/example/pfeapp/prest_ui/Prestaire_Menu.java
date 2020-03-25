@@ -1,5 +1,6 @@
 package com.example.pfeapp.prest_ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -19,7 +21,10 @@ public class Prestaire_Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prestaire__menu);
 
+        Intent i = getIntent();
+        User user = (User)i.getSerializableExtra("User");
 
+        getIntent().putExtra("User", user);
 
         Toolbar toolBar = findViewById(R.id.toolBarMenu);
         setSupportActionBar(toolBar);
