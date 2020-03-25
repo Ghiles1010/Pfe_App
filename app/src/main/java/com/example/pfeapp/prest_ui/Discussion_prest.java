@@ -8,11 +8,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -120,6 +123,7 @@ public class Discussion_prest extends AppCompatActivity {
 
             Chat_card c= new Chat_card();
             c.setText(message.getText().toString());
+            c.setUser(user.getId());
             cards.add(c);
             recview.smoothScrollToPosition(cards.size());
             adapter.notifyDataSetChanged();
@@ -242,6 +246,7 @@ public class Discussion_prest extends AppCompatActivity {
 
                     cg= new Chat_card();
                     cg.setText(JO.get("text").toString());
+                    cg.setUser(JO.get("user").toString());
                     cards.add(cg);
                 }
                 }catch (org.json.JSONException e){
@@ -416,6 +421,67 @@ public class Discussion_prest extends AppCompatActivity {
                 else
                     return isAfter(d1,d2,2);
 
+            }
+        }
+    }
+
+
+
+
+    public class Chat_adapter_prest extends RecyclerView.Adapter<Chat_Holder_prest> {
+
+        Discussion_prest c;
+        ArrayList<Chat_card> cards;
+
+        public static final int MSG_RIGHT=1;
+        public static final int MSG_LEFT=0;
+
+
+        public Chat_adapter_prest(Discussion_prest c, ArrayList<Chat_card> cards) {
+            this.c = c;
+            this.cards = cards;
+        }
+
+
+///////////////////////////////////////////////////////////////////////////
+
+        @NonNull
+        @Override
+        public Chat_Holder_prest onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view;
+            if(viewType==MSG_RIGHT) {
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_right, null);
+            }
+            else{
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_left, null);
+            }
+            return new Chat_Holder_prest(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull Chat_Holder_prest holder, int position) {
+
+            holder.text.setText(cards.get(position).getText());
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return cards.size();
+        }
+
+
+        @Override
+        public int getItemViewType(int position) {
+
+            String f=cards.get(position).getUser();
+
+            if(f.equals(user.getId())){
+                return MSG_RIGHT;
+            }
+
+            else{
+                return  MSG_LEFT;
             }
         }
     }
