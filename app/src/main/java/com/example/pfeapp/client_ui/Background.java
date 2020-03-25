@@ -38,30 +38,29 @@ public class Background extends AsyncTask<String, Void, String> {
 
         switch (s) {
 
-            case ("success"): {
+            case ("success"):
 
                 break;
-            }
 
-            case ("message_sent"): {
+
+            case ("message_sent"):
 
 
                 break;
-            }
 
-            case ("get_message"): {
+            case ("get_message"):
 
                 dialog.setMessage(s);
                 dialog.show();
 
 
                 break;
-            }
 
-            default: {
+
+            default:
                 dialog.setMessage(s);
                 dialog.show();
-            }
+
         }
 
     }

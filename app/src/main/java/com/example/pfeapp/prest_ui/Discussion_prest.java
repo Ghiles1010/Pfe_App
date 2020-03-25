@@ -160,14 +160,14 @@ public class Discussion_prest extends AppCompatActivity {
 
     private void getList(){
 
-        new getData().execute("get_message","conv");
+        new getData().execute("get_message","conv",current_last_message_time);
 
     }
 
     private class getData extends AsyncTask<String, Void, String> {
         String name;
         String sData;
-        String Data = "";
+
         String result;
 
         Context con;
@@ -180,6 +180,7 @@ public class Discussion_prest extends AppCompatActivity {
 
                 String result = "";
                 String type = voids[0];
+                String time=voids[2];
                 String c = type;
                 String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
 
@@ -198,7 +199,7 @@ public class Discussion_prest extends AppCompatActivity {
                 OutputStream ops = URLconn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
                 String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8")+ "&"
-                        + URLEncoder.encode("time", "UTF8") + "=" + URLEncoder.encode(current_last_message_time, "UTF8");
+                        + URLEncoder.encode("time", "UTF8") + "=" + URLEncoder.encode(time, "UTF8");
 
                 writer.write(data);//write on the buffer
                 writer.flush();
@@ -286,7 +287,7 @@ public class Discussion_prest extends AppCompatActivity {
 
             while(true){
 
-                SystemClock.sleep(1000);
+                SystemClock.sleep(500);
                 String result = "";
 
                 try {
@@ -355,7 +356,7 @@ public class Discussion_prest extends AppCompatActivity {
                 if(isAfter(last,current,4)){ // ne change pas le numero 4, il represente le nombre de chiifre de l'annee
 
 
-                    current_last_message_time=  last_message_time;
+
 
 
                     mainHandler.post(new Runnable() {
@@ -364,6 +365,7 @@ public class Discussion_prest extends AppCompatActivity {
 
 
                             getList();
+                            current_last_message_time=  last_message_time;
                             adapter.notifyDataSetChanged();
                             recview.smoothScrollToPosition(cards.size());
 
