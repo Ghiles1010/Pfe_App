@@ -50,8 +50,6 @@ public class Discussion_prest extends AppCompatActivity {
     String last_message_time;
     String current_last_message_time;
 
-    int number_of_messages;
-    int current_number_of_messages;
     ArrayList<Chat_card> cards = new ArrayList<>();
 
     private thread looperThread = new thread();
@@ -134,7 +132,7 @@ public class Discussion_prest extends AppCompatActivity {
             String conv="conv";
             String type = "send_message";
             String res;
-            res=background.execute(type, mes,conv).toString();
+            res=background.execute(type, mes,conv,user.getId()).toString();
 
 
 
@@ -218,44 +216,38 @@ public class Discussion_prest extends AppCompatActivity {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(ips, "ISO-8859-1"));
                 String line = "";
                 while ((line = reader.readLine()) != null) {
+
                     result += line;
 
-
-
-
                 }
 
 
 
+                if(!result.equals("no messages")) {
+                    current_last_message_time = result.substring(0, 19);
 
-                current_last_message_time=result.substring(0, 19);
-
-                result=result.replaceFirst("\\d+(-\\d+){2} (\\d+:){2}\\d+", "");
-
-
+                    result = result.replaceFirst("\\d+(-\\d+){2} (\\d+:){2}\\d+", "");
 
 
-                try {
+                    try {
 
 
+                        JSONArray JA = new JSONArray(result);
 
-                JSONArray JA = new JSONArray(result);
+                        for (int j = 0; j < JA.length(); j++) {
+                            JSONObject JO = (JSONObject) JA.get(j);
 
-                for(int j=0; j<JA.length();j++){
-                    JSONObject JO = (JSONObject) JA.get(j);
+                            cg = new Chat_card();
+                            cg.setText(JO.get("text").toString());
+                            cg.setUser(JO.get("user").toString());
+                            cards.add(cg);
+                        }
+                    } catch (org.json.JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                    cg= new Chat_card();
-                    cg.setText(JO.get("text").toString());
-                    cg.setUser(JO.get("user").toString());
-                    cards.add(cg);
+
                 }
-                }catch (org.json.JSONException e){
-                    e.printStackTrace();
-                }
-
-
-
-
 
 
                 reader.close();
@@ -295,6 +287,8 @@ public class Discussion_prest extends AppCompatActivity {
 
             while(true){
 
+
+
                 SystemClock.sleep(500);
                 String result = "";
 
@@ -319,7 +313,8 @@ public class Discussion_prest extends AppCompatActivity {
 
                     OutputStream ops = URLconn.getOutputStream();
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
-                    String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8");
+                    String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8")+ "&"
+                            + URLEncoder.encode("user", "UTF8") + "=" + URLEncoder.encode(user.getId(), "UTF8");
 
                     writer.write(data);//write on the buffer
                     writer.flush();
@@ -337,9 +332,38 @@ public class Discussion_prest extends AppCompatActivity {
                     }
 
 
-                    last_message_time=result.substring(0, 19);
+                    if(!result.equals("")) {
+                        last_message_time = result.substring(0, 19);
 
-                    result=result.replaceFirst("\\d+(-\\d+){2} (\\d+:){2}\\d+", "");
+                        result = result.replaceFirst("\\d+(-\\d+){2} (\\d+:){2}\\d+", "");
+
+
+                        String current;
+                        String last;
+
+                        current = current_last_message_time.replaceAll("(-|:)", " ");
+                        last = last_message_time.replaceAll("(-|:)", " ");
+
+
+                        if (isAfter(last, current, 4)) { // ne change pas le numero 4, il represente le nombre de chiifre de l'annee
+
+
+                            mainHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+
+
+                                    getList(user.getId());
+                                    current_last_message_time = last_message_time;
+                                    adapter.notifyDataSetChanged();
+                                    recview.smoothScrollToPosition(cards.size());
+
+                                }
+                            });
+
+                        }
+                    }
+
 
 
                     reader.close();
@@ -354,33 +378,6 @@ public class Discussion_prest extends AppCompatActivity {
                 }//fin try-catch
 
 
-                String current;
-                String last;
-
-                current=current_last_message_time.replaceAll("(-|:)"," ");
-                last=last_message_time.replaceAll("(-|:)"," ");
-
-
-                if(isAfter(last,current,4)){ // ne change pas le numero 4, il represente le nombre de chiifre de l'annee
-
-
-
-
-
-                    mainHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                            getList(user.getId());
-                            current_last_message_time=  last_message_time;
-                            adapter.notifyDataSetChanged();
-                            recview.smoothScrollToPosition(cards.size());
-
-                        }
-                    });
-
-                }
 
 
 

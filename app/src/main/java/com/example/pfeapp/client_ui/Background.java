@@ -139,6 +139,7 @@ public class Background extends AsyncTask<String, Void, String> {
                 try {
                     String message = voids[1];
                     String conv = voids[2];
+                    String user= voids[3];
 
                     URL url = new URL(login_url);
                     HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
@@ -149,7 +150,8 @@ public class Background extends AsyncTask<String, Void, String> {
                     OutputStream ops = URLconn.getOutputStream();
                     BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
                     String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8") + "&"
-                            + URLEncoder.encode("message", "UTF8") + "=" + URLEncoder.encode(message, "UTF8");
+                            + URLEncoder.encode("message", "UTF8") + "=" + URLEncoder.encode(message, "UTF8")+ "&"
+                            + URLEncoder.encode("user", "UTF8") + "=" + URLEncoder.encode(user, "UTF8");
                     writer.write(data);//write on the buffer
                     writer.flush();
                     writer.close();//close the buffer
