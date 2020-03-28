@@ -47,6 +47,7 @@ public class Prestaire_Menu extends AppCompatActivity {
 
 
                             titreBar.setText("Profil");
+                            selectedFragment = new Profil_prest();
 
 
                             break;
@@ -61,6 +62,7 @@ public class Prestaire_Menu extends AppCompatActivity {
 
                         case R.id.nav_agenda_prest:
                             titreBar.setText("Agenda");
+                            selectedFragment = new Agenda_prest();
 
                             break;
 

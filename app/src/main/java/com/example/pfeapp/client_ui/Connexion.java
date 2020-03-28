@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +39,7 @@ import static com.example.pfeapp.R.layout.connexion;
 public class Connexion extends AppCompatActivity {
     private EditText emailET, pswET;
     private Button conn;
+    private TextView error;
     public User user = new User();
     String UserId;
 
@@ -48,7 +50,7 @@ public class Connexion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(connexion);
 
-
+        error=findViewById(R.id.Error);
         emailET = (EditText) findViewById(R.id.mail);
         pswET = (EditText) findViewById(R.id.psww);
 
@@ -175,11 +177,8 @@ public class Connexion extends AppCompatActivity {
         String sData;
         AlertDialog dialog;
         String result = "";
-
         Context context;
         String type = "login";
-
-
         String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
 
         public connect(Context context) {
@@ -249,8 +248,7 @@ public class Connexion extends AppCompatActivity {
             } else {
 
 
-                dialog.setMessage(result);
-                dialog.show();
+                error.setText(result);
 
             }
         }

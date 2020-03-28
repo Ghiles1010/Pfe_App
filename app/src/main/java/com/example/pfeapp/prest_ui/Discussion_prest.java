@@ -160,6 +160,8 @@ public class Discussion_prest extends AppCompatActivity {
         return connected;
     }
 
+
+
     private void getList(String us){
         //entrez le chaine vide dans us pour afficher tout les user
         //sinon specifier le ID du user
@@ -167,15 +169,11 @@ public class Discussion_prest extends AppCompatActivity {
 
     }
 
+
+
     private class getData extends AsyncTask<String, Void, String> {
-        String name;
-        String sData;
 
         String result;
-
-        Context con;
-
-
 
         @Override
         protected String doInBackground(String... voids) {
@@ -482,19 +480,6 @@ public class Discussion_prest extends AppCompatActivity {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
