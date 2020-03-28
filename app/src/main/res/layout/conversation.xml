@@ -1,65 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
-    app:cardElevation="5dp"
+    android:layout_marginTop="10dp"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:layout_marginBottom="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    >
 
-
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
 
-        >
+
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        tools:ignore="MissingConstraints">
+
+        <RelativeLayout
+
+            android:background="@drawable/rech_res_shape"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
 
-        <ImageView
-            android:id="@+id/ImageUser"
-            android:layout_width="52dp"
+            <TextView
+                android:id="@+id/UserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/cardImrestrech"
 
-            android:layout_height="50dp"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="16dp"
-            tools:srcCompat="@drawable/body" />
+                android:layout_marginStart="25dp"
 
-        <TextView
-            android:id="@+id/UserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/ImageUser"
-            android:layout_marginLeft="24dp"
-            android:textColor="@color/Black"
-            android:layout_toRightOf="@+id/ImageUser"
-            android:text="Nom_Utilisateur"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+                android:layout_marginTop="6dp"
+                android:layout_toEndOf="@+id/cardImrestrech"
+                android:text="Plombier Amar"
+                android:textColor="@color/Navy"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/Umessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/ImageUser"
-            android:layout_marginLeft="27dp"
-            android:layout_marginBottom="2dp"
-            android:layout_toRightOf="@+id/ImageUser"
-            android:text="Dernier Message"
+            <TextView
+                android:id="@+id/Umessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-            android:textSize="13sp" />
+                android:layout_below="@+id/UserName"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="18dp"
+                android:layout_toEndOf="@+id/cardImrestrech"
+                android:gravity="center"
+                android:text="Rendez-vous samedi à 13h!"
+                android:textColor="@color/Black"
+                android:textSize="11sp" />
 
-        <TextView
-            android:id="@+id/uTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:layout_alignBottom="@+id/ImageUser"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="22dp"
-            android:text="3:34 PM"
-            android:textSize="12sp" />
-    </RelativeLayout>
 
-</androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/uTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/Umessage"
+
+                android:layout_alignParentEnd="true"
+
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="6:21 pm"
+                android:textColor="@color/Black"
+                android:textSize="11sp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardImrestrech"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rech_res_shape"
+                android:layout_marginBottom="5dp"
+                app:cardCornerRadius="20dp">
+
+
+                <ImageView
+
+
+                    android:id="@+id/ImageUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    tools:srcCompat="@drawable/rest"
+
+
+                    />
+
+
+            </androidx.cardview.widget.CardView>
+
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
