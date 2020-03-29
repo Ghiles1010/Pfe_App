@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:umanoDragView="@id/dragview"
-    app:umanoScrollableView="@id/listView"
+    app:umanoScrollableView="@id/RecViewTasks"
     android:layout_gravity="bottom"
     android:gravity="bottom"
-    app:umanoPanelHeight="68dp"
+    app:umanoPanelHeight="150dp"
     app:umanoOverlay="false"
     app:umanoParallaxOffset="100dp"
     app:umanoShadowHeight="4dp">
@@ -19,13 +19,18 @@
         android:layout_height="match_parent">
 
         <CalendarView
+            android:background="@color/White"
 
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusedMonthDateColor="@color/Navy"
+            android:selectedWeekBackgroundColor="@color/Navy"
+            android:backgroundTint="@color/White"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:unfocusedMonthDateColor="@color/Navy"
             android:layout_marginStart="0dp"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
@@ -38,6 +43,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/dragview"
         android:clickable="true"
+        android:background="@color/White"
         android:focusable="false"
         android:orientation="vertical">
 
@@ -50,21 +56,18 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:textSize="16sp"
-                android:text="Action"
+                android:text="Programme de la journée"
                 android:paddingStart="15dp"
                 android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:id="@+id/listView"
-            >
-
-
-        </ListView>
+            android:id="@+id/RecViewTasks"
+            />
 
 
     </LinearLayout>
