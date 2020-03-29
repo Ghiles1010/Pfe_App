@@ -45,6 +45,9 @@ public class Res_resch_adapter extends RecyclerView.Adapter<Res_rech_holder> {
 
     @Override
     public int getItemCount() {
-        return cards.size();
+      try{
+        return cards.size();}
+       catch(Exception e)
+        {return 0;}
     }
 }

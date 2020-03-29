@@ -184,7 +184,7 @@ public class Discussion_prest extends AppCompatActivity {
                 String time=voids[2];
                 String user=voids[3];
                 String c = type;
-                String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
+                String login_url = "http:/192.168.1.8/" + type + ".php";//go to commend prompt to know your local ip adress
 
 
                 Chat_card cg;
@@ -295,7 +295,7 @@ public class Discussion_prest extends AppCompatActivity {
 
                     String type = "number_messages";
                     String c = type;
-                    String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
+                    String login_url = "http:/192.168.1.8/" + type + ".php";//go to commend prompt to know your local ip adress
 
 
                     Chat_card cg;

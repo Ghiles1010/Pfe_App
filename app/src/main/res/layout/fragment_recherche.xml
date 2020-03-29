@@ -58,9 +58,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/ajouterFiltre" />
+    
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/SearchBar"
         android:layout_width="0dp"
         android:layout_height="37dp"
         android:layout_marginTop="32dp"
@@ -89,7 +90,7 @@
         android:textColor="@color/Navy"
         app:layout_constraintBottom_toBottomOf="@+id/ajouterFiltre"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/SearchBar"
         app:layout_constraintVertical_bias="1.0" />
 
 
@@ -108,7 +109,7 @@
         android:textAllCaps="false"
         android:textColor="@color/White"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/SearchBar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecomRecView"
