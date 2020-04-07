@@ -3,7 +3,6 @@ package com.example.pfeapp.client_ui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,9 +19,13 @@ public class Background extends AsyncTask<String, Void, String> {
 
     AlertDialog dialog;
     Context context;
+    public static final String ip ="192.168.1.7";
 
     public Background(Context context) {
         this.context = context;
+    }
+
+    public Background() {
     }
 
     @Override
@@ -74,7 +77,6 @@ public class Background extends AsyncTask<String, Void, String> {
         String type = voids[0];
         String c = type;
 
-        String login_url = "http:/192.168.1.7/" + type + ".php";//go to commend prompt to know your local ip adress
 
         switch (c) {
 
@@ -83,104 +85,100 @@ public class Background extends AsyncTask<String, Void, String> {
 
             case "sign-in":
 
-                try {
 
-                    String name = voids[1];
-                    String surname = voids[2];
-                    String username = voids[3];
-                    String email = voids[4];
-                    String psw = voids[5];
-
-                    URL url = new URL(login_url);
-                    HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
-                    URLconn.setRequestMethod("POST");//request to write on the server
-                    URLconn.setDoInput(true);
-                    URLconn.setDoOutput(true);
-
-                    OutputStream ops = URLconn.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
-                    String data = URLEncoder.encode("name", "UTF8") + "=" + URLEncoder.encode(name, "UTF8") + "&"
-                            + URLEncoder.encode("surname", "UTF8") + "=" + URLEncoder.encode(surname, "UTF8") + "&"
-                            + URLEncoder.encode("username", "UTF8") + "=" + URLEncoder.encode(username, "UTF8") + "&"
-                            + URLEncoder.encode("email", "UTF8") + "=" + URLEncoder.encode(email, "UTF8") + "&"
-                            + URLEncoder.encode("psw", "UTF8") + "=" + URLEncoder.encode(psw, "UTF8");//encode the string into utf-8 (the recommended web encoding)
-
-                    writer.write(data);//write on the buffer
-                    writer.flush();
-                    writer.close();//close the buffer
-
-                    ops.close();
-
-                    InputStream ips = URLconn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(ips, "ISO-8859-1"));
-                    String line = "";
-                    while ((line = reader.readLine()) != null) {
-                        result += line;
-                    }
-                    reader.close();
-                    ips.close();
-                    URLconn.disconnect();
-                    return result;
+                result=request(c,ip,"name",voids[1],"surname",voids[2],"username",voids[3],"email",voids[4],"psw",voids[5]);
 
 
-                } catch (MalformedURLException e) {
-                    result = e.getMessage();
-                } catch (java.io.IOException e) {
-                    result = e.getMessage();
-                }
-
-
-                Log.d("ress", result);
 
                 break;
 
             case "send_message":
 
-                try {
-                    String message = voids[1];
-                    String conv = voids[2];
-                    String user= voids[3];
-
-                    URL url = new URL(login_url);
-                    HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
-                    URLconn.setRequestMethod("POST");//request to write on the server
-                    URLconn.setDoInput(true);
-                    URLconn.setDoOutput(true);
-
-                    OutputStream ops = URLconn.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
-                    String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8") + "&"
-                            + URLEncoder.encode("message", "UTF8") + "=" + URLEncoder.encode(message, "UTF8")+ "&"
-                            + URLEncoder.encode("user", "UTF8") + "=" + URLEncoder.encode(user, "UTF8");
-                    writer.write(data);//write on the buffer
-                    writer.flush();
-                    writer.close();//close the buffer
-
-                    ops.close();
-
-                    InputStream ips = URLconn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(ips, "ISO-8859-1"));
-                    String line = "";
-                    while ((line = reader.readLine()) != null) {
-                        result += line;
-                    }
-                    reader.close();
-                    ips.close();
-                    URLconn.disconnect();
-                    return result;
 
 
-                } catch (MalformedURLException e) {
-                    result = e.getMessage();
-                } catch (java.io.IOException e) {
-                    result = e.getMessage();
-                }
+                result=request(c,ip,"message",voids[1],"conv",voids[2],"user",voids[3]);
+
+
 
                 break;
 
-
-
         }
+
+
+        return result;
+    }
+
+
+    /*
+    Le premier Argument est le nom du fichier php sans l'extension
+    le deuxieme est le est l'adresse ip
+    puis "nom du $_POST puis sa valeur..."
+     */
+    public String request(String... voids){
+
+
+        String result = "";
+        String type = voids[0];
+        String address=voids[1];
+
+
+        String login_url = "http:/"+address+"/" + type + ".php";//go to commend prompt to know your local ip adress
+
+
+        try {
+
+
+            URL url = new URL(login_url);
+            HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
+            URLconn.setRequestMethod("POST");//request to write on the server
+            URLconn.setDoInput(true);
+            URLconn.setDoOutput(true);
+
+            OutputStream ops = URLconn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
+
+            int i=2;
+            String data="";
+            while(i<voids.length){
+
+                if(i==2) {
+                    data = data + URLEncoder.encode(voids[i], "UTF8") + "=" + URLEncoder.encode(voids[i + 1], "UTF8");
+                }
+                else{
+                    data = data + "&"+URLEncoder.encode(voids[i], "UTF8") + "=" + URLEncoder.encode(voids[i + 1], "UTF8");
+                }
+
+                i=i+2;
+
+            }
+
+            writer.write(data);//write on the buffer
+            writer.flush();
+            writer.close();//close the buffer
+
+            ops.close();
+
+            InputStream ips = URLconn.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(ips, "ISO-8859-1"));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                result += line;
+            }
+            reader.close();
+            ips.close();
+            URLconn.disconnect();
+            return result;
+
+
+        } catch (MalformedURLException e) {
+            result = e.getMessage();
+        } catch (java.io.IOException e) {
+            result = e.getMessage();
+        }
+
+
+
+
 
 
         return result;

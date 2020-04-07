@@ -27,17 +27,9 @@ import com.example.pfeapp.client_ui.Background;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+
+import static com.example.pfeapp.client_ui.Background.ip;
 
 public class Discussion_prest extends AppCompatActivity {
 
@@ -46,6 +38,8 @@ public class Discussion_prest extends AppCompatActivity {
     private RecyclerView recview;
     Chat_adapter_prest adapter;
     User user;
+
+
 
     String last_message_time;
     String current_last_message_time;
@@ -177,47 +171,15 @@ public class Discussion_prest extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... voids) {
-            try {
 
-                String result = "";
-                String type = voids[0];
-                String time=voids[2];
-                String user=voids[3];
-                String c = type;
-                String login_url = "http:/192.168.1.8/" + type + ".php";//go to commend prompt to know your local ip adress
+
+            Background b=new Background();
+
+            result=b.request(voids[0],ip,"conv",voids[1],"time",voids[2],"user",voids[3]);
 
 
                 Chat_card cg;
 
-
-                String conv = voids[1];
-
-                URL url = new URL(login_url);
-                HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
-                URLconn.setRequestMethod("POST");//request to write on the server
-                URLconn.setDoInput(true);
-                URLconn.setDoOutput(true);
-
-                OutputStream ops = URLconn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
-                String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8")+ "&"
-                        + URLEncoder.encode("time", "UTF8") + "=" + URLEncoder.encode(time, "UTF8")+ "&"
-                        + URLEncoder.encode("user", "UTF8") + "=" + URLEncoder.encode(user, "UTF8");
-
-                writer.write(data);//write on the buffer
-                writer.flush();
-                writer.close();//close the buffer
-
-                ops.close();
-
-                InputStream ips = URLconn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(ips, "ISO-8859-1"));
-                String line = "";
-                while ((line = reader.readLine()) != null) {
-
-                    result += line;
-
-                }
 
 
 
@@ -248,17 +210,6 @@ public class Discussion_prest extends AppCompatActivity {
                 }
 
 
-                reader.close();
-                ips.close();
-                URLconn.disconnect();
-
-
-
-            } catch (MalformedURLException e) {
-                result = e.getMessage();
-            } catch (java.io.IOException e) {
-                result = e.getMessage();
-            }
             return result;
         }
 
@@ -290,44 +241,9 @@ public class Discussion_prest extends AppCompatActivity {
                 SystemClock.sleep(500);
                 String result = "";
 
-                try {
+                Background b=new Background();
+                result=b.request("number_messages",ip,"conv","conv","user",user.getId());
 
-
-                    String type = "number_messages";
-                    String c = type;
-                    String login_url = "http:/192.168.1.8/" + type + ".php";//go to commend prompt to know your local ip adress
-
-
-                    Chat_card cg;
-
-
-                    String conv = "conv";
-
-                    URL url = new URL(login_url);
-                    HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
-                    URLconn.setRequestMethod("POST");//request to write on the server
-                    URLconn.setDoInput(true);
-                    URLconn.setDoOutput(true);
-
-                    OutputStream ops = URLconn.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
-                    String data = URLEncoder.encode("conv", "UTF8") + "=" + URLEncoder.encode(conv, "UTF8")+ "&"
-                            + URLEncoder.encode("user", "UTF8") + "=" + URLEncoder.encode(user.getId(), "UTF8");
-
-                    writer.write(data);//write on the buffer
-                    writer.flush();
-                    writer.close();//close the buffer
-
-                    ops.close();
-
-                    InputStream ips = URLconn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(ips, "ISO-8859-1"));
-                    String line = "";
-                    while ((line = reader.readLine()) != null) {
-                        result += line;
-
-
-                    }
 
 
                     if(!result.equals("")) {
@@ -361,19 +277,6 @@ public class Discussion_prest extends AppCompatActivity {
 
                         }
                     }
-
-
-
-                    reader.close();
-                    ips.close();
-                    URLconn.disconnect();
-
-
-                } catch (MalformedURLException e) {
-                    result = e.getMessage();
-                } catch (java.io.IOException e) {
-                    result = e.getMessage();
-                }//fin try-catch
 
 
 

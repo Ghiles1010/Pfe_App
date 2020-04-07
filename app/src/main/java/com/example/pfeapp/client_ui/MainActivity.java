@@ -1,19 +1,34 @@
 package com.example.pfeapp.client_ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
+import com.example.pfeapp.prest_ui.Temporaire;
+
+import static com.example.pfeapp.client_ui.Connexion.LOGGED;
+import static com.example.pfeapp.client_ui.Connexion.PREFERENCES;
 
 public class MainActivity extends AppCompatActivity  {
     private Button Acc,insc;
+    User user=new User();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        SharedPreferences prefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        String isLogged = prefs.getString(LOGGED, "");
+
+        if(isLogged.isEmpty()) {
+
+
         setContentView(R.layout.welcome);
         Acc=(Button)findViewById(R.id.connecter);
         insc=(Button)findViewById(R.id.inscrire);
@@ -34,6 +49,18 @@ public class MainActivity extends AppCompatActivity  {
                 OpenInsc();
             }
         });
+
+        }
+
+        else{
+
+            user.setId(isLogged);
+
+            Intent intent = new Intent(this, Temporaire.class);
+            intent.putExtra("User",  user);
+            startActivity(intent);
+        }
+
     }
 
     private void OpenInsc() {
