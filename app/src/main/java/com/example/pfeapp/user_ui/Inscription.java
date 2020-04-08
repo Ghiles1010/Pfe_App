@@ -1,9 +1,12 @@
 package com.example.pfeapp.user_ui;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +19,7 @@ import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Background;
 
 import static com.example.pfeapp.R.layout.inscription;
+import static com.example.pfeapp.client_ui.Background.ip;
 
 public class Inscription extends AppCompatActivity {
 
@@ -65,7 +69,9 @@ public class Inscription extends AppCompatActivity {
             String type = "sign-in";
             String res;
 
-            res=background.execute(type, name, surname, userName, email, psw).toString();
+            connect connect = new connect(this);
+            res=connect.execute(type, name, surname, userName, email, psw).toString();
+
 
 
             Toast.makeText(this,res, Toast.LENGTH_LONG).show();
@@ -93,4 +99,57 @@ public class Inscription extends AppCompatActivity {
     }
 
 
+
+
+
+
+    public class connect extends AsyncTask<String, Void, String> {
+
+        AlertDialog dialog;
+        String result = "";
+        Context context;
+
+        public connect(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected String doInBackground(String... voids) {
+
+
+            Background b=new Background();
+            result=b.request("sign-in",ip,"name",voids[1],"surname",voids[2],"username",voids[3],"email",voids[4],"psw",voids[5]);
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            if(result.equals("sucess")){
+
+                Intent intent = new Intent(context, Choix_session_inscr.class);
+               // intent.putExtra("User",  user);
+                startActivity(intent);
+            }
+
+
+
+
+
+
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+
+            dialog = new AlertDialog.Builder(context).create();
+            dialog.setTitle("");
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
 }
