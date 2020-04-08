@@ -1,4 +1,4 @@
-package com.example.pfeapp.client_ui;
+package com.example.pfeapp.user_ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pfeapp.R;
+import com.example.pfeapp.client_ui.Background;
 
 import static com.example.pfeapp.R.layout.inscription;
 

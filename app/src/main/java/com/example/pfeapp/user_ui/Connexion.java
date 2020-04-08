@@ -1,4 +1,4 @@
-package com.example.pfeapp.client_ui;
+package com.example.pfeapp.user_ui;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
+import com.example.pfeapp.client_ui.Background;
 import com.example.pfeapp.prest_ui.Temporaire;
 
 import static com.example.pfeapp.R.layout.connexion;

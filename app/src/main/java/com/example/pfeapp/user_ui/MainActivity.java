@@ -1,4 +1,4 @@
-package com.example.pfeapp.client_ui;
+package com.example.pfeapp.user_ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +12,8 @@ import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
 import com.example.pfeapp.prest_ui.Temporaire;
 
-import static com.example.pfeapp.client_ui.Connexion.LOGGED;
-import static com.example.pfeapp.client_ui.Connexion.PREFERENCES;
+import static com.example.pfeapp.user_ui.Connexion.LOGGED;
+import static com.example.pfeapp.user_ui.Connexion.PREFERENCES;
 
 public class MainActivity extends AppCompatActivity  {
     private Button Acc,insc;

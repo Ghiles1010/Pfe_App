@@ -26,9 +26,9 @@
             android:value="@string/map_key" />
 
         <activity android:name=".client_ui.Menu" />
-        <activity android:name=".client_ui.Connexion" />
-        <activity android:name=".client_ui.Inscription" />
-        <activity android:name=".client_ui.MainActivity">
+        <activity android:name=".user_ui.Connexion" />
+        <activity android:name=".user_ui.Inscription" />
+        <activity android:name=".user_ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
