@@ -15,23 +15,21 @@
         android:text="Inscription réussie !"
         android:textColor="@color/Navy"
         android:textSize="35sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline15"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline19" />
 
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="Comment voulez vous utiliser Aukid ?"
         android:textColor="@color/Navy"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline15"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
@@ -41,7 +39,7 @@
         android:background="@drawable/buttons"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="Je veux trouver des services"
+        android:text="Je veux trouver des services "
         android:textAllCaps="false"
         android:textColor="@color/White"
         android:textSize="15dp"
@@ -54,30 +52,33 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="25sp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/buttons"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="Je veux proposer un service"
+        android:text="Je veux proposer un service "
         android:textAllCaps="false"
         android:textColor="@color/White"
         android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline15"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
 
     <TextView
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="Par la suite, vous pourrez choisir un autre type de compte"
         android:textColor="@color/Black"
-        android:textSize="12sp"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline15"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/button3"
+        app:layout_constraintVertical_bias="0.04" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
@@ -98,14 +99,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.20" />
+        app:layout_constraintGuide_percent="0.16" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline129"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.67" />
+        app:layout_constraintGuide_percent="0.76" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -126,7 +126,7 @@ public class Inscription extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            if(result.equals("sucess")){
+            if(result.equals("success")){
 
                 Intent intent = new Intent(context, Choix_session_inscr.class);
                // intent.putExtra("User",  user);
