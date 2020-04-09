@@ -7,14 +7,17 @@
     android:layout_height="match_parent">
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/mapButton"
-
+        style="@style/MyButtonRight"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
+        android:padding="0dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/map_button"
+        app:strokeWidth="1px"
+        android:backgroundTint="@color/White"
         android:text="Carte"
+        app:strokeColor="@color/Navy"
         android:textAllCaps="false"
         android:textColor="@color/Navy"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,13 +25,17 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/liste_Button" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/liste_Button"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="16dp"
-
-        android:background="@drawable/liste_button"
+        app:strokeColor="@color/Navy"
+        app:strokeWidth="1px"
+        android:gravity="center"
+        android:padding="0dp"
+        style="@style/MyButtonLeft"
+        android:backgroundTint="@color/Navy"
         android:text="Liste"
         android:textAllCaps="false"
         android:textColor="@color/White"

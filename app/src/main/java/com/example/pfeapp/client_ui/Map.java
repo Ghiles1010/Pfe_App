@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,12 +14,13 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.button.MaterialButton;
 
 public class Map extends Fragment implements OnMapReadyCallback {
 
 
-    private Button liste;
-    private Button mapButton;
+    private MaterialButton liste;
+    private MaterialButton mapButton;
 
     private static  String MAPVIEW_BUNDLE_KEY;
     MapView map;
@@ -33,16 +33,16 @@ public class Map extends Fragment implements OnMapReadyCallback {
         View view=inflater.inflate(R.layout.map, container, false);
         map = view.findViewById(R.id.mapView);
 
-        liste=(Button)view.findViewById(R.id.liste_Button);
-        mapButton=(Button)view.findViewById(R.id.mapButton);
+        liste=(MaterialButton)view.findViewById(R.id.liste_Button);
+        mapButton=(MaterialButton)view.findViewById(R.id.mapButton);
 
 
 
         ///////////////////////////////////////////////////
 
-        liste.setBackground(getResources().getDrawable(R.drawable.map_button_left));
+        liste.setBackgroundColor(getResources().getColor(R.color.White));
         liste.setTextColor(getResources().getColor(R.color.Navy));
-        mapButton.setBackground(getResources().getDrawable(R.drawable.liste_button_left));
+        mapButton.setBackgroundColor(getResources().getColor(R.color.Navy));
         mapButton.setTextColor(getResources().getColor(R.color.White));
 
 
@@ -52,7 +52,7 @@ public class Map extends Fragment implements OnMapReadyCallback {
 
         ///////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////////////////////////////////////
-        liste=(Button)view.findViewById(R.id.liste_Button);
+        liste=(MaterialButton)view.findViewById(R.id.liste_Button);
 
         liste.setOnClickListener(new View.OnClickListener() {
             @Override

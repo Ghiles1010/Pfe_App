@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pfeapp.R;
+import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,8 +39,8 @@ import static java.lang.Integer.parseInt;
 
 public class ResRech extends Fragment {
 
-    private Button liste;
-    private Button map;
+    private MaterialButton liste;
+    private MaterialButton map;
     RecyclerView recview;
     Res_resch_adapter adapter;
     String tokenSearch;
@@ -69,14 +69,14 @@ public class ResRech extends Fragment {
         recview.setLayoutManager(layoutManager);
 
         /////////////////////////////////////////////////////////////////////////////////////////////
-        liste=(Button)view.findViewById(R.id.liste_Button);
-        map=(Button)view.findViewById(R.id.mapButton);
+        liste=(MaterialButton) view.findViewById(R.id.liste_Button);
+        map=(MaterialButton) view.findViewById(R.id.mapButton);
 
 
 
-        liste.setBackground(getResources().getDrawable(R.drawable.liste_button));
+        liste.setBackgroundColor(getResources().getColor(R.color.Navy));
         liste.setTextColor(getResources().getColor(R.color.White));
-        map.setBackground(getResources().getDrawable(R.drawable.map_button));
+        map.setBackgroundColor(getResources().getColor(R.color.White));
         map.setTextColor(getResources().getColor(R.color.Navy));
 
 
@@ -88,9 +88,9 @@ public class ResRech extends Fragment {
             @Override
             public void onClick(View v) {
 
-                liste.setBackground(getResources().getDrawable(R.drawable.map_button_left));
+                liste.setBackgroundColor(getResources().getColor(R.color.White));
                 liste.setTextColor(getResources().getColor(R.color.Navy));
-                map.setBackground(getResources().getDrawable(R.drawable.liste_button_left));
+                map.setBackgroundColor(getResources().getColor(R.color.Navy));
                 map.setTextColor(getResources().getColor(R.color.White));
 
 

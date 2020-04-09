@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="ExtraText,GoogleAppIndexingWarning">
-        <activity android:name=".user_ui.Choix_session_inscr"></activity>
+        <activity android:name=".prest_ui.Inscription_prest"></activity>
+        <activity android:name=".user_ui.Choix_session_inscr" />
         <activity android:name=".prest_ui.Discussion_prest" />
         <activity android:name=".client_ui.Discussion" />
         <activity android:name=".prest_ui.Temporaire" />
