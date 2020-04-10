@@ -154,10 +154,30 @@ public class Data_Base extends SQLiteOpenHelper {
 
     public void insertUser(String ID, String email, String psw, String name, String surname, String username){
 
-        String insert_User="INSERT INTO user (id_user,mail,psw,username,name,surname) VALUES ( '"+ID+"','"+email+"','"+psw+"','"+"','"+username+name+"','"+surname+"');";
+        String insert_User="INSERT INTO user (id_user,mail,psw,username,name,surname) VALUES ( '"+ID+"','"+email+"','"+psw+"','"+username+"','"+name+"','"+surname+"');";
         this.getWritableDatabase().execSQL(insert_User);
     }
 
+
+    public void affect_category(String id_service,ArrayList<Integer>cat_ids){
+
+        for (int i=0;i<cat_ids.size();i++){
+
+            String insert_Service="INSERT INTO cat_service (id_service,id_category) VALUES ( '"+id_service+"','"+cat_ids.get(i)+"');";
+            this.getWritableDatabase().execSQL(insert_Service);
+
+        }
+
+
+
+    }
+
+
+    public void insertService(String id_service, String nom,String longitude, String latitude){
+
+        String insert_Service="INSERT INTO service (id_service,nom,longitude,latitude) VALUES ( '"+id_service+"','"+nom+"','"+longitude+"','"+latitude+"');";
+        this.getWritableDatabase().execSQL(insert_Service);
+    }
 
 
     public void insertPrest(String id_user, String id_prest ){
@@ -229,6 +249,23 @@ public class Data_Base extends SQLiteOpenHelper {
 
 
         return c;
+    }
+
+
+    public ArrayList<Prestataire> getPrest(){
+
+        ArrayList<Prestataire> u = new ArrayList<>();
+        String strSql = "select * from prestataire";
+        Cursor cursor = this.getReadableDatabase().rawQuery( strSql, null );
+        cursor.moveToFirst();
+        while( ! cursor.isAfterLast() ) {
+            Prestataire prest = new Prestataire( cursor.getString( 0 ),cursor.getString( 1 ) );
+            u.add( prest );
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return u;
     }
 
 

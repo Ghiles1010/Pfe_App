@@ -2,7 +2,7 @@ package com.example.pfeapp.BD;
 
 import java.util.ArrayList;
 
-class Service {
+public class Service {
 
 
     private String IDservice;

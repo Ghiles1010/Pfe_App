@@ -1,48 +1,34 @@
 package com.example.pfeapp.BD;
 
-import java.util.ArrayList;
-
 public class Prestataire extends Utilisateur {
 
 
 
-    private  int IDprestataire;
-    private ArrayList<Service> services=new ArrayList<Service>();
+    private String id_prestataire;
+    private String id_user;
 
 
-
-
-
-    public int getIDprestataire() {
-        return IDprestataire;
+    public Prestataire() {
     }
 
-    public void setIDprestataire(int IDprestataire) {
-        this.IDprestataire = IDprestataire;
+    public Prestataire(String id_prestataire, String id_user) {
+        this.id_prestataire = id_prestataire;
+        this.id_user = id_user;
     }
 
-    public ArrayList<Service> getServices() {
-        return services;
+    public String getId_prestataire() {
+        return id_prestataire;
     }
 
-    public void setServices(ArrayList<Service> services) {
-        this.services = services;
+    public void setId_prestataire(String id_prestataire) {
+        this.id_prestataire = id_prestataire;
     }
 
+    public String getId_user() {
+        return id_user;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void setId_user(String id_user) {
+        this.id_user = id_user;
+    }
 }

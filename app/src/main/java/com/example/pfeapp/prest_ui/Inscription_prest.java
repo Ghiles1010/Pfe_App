@@ -1,25 +1,30 @@
 package com.example.pfeapp.prest_ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pfeapp.BD.Category;
-
+import com.example.pfeapp.BD.Service;
 import com.example.pfeapp.BD.Data_Base;
 import com.example.pfeapp.BD.Prestataire;
 import com.example.pfeapp.R;
+import com.example.pfeapp.client_ui.Background;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -27,6 +32,7 @@ import com.google.android.material.chip.ChipGroup;
 import java.util.ArrayList;
 
 import static com.example.pfeapp.R.layout.prestataire_inscription;
+import static com.example.pfeapp.client_ui.Background.ip;
 
 public class Inscription_prest extends AppCompatActivity implements AdapterView.OnItemSelectedListener, OnCardListener {
 
@@ -36,8 +42,14 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
     cat_adapter adapter;
     ArrayList<Category> cards;
     Chip chip;
+    ArrayList<Integer> selected_cat_ids=new ArrayList<>();
     ChipGroup chipGroup;
     MaterialButton terminer;
+
+
+    EditText nomService,GPS;
+
+    Service service;
 
     Data_Base db;
 
@@ -51,10 +63,15 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
 
         db=new Data_Base(this);
 
+
+        service = new Service();
         prest = new Prestataire();
         cards = new ArrayList<>();
         terminer = findViewById(R.id.terminer);
         getList();
+
+        nomService=findViewById(R.id.name_service);
+        GPS=findViewById(R.id.Gps);
 
         chip = (Chip) findViewById(R.id.chip);
         chipGroup = (ChipGroup) findViewById(R.id.chipGroup);
@@ -81,16 +98,7 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
 
     }
 
-    void Register_GoMenu() {
 
-
-
-        Intent intent = new Intent(this, Prestaire_Menu.class);
-        startActivity(intent);
-
-
-
-    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -107,8 +115,19 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
 
     void getList() {
         cards=db.getCategory();
-        Category f= new Category(26,"rwogwmv");
-        cards.add(f);
+    }
+
+    int id_chip(String s){
+
+        for(int i=0;i<cards.size();i++){
+
+            if(cards.get(i).getCategorie().equals(s)){
+                return cards.get(i).getID();
+            }
+
+
+        }
+        return 0;
     }
 
     @Override
@@ -118,9 +137,11 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
 
         c = cards.get(position);
 
+        selected_cat_ids.add(c.getID());
+
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        Chip chip = (Chip) inflater.inflate(R.layout.chip, null, false);
+        final Chip chip = (Chip) inflater.inflate(R.layout.chip, null, false);
 
         chip.setText(c.getCategorie());
 
@@ -129,7 +150,10 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
             @Override
             public void onClick(View v) {
 
+                int d=id_chip(chip.getText().toString());
+                selected_cat_ids.remove(d);
                 chipGroup.removeView(v);
+
             }
         });
 
@@ -187,7 +211,19 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
     }
 
 
-  /*  public class connect extends AsyncTask<String, Void, String> {
+    void Register_GoMenu() {
+        service.setNom(nomService.getText().toString());
+        service.setLongitude(GPS.getText().toString());
+
+
+
+        connect connect = new connect(this);
+        connect.execute();
+
+    }
+
+
+ public class connect extends AsyncTask<String, Void, String> {
 
         AlertDialog dialog;
         String result = "";
@@ -200,10 +236,21 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
         @Override
         protected String doInBackground(String... voids) {
 
+            String r1="";
+            String  r2="";
+
+            Prestataire prest;
+
+            prest=db.getPrest().get(0);
 
             Background b = new Background();
-            result = b.request("sign-in", ip, "name", voids[1], "surname", voids[2], "username", voids[3], "email", voids[4], "psw", voids[5]);
+            r1 = b.request("insert_service", ip, "id_prest",prest.getId_prestataire(),"nom",service.getNom(),"longitude",service.getLongitude());
+            //r1 returns service ID
 
+            r2 = b.request("affect_category", ip, "id_prest",prest.getId_prestataire());
+
+
+            result=r1+r2;
             return result;
         }
 
@@ -217,10 +264,9 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
                 id = result.substring(3);
 
 
-                data_base.insertUser(id, "email", "psw", "surname", "username", "username");
+       //         data_base.insertUser(id, "email", "psw", "surname", "username", "username");
 
-                Intent intent = new Intent(context, Choix_session_inscr.class);
-                intent.putExtra("User", user);
+                Intent intent = new Intent(context, Prestaire_Menu.class);
                 startActivity(intent);
 
 
@@ -240,7 +286,6 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
         @Override
         protected void onProgressUpdate(Void... values) {
         }
-    }*/
-
+    }
 
 }
