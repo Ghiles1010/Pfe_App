@@ -1,11 +1,28 @@
-package com.example.pfeapp.prest_ui;
+package com.example.pfeapp.BD;
 
-public class Cat_card {
+public class Category {
+
+    private int ID;
 
     private String categorie;
     private boolean isFinal;
 
+    public Category(int ID, String categorie) {
+        this.ID = ID;
+        this.categorie = categorie;
+    }
 
+
+    public Category() {
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
     public boolean isFinal() {
         return isFinal;
     }

@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pfeapp.BD.Data_Base;
 import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
 import com.example.pfeapp.prest_ui.Temporaire;
@@ -18,11 +19,15 @@ import static com.example.pfeapp.user_ui.Connexion.PREFERENCES;
 public class MainActivity extends AppCompatActivity  {
     private Button Acc,insc;
     User user=new User();
+    Data_Base db=new Data_Base(this);
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        aliment_data_base();
         SharedPreferences prefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         String isLogged = prefs.getString(LOGGED, "");
 
@@ -73,4 +78,9 @@ public class MainActivity extends AppCompatActivity  {
         startActivity(intent);
     }
 
+
+
+    void aliment_data_base(){
+        db.insertCat();
+    }
 }

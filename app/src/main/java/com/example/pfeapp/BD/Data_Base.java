@@ -2,15 +2,22 @@ package com.example.pfeapp.BD;
 
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
 
 
 public class Data_Base extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Base_donnees";
     private static final int Version = 1;
+
+    Category c;
+
+    int rec=0;
 
     public Data_Base(Context context) {
 
@@ -30,13 +37,15 @@ public class Data_Base extends SQLiteOpenHelper {
                 + " surname VARCHAR(20)"
                 + " );";
 
-        String creer_prestataire = "CREATE TABLE prestataire("
+       String creer_prestataire = "CREATE TABLE prestataire("
                 + " id_prestataire VARCHAR(40) PRIMARY KEY NOT NULL,"
                 + " id_user VARCHAR(255),"
                 + "CONSTRAINT Fk_userP FOREIGN KEY(id_user) REFERENCES user(id_user)"
                 + " );";
 
-        String creer_client = "CREATE TABLE client("
+
+
+       String creer_client = "CREATE TABLE client("
                 + " id_client VARCHAR(40) PRIMARY KEY NOT NULL,"
                 + " id_user VARCHAR(255),"
                 + "CONSTRAINT Fk_userC FOREIGN KEY(id_user) REFERENCES user(id_user)"
@@ -64,8 +73,10 @@ public class Data_Base extends SQLiteOpenHelper {
                 + " note INT,"
                 + " CONSTRAINT Fk_serviceA FOREIGN KEY (id_service) references service(id_service),"
                 + " CONSTRAINT Fk_clientA FOREIGN KEY (id_client) references client(id_client),"
-                + " CONSTRAINT PK_appreciation PRIMARY KEY (client,service)"
+                + " CONSTRAINT PK_appreciation PRIMARY KEY (id_client,id_service)"
                 + " );";
+
+
         String creer_commentaire = "CREATE TABLE commentaire("
                 + "id_comment VARCHAR(40) ,"
                 + " id_client VARCHAR(40) ,"
@@ -74,6 +85,8 @@ public class Data_Base extends SQLiteOpenHelper {
                 + " CONSTRAINT Fk_serviceC FOREIGN KEY (id_service) references service(id_service),"
                 + " CONSTRAINT Fk_clientC FOREIGN KEY (id_client) references client(id_client)"
                 + " );";
+
+
         String creer_rdv = "CREATE TABLE rdv("
                 + " id_rdv VARCHAR(40) ,"
                 + " id_client VARCHAR(40) ,"
@@ -81,7 +94,7 @@ public class Data_Base extends SQLiteOpenHelper {
                 + " time DATETIME,"
                 + " lieu VARCHAR (50),"
                 + " CONSTRAINT Fk_client FOREIGN KEY (id_client) references client(id_client),"
-                + " CONSTRAINT Fk_prest FOREIGN KEY (id_prest) references prestataire(id_prestataire)"
+                + " CONSTRAINT Fk_service FOREIGN KEY (id_service) references prestataire(id_service)"
                 + " );";
 
         String creer_conversation = "CREATE TABLE conversation("
@@ -97,8 +110,21 @@ public class Data_Base extends SQLiteOpenHelper {
                 + " id_conversation VARCHAR(40),"
                 + " heure TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,"
                 + "texte VARCHAR(255),"
-                + " CONSTRAINT Fk_conversation FOREIGN KEY (conversation) references conversation(id_conversation),"
-                + " CONSTRAINT PK_message PRIMARY KEY (conversation,heure)"
+                + " CONSTRAINT Fk_conversation FOREIGN KEY (id_conversation) references conversation(id_conversation),"
+                + " CONSTRAINT PK_message PRIMARY KEY (id_conversation,heure)"
+                + " );";
+
+        String creer_Category= "CREATE TABLE category("
+                + " id_category INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,"
+                + " name VARCHAR(255)"
+                + " );";
+
+        String cat_service="CREATE TABLE category_service("
+                + " id_category INT ,"
+                + " id_service VARCHAR(255),"
+                + " CONSTRAINT Fk_category FOREIGN KEY (id_category) references category(id_category),"
+                + " CONSTRAINT Fk_service FOREIGN KEY (id_service) references service(id_service),"
+                + " CONSTRAINT PK_message PRIMARY KEY (id_category,id_service)"
                 + " );";
 
 
@@ -111,8 +137,12 @@ public class Data_Base extends SQLiteOpenHelper {
         db.execSQL(creer_rdv);
         db.execSQL(creer_conversation);
         db.execSQL(creer_message);
+        db.execSQL(creer_Category);
+        db.execSQL(cat_service);
 
-        Log.i("DATABASE", "onCreate invoked");
+
+
+        Log.i("DATABASEppp", "onCreate invoked");
 
 
     }
@@ -122,7 +152,84 @@ public class Data_Base extends SQLiteOpenHelper {
 
     }
 
+    public void insertUser(String ID, String email, String psw, String name, String surname, String username){
 
+        String insert_User="INSERT INTO user (id_user,mail,psw,username,name,surname) VALUES ( '"+ID+"','"+email+"','"+psw+"','"+"','"+username+name+"','"+surname+"');";
+        this.getWritableDatabase().execSQL(insert_User);
+    }
+
+
+
+    public void insertPrest(String id_user, String id_prest ){
+
+        String insert_User="INSERT INTO prestataire (id_prestataire,id_user) VALUES ( '"+id_user+"','"+id_prest+"');";
+        this.getWritableDatabase().execSQL(insert_User);
+    }
+
+    public ArrayList<User> getUser(){
+
+        ArrayList<User> u = new ArrayList<>();
+        String strSql = "select * from user";
+        Cursor cursor = this.getReadableDatabase().rawQuery( strSql, null );
+        cursor.moveToFirst();
+        while( ! cursor.isAfterLast() ) {
+            User user = new User( cursor.getString( 0 ),cursor.getString( 01 ),cursor.getString( 2 ),
+                    cursor.getString( 3 ), cursor.getString( 4 ),cursor.getString( 5 ) );
+            u.add( user );
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return u;
+    }
+
+
+    public void insertCat(){
+
+
+        rec=rec+1;
+        String insert_cat="";
+        ArrayList<String> cat =new ArrayList<>();
+
+        cat.add("bla");
+        cat.add("bla");
+        cat.add("bla");
+        cat.add("bla");
+        cat.add("bla");
+        cat.add("bla");
+
+        int i=0;
+
+        do{
+            insert_cat ="INSERT INTO category (name) VALUES ( '"+ cat.get(i)+"');";
+            this.getWritableDatabase().execSQL(insert_cat);
+
+            i++;
+        }while(i<cat.size());
+
+
+    }
+
+
+    public ArrayList<Category> getCategory(){
+
+        String d;
+        ArrayList<Category> c = new ArrayList<>();
+        String strSql = "select * from category";
+        Cursor cursor = this.getReadableDatabase().rawQuery( strSql, null );
+        cursor.moveToFirst();
+        while( ! cursor.isAfterLast() ) {
+            Category catego = new Category( cursor.getInt( 0 ),cursor.getString( 1 ) );
+            c.add( catego );
+            d=catego.getCategorie();
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+
+
+        return c;
+    }
 
 
 }

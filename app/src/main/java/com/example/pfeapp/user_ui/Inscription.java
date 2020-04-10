@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pfeapp.BD.Data_Base;
+import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Background;
 
@@ -25,7 +27,8 @@ public class Inscription extends AppCompatActivity {
 
     private EditText nomET ,prenomET ,usernameET,emailET,pswET,confpsw;
     private Button inscrire;
-
+    User user;
+    Data_Base data_base;
     Background background;
 
 
@@ -34,6 +37,10 @@ public class Inscription extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(inscription);
+
+        user=new User();
+
+        data_base=new Data_Base(this);
 
         nomET= (EditText)findViewById(R.id.nom);
         prenomET= (EditText)findViewById(R.id.prenom);
@@ -66,15 +73,20 @@ public class Inscription extends AppCompatActivity {
             String name=nomET.getText().toString();
             String surname=prenomET.getText().toString();
 
+
+            user.setEmail(email);
+            user.setPsw(psw);
+            user.setName(name);
+            user.setSurname(surname);
+            user.setUserName(userName);
+
             String type = "sign-in";
             String res;
 
             connect connect = new connect(this);
-            res=connect.execute(type, name, surname, userName, email, psw).toString();
+            connect.execute(type, name, surname, userName, email, psw).toString();
 
 
-
-            Toast.makeText(this,res, Toast.LENGTH_LONG).show();
         }
         else{
 
@@ -126,11 +138,20 @@ public class Inscription extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            if(result.equals("success")){
+            String id=result.substring(0,3);
+
+            if(id.equals("ID=")){
+
+                id=result.substring(3);
+
+
+                data_base.insertUser(id,user.getEmail(),user.getPsw(),user.getName(),user.getSurname(),user.getUserName());
 
                 Intent intent = new Intent(context, Choix_session_inscr.class);
-               // intent.putExtra("User",  user);
+                intent.putExtra("User",  user);
                 startActivity(intent);
+
+
             }
 
 
