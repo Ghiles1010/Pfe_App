@@ -240,31 +240,38 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
             String  r2="";
 
             Prestataire prest;
-
             prest=db.getPrest().get(0);
+
+            String ids=""; //convert ids of categories to strings
+            selected_cat_ids=selected_cat_ids;
+            for(Integer j:selected_cat_ids){
+                ids=ids+" "+j.toString();
+            }
 
             Background b = new Background();
             r1 = b.request("insert_service", ip, "id_prest",prest.getId_prestataire(),"nom",service.getNom(),"longitude",service.getLongitude());
             //r1 returns service ID
 
-            r2 = b.request("affect_category", ip, "id_prest",prest.getId_prestataire());
+           r2 = b.request("affect_category", ip, "id_prest",prest.getId_prestataire(),"cat_ids",ids);
 
 
-            result=r1+r2;
+            result=r1+"#"+r2;
             return result;
         }
 
         @Override
         protected void onPostExecute(String result) {
 
-            String id = result.substring(0, 3);
+            String [] r1_r2=result.split("#");
+            String id = r1_r2[0];
+            id = id.substring(0, 3);
 
             if (id.equals("ID=")) {
 
                 id = result.substring(3);
 
-
-       //         data_base.insertUser(id, "email", "psw", "surname", "username", "username");
+                    db.insertService(id,service.getNom(),service.getLongitude(),"");
+                    //data_base.insertUser(id, "email", "psw", "surname", "username", "username");
 
                 Intent intent = new Intent(context, Prestaire_Menu.class);
                 startActivity(intent);

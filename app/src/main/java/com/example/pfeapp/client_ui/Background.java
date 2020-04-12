@@ -19,7 +19,7 @@ public class Background extends AsyncTask<String, Void, String> {
 
     AlertDialog dialog;
     Context context;
-    public static final String ip ="192.168.1.7";
+    public static final String ip ="192.168.1.8";
 
     public Background(Context context) {
         this.context = context;

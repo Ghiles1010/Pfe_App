@@ -81,13 +81,13 @@
             android:id="@+id/textVieoww"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:text="Catégories *"
             android:textColor="@color/Black"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/guideline17"
-            app:layout_constraintTop_toBottomOf="@+id/phone" />
+            app:layout_constraintTop_toBottomOf="@+id/Gps" />
 
         <include
             android:id="@+id/include"
@@ -138,21 +138,15 @@
             app:layout_constraintStart_toStartOf="@+id/guideline17"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="8dp"
-            android:src="@drawable/toolbar_dropshadow"
-            app:layout_constraintEnd_toEndOf="@+id/recCAT"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/recCAT"
-            app:layout_constraintTop_toTopOf="@+id/recCAT" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recCAT"
             android:layout_width="0dp"
             android:layout_height="300dp"
+            android:layout_marginTop="64dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 

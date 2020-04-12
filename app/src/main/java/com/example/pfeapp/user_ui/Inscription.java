@@ -153,6 +153,12 @@ public class Inscription extends AppCompatActivity {
 
 
             }
+            else{
+
+                dialog.setMessage(result);
+                dialog.show();
+
+            }
 
 
 

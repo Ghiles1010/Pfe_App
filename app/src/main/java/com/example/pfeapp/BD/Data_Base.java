@@ -153,6 +153,7 @@ public class Data_Base extends SQLiteOpenHelper {
     }
 
     public void insertUser(String ID, String email, String psw, String name, String surname, String username){
+        this.getWritableDatabase().execSQL("delete from user");
 
         String insert_User="INSERT INTO user (id_user,mail,psw,username,name,surname) VALUES ( '"+ID+"','"+email+"','"+psw+"','"+username+"','"+name+"','"+surname+"');";
         this.getWritableDatabase().execSQL(insert_User);
@@ -182,7 +183,10 @@ public class Data_Base extends SQLiteOpenHelper {
 
     public void insertPrest(String id_user, String id_prest ){
 
-        String insert_User="INSERT INTO prestataire (id_prestataire,id_user) VALUES ( '"+id_user+"','"+id_prest+"');";
+        this.getWritableDatabase().execSQL("delete from prestataire");
+
+
+        String insert_User="INSERT INTO prestataire (id_prestataire,id_user) VALUES ( '"+id_prest+"','"+id_user+"');";
         this.getWritableDatabase().execSQL(insert_User);
     }
 

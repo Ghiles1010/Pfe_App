@@ -110,7 +110,7 @@ public class Choix_session_inscr extends AppCompatActivity {
                 values = result.substring(3).split(" ");
 
 
-                db.insertPrest(values[0],values[1]);
+                db.insertPrest(values[1],values[0]);
 
                 Intent intent = new Intent(context, Inscription_prest.class);
                 startActivity(intent);
