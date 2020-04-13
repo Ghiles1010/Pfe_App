@@ -56,7 +56,7 @@
     <Button
         android:id="@+id/inscrire"
         android:layout_width="300dp"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:padding="0dp"
 
@@ -75,7 +75,7 @@
     <Button
         android:id="@+id/connecter"
         android:layout_width="300dp"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         android:padding="0dp"

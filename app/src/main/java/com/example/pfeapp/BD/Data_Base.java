@@ -160,11 +160,11 @@ public class Data_Base extends SQLiteOpenHelper {
     }
 
 
-    public void affect_category(String id_service,ArrayList<Integer>cat_ids){
+    public void affect_category(String id_service,ArrayList<Integer> cat_ids){
 
         for (int i=0;i<cat_ids.size();i++){
 
-            String insert_Service="INSERT INTO cat_service (id_service,id_category) VALUES ( '"+id_service+"','"+cat_ids.get(i)+"');";
+            String insert_Service="INSERT INTO category_service (id_service,id_category) VALUES ( '"+id_service+"','"+cat_ids.get(i)+"');";
             this.getWritableDatabase().execSQL(insert_Service);
 
         }
@@ -206,6 +206,10 @@ public class Data_Base extends SQLiteOpenHelper {
 
         return u;
     }
+
+
+
+
 
 
     public void insertCat(){

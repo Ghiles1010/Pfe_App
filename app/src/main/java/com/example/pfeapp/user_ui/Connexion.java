@@ -114,6 +114,21 @@ public class Connexion extends AppCompatActivity {
             Background b=new Background();
             result=b.request("login",ip,"email",voids[1],"psw",voids[2]);
 
+            String temp="";
+
+
+            if (result.length()> 7) {
+                temp = result.substring(0, 7);
+            }
+
+            if (temp.equals("success")) {
+
+
+
+            }
+
+
+
             return result;
         }
 
@@ -131,6 +146,8 @@ public class Connexion extends AppCompatActivity {
             if (temp.equals("success")) {
 
                 String id=result.substring(8, length);
+
+
 
 
                 SharedPreferences prefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE);

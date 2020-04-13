@@ -242,17 +242,26 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
             Prestataire prest;
             prest=db.getPrest().get(0);
 
-            String ids=""; //convert ids of categories to strings
-            selected_cat_ids=selected_cat_ids;
-            for(Integer j:selected_cat_ids){
-                ids=ids+" "+j.toString();
-            }
+            String ids=arrayInt_to_String(selected_cat_ids); //convert ids of categories to strings
 
             Background b = new Background();
             r1 = b.request("insert_service", ip, "id_prest",prest.getId_prestataire(),"nom",service.getNom(),"longitude",service.getLongitude());
             //r1 returns service ID
 
-           r2 = b.request("affect_category", ip, "id_prest",prest.getId_prestataire(),"cat_ids",ids);
+            String buf;
+            buf=r1.substring(0,3);
+
+            if (buf.equals("ID=")) {
+
+                String id_service = r1.substring(3);
+                r2 = b.request("affect_category", ip, "id_service",id_service,"cat_ids",ids);
+
+            }
+
+
+
+
+
 
 
             result=r1+"#"+r2;
@@ -271,7 +280,7 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
                 id = result.substring(3);
 
                     db.insertService(id,service.getNom(),service.getLongitude(),"");
-                    //data_base.insertUser(id, "email", "psw", "surname", "username", "username");
+                    db.affect_category(id,selected_cat_ids);
 
                 Intent intent = new Intent(context, Prestaire_Menu.class);
                 startActivity(intent);
@@ -292,6 +301,19 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
 
         @Override
         protected void onProgressUpdate(Void... values) {
+        }
+
+
+
+
+        String arrayInt_to_String(ArrayList<Integer> S){
+
+            String ids=""; //convert ids of categories to strings
+
+            for(Integer j:S){
+                ids=ids+" "+j.toString();
+            }
+            return ids;
         }
     }
 
