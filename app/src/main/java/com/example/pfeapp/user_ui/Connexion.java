@@ -17,10 +17,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pfeapp.BD.Data_Base;
 import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Background;
-import com.example.pfeapp.prest_ui.Temporaire;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import static com.example.pfeapp.R.layout.connexion;
 import static com.example.pfeapp.client_ui.Background.ip;
@@ -30,6 +33,7 @@ public class Connexion extends AppCompatActivity {
     private Button conn;
     private TextView error;
     public User user = new User();
+    Data_Base db= new Data_Base(this);
     public static final String PREFERENCES="preferences";
     public static final String LOGGED="logged";
 
@@ -102,6 +106,7 @@ public class Connexion extends AppCompatActivity {
         AlertDialog dialog;
         String result = "";
         Context context;
+        User user=new User();
 
         public connect(Context context) {
             this.context = context;
@@ -114,16 +119,30 @@ public class Connexion extends AppCompatActivity {
             Background b=new Background();
             result=b.request("login",ip,"email",voids[1],"psw",voids[2]);
 
-            String temp="";
+
+            if (result.equals("success")) {
 
 
-            if (result.length()> 7) {
-                temp = result.substring(0, 7);
-            }
-
-            if (temp.equals("success")) {
+                String us=b.request("get_user",ip,"mail",voids[1]);
 
 
+                try {
+
+
+                    JSONArray JA = new JSONArray(us);
+                    JSONObject JO = (JSONObject) JA.get(0);
+                    user.setId(JO.get("id_user").toString());
+                    user.setEmail(JO.get("mail").toString());
+                    user.setPsw(JO.get("psw").toString());
+                    user.setUserName(JO.get("username").toString());
+                    user.setName(JO.get("name").toString());
+                    user.setSurname(JO.get("surname").toString());
+
+                    db.insertUser(user.getId(),user.getEmail(),user.getPsw(),user.getName(),user.getSurname(),user.getUserName());
+
+                } catch (org.json.JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -135,31 +154,17 @@ public class Connexion extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            String temp="";
-            int length=result.length();
 
-
-            if (length > 7) {
-                temp = result.substring(0, 7);
-            }
-
-            if (temp.equals("success")) {
-
-                String id=result.substring(8, length);
-
-
+            if (result.equals("success")) {
 
 
                 SharedPreferences prefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(LOGGED,id );
+                editor.putString(LOGGED,db.getUser().get(0).getId());
                 editor.apply();
 
-                user.setId(id);
-                user.setEmail(emailET.getText().toString());
 
-                Intent intent = new Intent(context, Temporaire.class);
-                intent.putExtra("User",  user);
+                Intent intent = new Intent(context, Choix_session_connexion.class);
                 startActivity(intent);
 
             } else {

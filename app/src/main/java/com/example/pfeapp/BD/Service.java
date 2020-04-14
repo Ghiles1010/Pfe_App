@@ -9,15 +9,35 @@ public class Service {
     private String IDprestataire;
     private String nom;
     private String description;
+    private int dispo;
     private String categorie;
+    private int nb_views;
+    private float avg_stars;
     private String addresse;
     private String longitude;
     private String latitude;
     private String ville;
-    private int dispo;
-    private int nb_views;
-    private float avg_stars;
 
+
+
+
+    public Service() {
+    }
+
+    public Service(String IDservice, String IDprestataire, String nom, String description, int dispo, String categorie, int nb_views, float avg_stars, String addresse, String longitude, String latitude, String ville) {
+        this.IDservice = IDservice;
+        this.IDprestataire = IDprestataire;
+        this.nom = nom;
+        this.description = description;
+        this.dispo = dispo;
+        this.categorie = categorie;
+        this.nb_views = nb_views;
+        this.avg_stars = avg_stars;
+        this.addresse = addresse;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.ville = ville;
+    }
 
     public String getIDservice() {
         return IDservice;

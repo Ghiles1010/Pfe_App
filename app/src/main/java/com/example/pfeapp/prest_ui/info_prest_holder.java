@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pfeapp.R;
 
-public class info_prest_holder extends RecyclerView.ViewHolder {
+public class info_prest_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
     TextView section;
@@ -20,6 +20,11 @@ public class info_prest_holder extends RecyclerView.ViewHolder {
 
         this.description = itemView.findViewById(R.id.description);
         this.section = itemView.findViewById(R.id.nom_section);
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 }

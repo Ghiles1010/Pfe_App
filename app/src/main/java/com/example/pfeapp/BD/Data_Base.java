@@ -174,12 +174,30 @@ public class Data_Base extends SQLiteOpenHelper {
     }
 
 
-    public void insertService(String id_service, String nom,String longitude, String latitude){
+    public void insertService(String id_service,String id_prestataire, String nom,String longitude, String latitude){
 
-        String insert_Service="INSERT INTO service (id_service,nom,longitude,latitude) VALUES ( '"+id_service+"','"+nom+"','"+longitude+"','"+latitude+"');";
+        String insert_Service="INSERT INTO service (id_service,id_prestataire,nom,longitude,latitude) VALUES ( '"+id_service+"','"+id_prestataire+"','"+nom+"','"+longitude+"','"+latitude+"');";
         this.getWritableDatabase().execSQL(insert_Service);
     }
 
+    public ArrayList<Service> get_services(String id_prestataire){
+
+        ArrayList<Service> u = new ArrayList<>();
+        String strSql = "select * from service";
+        Cursor cursor = this.getReadableDatabase().rawQuery( strSql, null );
+        cursor.moveToFirst();
+        while( ! cursor.isAfterLast() ) {
+            Service service = new Service( cursor.getString( 0 ),cursor.getString( 1 ),cursor.getString( 2 ),
+                    cursor.getString( 3 ), cursor.getInt( 4 ),cursor.getString( 5 ),cursor.getInt( 6 ),
+                    cursor.getFloat( 7 ),cursor.getString( 8 ),cursor.getString( 9 ),cursor.getString( 10 ),
+                    cursor.getString( 11 ));
+            u.add( service );
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return u;
+    }
 
     public void insertPrest(String id_user, String id_prest ){
 
@@ -208,6 +226,14 @@ public class Data_Base extends SQLiteOpenHelper {
     }
 
 
+    public void insertClient(String id_user, String id_client ){
+
+        this.getWritableDatabase().execSQL("delete from client");
+
+
+        String insert_User="INSERT INTO client (id_client,id_user) VALUES ( '"+id_client+"','"+id_user+"');";
+        this.getWritableDatabase().execSQL(insert_User);
+    }
 
 
 
@@ -269,6 +295,24 @@ public class Data_Base extends SQLiteOpenHelper {
         while( ! cursor.isAfterLast() ) {
             Prestataire prest = new Prestataire( cursor.getString( 0 ),cursor.getString( 1 ) );
             u.add( prest );
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return u;
+    }
+
+
+
+    public ArrayList<Client> getClient(){
+
+        ArrayList<Client> u = new ArrayList<>();
+        String strSql = "select * from client";
+        Cursor cursor = this.getReadableDatabase().rawQuery( strSql, null );
+        cursor.moveToFirst();
+        while( ! cursor.isAfterLast() ) {
+            Client client = new Client( cursor.getString( 0 ),cursor.getString( 1 ) );
+            u.add( client );
             cursor.moveToNext();
         }
         cursor.close();

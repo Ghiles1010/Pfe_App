@@ -1,6 +1,6 @@
 package com.example.pfeapp.BD;
 
-public class Prestataire extends Utilisateur {
+public class Prestataire extends User {
 
 
 

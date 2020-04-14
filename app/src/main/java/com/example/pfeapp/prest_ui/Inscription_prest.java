@@ -277,9 +277,12 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
 
             if (id.equals("ID=")) {
 
+                Prestataire prest;
+                prest=db.getPrest().get(0);
+
                 id = result.substring(3);
 
-                    db.insertService(id,service.getNom(),service.getLongitude(),"");
+                    db.insertService(id,prest.getId_prestataire(),service.getNom(),service.getLongitude(),"");
                     db.affect_category(id,selected_cat_ids);
 
                 Intent intent = new Intent(context, Prestaire_Menu.class);

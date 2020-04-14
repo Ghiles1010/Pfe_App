@@ -16,54 +16,26 @@
             android:id="@+id/textView18"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="88dp"
             android:gravity="center"
             android:text="Choisissez une session"
             android:textColor="@color/Navy"
-            android:textSize="35dp"
+            android:textSize="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline18" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+
 
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sessions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/materialButton"
-            app:layout_constraintTop_toTopOf="@+id/guideline100"
-            app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="0dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/materialButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Terminer"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline109" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline18"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.15" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline100"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.40" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline109"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.86" />
+            android:layout_marginTop="60dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView18"
+            tools:layout_editor_absoluteX="16dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
