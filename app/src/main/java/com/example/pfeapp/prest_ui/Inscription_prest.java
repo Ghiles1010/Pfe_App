@@ -20,9 +20,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pfeapp.BD.Category;
-import com.example.pfeapp.BD.Service;
 import com.example.pfeapp.BD.Data_Base;
 import com.example.pfeapp.BD.Prestataire;
+import com.example.pfeapp.BD.Service;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Background;
 import com.google.android.material.button.MaterialButton;
@@ -141,9 +141,12 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
 
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        final Chip chip = (Chip) inflater.inflate(R.layout.chip, null, false);
+
+
+        final Chip chip = (Chip) inflater.inflate(R.layout.chip, null);
 
         chip.setText(c.getCategorie());
+
 
         chip.setOnCloseIconClickListener(new View.OnClickListener() {
 
@@ -151,6 +154,7 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
             public void onClick(View v) {
 
                 int d=id_chip(chip.getText().toString());
+                d=d-1;
                 selected_cat_ids.remove(d);
                 chipGroup.removeView(v);
 
@@ -282,7 +286,7 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
 
                 id = result.substring(3);
 
-                    db.insertService(id,prest.getId_prestataire(),service.getNom(),service.getLongitude(),"");
+                    db.insertService(id,prest.getId_prestataire(),service.getNom(),service.getLongitude(),"",1);
                     db.affect_category(id,selected_cat_ids);
 
                 Intent intent = new Intent(context, Prestaire_Menu.class);

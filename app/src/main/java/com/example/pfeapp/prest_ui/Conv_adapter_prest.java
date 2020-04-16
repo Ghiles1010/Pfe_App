@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pfeapp.BD.Conversation;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.OnConvListener;
 
@@ -18,9 +19,9 @@ public class Conv_adapter_prest extends RecyclerView.Adapter<Conv_Holder_prest> 
 
     private OnConvListener onConvListener;
 
-    ArrayList<Conv_card_prest> cards;
+    ArrayList<Conversation> cards;
 
-    public Conv_adapter_prest(Messagerie_prest cp, ArrayList<Conv_card_prest> cards, OnConvListener onConvListener) {
+    public Conv_adapter_prest(Messagerie_prest cp, ArrayList<Conversation> cards, OnConvListener onConvListener) {
         this.cp = cp;
         this.cards = cards;
         this.onConvListener=onConvListener;
@@ -37,10 +38,10 @@ public class Conv_adapter_prest extends RecyclerView.Adapter<Conv_Holder_prest> 
 
     @Override
     public void onBindViewHolder(@NonNull Conv_Holder_prest holder, int position) {
-        holder.mUserName.setText(cards.get(position).getUserName());
-        holder.mMessage.setText(cards.get(position).getMessage());
+        holder.mUserName.setText(cards.get(position).getNom_client());
+        holder.mMessage.setText(cards.get(position).getLast_message());
         holder.mTime.setText(cards.get(position).getTime());
-        holder.mImageView.setImageResource(cards.get(position).getImage());
+        holder.mImageView.setImageResource(R.drawable.body);
     }
 
     @Override

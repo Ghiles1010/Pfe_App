@@ -17,6 +17,7 @@ public class Service {
     private String longitude;
     private String latitude;
     private String ville;
+    private int current;
 
 
 
@@ -24,7 +25,7 @@ public class Service {
     public Service() {
     }
 
-    public Service(String IDservice, String IDprestataire, String nom, String description, int dispo, String categorie, int nb_views, float avg_stars, String addresse, String longitude, String latitude, String ville) {
+    public Service(String IDservice, String IDprestataire, String nom, String description, int dispo, String categorie, int nb_views, float avg_stars, String addresse, String longitude, String latitude, String ville, int current) {
         this.IDservice = IDservice;
         this.IDprestataire = IDprestataire;
         this.nom = nom;
@@ -37,6 +38,7 @@ public class Service {
         this.longitude = longitude;
         this.latitude = latitude;
         this.ville = ville;
+        this.current=current;
     }
 
     public String getIDservice() {

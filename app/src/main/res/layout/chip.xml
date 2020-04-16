@@ -8,12 +8,15 @@
     style="@style/Widget.MaterialComponents.Chip.Entry"
 
     android:layout_width="wrap_content"
-    android:layout_height="35dp"
+    android:layout_height="wrap_content"
+
     android:text="Chip"
     android:textColor="@color/Navy"
     app:chipBackgroundColor="@color/White"
     app:chipStrokeColor="@color/Navy"
     app:chipStrokeWidth="1dp"
+    app:chipMinHeight="35dp"
+
     app:closeIcon="@drawable/ic_close_black_24dp"
     app:closeIconTint="@color/Navy"
     android:padding="0dp"

@@ -20,7 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pfeapp.BD.User;
+
+import com.example.pfeapp.BD.Data_Base;
+import com.example.pfeapp.BD.Message;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Background;
 
@@ -37,14 +39,19 @@ public class Discussion_prest extends AppCompatActivity {
     private ImageButton send;
     private RecyclerView recview;
     Chat_adapter_prest adapter;
-    User user;
+
+
+    String id_client;
+    String id_service;
 
 
 
     String last_message_time;
     String current_last_message_time;
 
-    ArrayList<Chat_card> cards = new ArrayList<>();
+    Data_Base db = new Data_Base(this);
+
+    ArrayList<Message> cards = new ArrayList<>();
 
     private thread looperThread = new thread();
     private Handler mainHandler=new Handler();
@@ -57,7 +64,9 @@ public class Discussion_prest extends AppCompatActivity {
         setContentView(R.layout.discussion);
 
         Intent i = getIntent();
-        user = (User)i.getSerializableExtra("User");
+        id_client = (String) i.getSerializableExtra("id_client");
+
+        id_service=db.get_current_service().getIDservice();
 
 
 
@@ -113,9 +122,9 @@ public class Discussion_prest extends AppCompatActivity {
 
 
 
-            Chat_card c= new Chat_card();
+            Message c= new Message();
             c.setText(message.getText().toString());
-            c.setUser(user.getId());
+            c.setId_sender(id_service);
             cards.add(c);
             recview.smoothScrollToPosition(cards.size());
             adapter.notifyDataSetChanged();
@@ -126,7 +135,7 @@ public class Discussion_prest extends AppCompatActivity {
             String conv="conv";
             String type = "send_message";
             String res;
-            res=background.execute(type, mes,conv,user.getId()).toString();
+            res=background.execute(type, mes,id_client,id_service,id_service).toString();
 
 
 
@@ -159,7 +168,7 @@ public class Discussion_prest extends AppCompatActivity {
     private void getList(String us){
         //entrez le chaine vide dans us pour afficher tout les user
         //sinon specifier le ID du user
-        new getData().execute("get_message","conv",current_last_message_time,us);
+        new getData().execute("get_message",id_service,current_last_message_time,id_client,us);
 
     }
 
@@ -175,10 +184,10 @@ public class Discussion_prest extends AppCompatActivity {
 
             Background b=new Background();
 
-            result=b.request(voids[0],ip,"conv",voids[1],"time",voids[2],"user",voids[3]);
+            result=b.request(voids[0],ip,"id_service",voids[1],"time",voids[2],"id_client",voids[3],"id_sender",voids[4]);
 
 
-                Chat_card cg;
+                Message cg;
 
 
 
@@ -197,9 +206,11 @@ public class Discussion_prest extends AppCompatActivity {
                         for (int j = 0; j < JA.length(); j++) {
                             JSONObject JO = (JSONObject) JA.get(j);
 
-                            cg = new Chat_card();
+                            cg = new Message();
                             cg.setText(JO.get("text").toString());
-                            cg.setUser(JO.get("user").toString());
+                            cg.setId_sender(JO.get("id_sender").toString());
+                            cg.setId_client(JO.get("client").toString());
+                            cg.setId_service(JO.get("service").toString());
                             cards.add(cg);
                         }
                     } catch (org.json.JSONException e) {
@@ -242,7 +253,7 @@ public class Discussion_prest extends AppCompatActivity {
                 String result = "";
 
                 Background b=new Background();
-                result=b.request("number_messages",ip,"conv","conv","user",user.getId());
+                result=b.request("last_message",ip,"id_service",id_service,"id_client",id_client);
 
 
 
@@ -267,7 +278,7 @@ public class Discussion_prest extends AppCompatActivity {
                                 public void run() {
 
 
-                                    getList(user.getId());
+                                    getList(id_service);
                                     current_last_message_time = last_message_time;
                                     adapter.notifyDataSetChanged();
                                     recview.smoothScrollToPosition(cards.size());
@@ -329,13 +340,13 @@ public class Discussion_prest extends AppCompatActivity {
     public class Chat_adapter_prest extends RecyclerView.Adapter<Chat_Holder_prest> {
 
         Discussion_prest c;
-        ArrayList<Chat_card> cards;
+        ArrayList<Message> cards;
 
         public static final int MSG_RIGHT=1;
         public static final int MSG_LEFT=0;
 
 
-        public Chat_adapter_prest(Discussion_prest c, ArrayList<Chat_card> cards) {
+        public Chat_adapter_prest(Discussion_prest c, ArrayList<Message> cards) {
             this.c = c;
             this.cards = cards;
         }
@@ -372,9 +383,9 @@ public class Discussion_prest extends AppCompatActivity {
         @Override
         public int getItemViewType(int position) {
 
-            String f=cards.get(position).getUser();
+            String f=cards.get(position).getId_sender();
 
-            if(f.equals(user.getId())){
+            if(f.equals(id_service)){
                 return MSG_RIGHT;
             }
 

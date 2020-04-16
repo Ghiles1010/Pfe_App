@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -157,11 +156,6 @@ public class Connexion extends AppCompatActivity {
 
             if (result.equals("success")) {
 
-
-                SharedPreferences prefs = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(LOGGED,db.getUser().get(0).getId());
-                editor.apply();
 
 
                 Intent intent = new Intent(context, Choix_session_connexion.class);

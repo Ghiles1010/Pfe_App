@@ -96,7 +96,7 @@ public class Background extends AsyncTask<String, Void, String> {
 
 
 
-                result=request(c,ip,"message",voids[1],"conv",voids[2],"user",voids[3]);
+                result=request(c,ip,"message",voids[1],"id_client",voids[2],"id_service",voids[3],"id_sender",voids[4]);
 
 
 

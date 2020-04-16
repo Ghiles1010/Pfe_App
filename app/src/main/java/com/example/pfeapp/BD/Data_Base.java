@@ -15,7 +15,7 @@ public class Data_Base extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Base_donnees";
     private static final int Version = 1;
 
-    Category c;
+
 
     int rec=0;
 
@@ -64,6 +64,7 @@ public class Data_Base extends SQLiteOpenHelper {
                 + " longitude VARCHAR(255),"
                 + " latitude VARCHAR(255),"
                 + " ville VARCHAR(255),"
+                + " current int(3),"
                 + " CONSTRAINT Fk_prestS FOREIGN KEY (id_prestataire) references prestataire(id_prestataire)"
                 + " );";
 
@@ -98,20 +99,26 @@ public class Data_Base extends SQLiteOpenHelper {
                 + " );";
 
         String creer_conversation = "CREATE TABLE conversation("
-                + " id_conversation VARCHAR(40) PRIMARY KEY NOT NULL,"
                 + " id_client VARCHAR(40),"
                 + " id_service VARCHAR(40),"
-                + " jour DATE DEFAULT CURRENT_DATE,"
+                + " time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,"
+                + " last_message VARCHAR(255),"
+                + " nom_client VARCHAR(255),"
+                + " nom_service VARCHAR(255),"
                 + " CONSTRAINT Fk_client FOREIGN KEY (id_client) references client(id_client),"
-                + " CONSTRAINT Fk_service FOREIGN KEY (id_service) references service(id_service)"
+                + " CONSTRAINT Fk_service FOREIGN KEY (id_service) references service(id_service),"
+                + " CONSTRAINT PK_conv PRIMARY KEY (id_client,id_service)"
                 + " );";
 
         String creer_message = "CREATE TABLE message("
-                + " id_conversation VARCHAR(40),"
-                + " heure TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,"
-                + "texte VARCHAR(255),"
-                + " CONSTRAINT Fk_conversation FOREIGN KEY (id_conversation) references conversation(id_conversation),"
-                + " CONSTRAINT PK_message PRIMARY KEY (id_conversation,heure)"
+                + " id_client VARCHAR(40),"
+                + " id_service VARCHAR(40),"
+                + " time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,"
+                + " texte VARCHAR(255),"
+                + " id_sender VARCHAR(255),"
+                + " CONSTRAINT Fk_client FOREIGN KEY (id_client) references client(id_client),"
+                + " CONSTRAINT Fk_service FOREIGN KEY (id_service) references service(id_service),"
+                + " CONSTRAINT PK_message PRIMARY KEY (id_client,id_service,time)"
                 + " );";
 
         String creer_Category= "CREATE TABLE category("
@@ -174,13 +181,13 @@ public class Data_Base extends SQLiteOpenHelper {
     }
 
 
-    public void insertService(String id_service,String id_prestataire, String nom,String longitude, String latitude){
+    public void insertService(String id_service,String id_prestataire, String nom,String longitude, String latitude,int current){
 
-        String insert_Service="INSERT INTO service (id_service,id_prestataire,nom,longitude,latitude) VALUES ( '"+id_service+"','"+id_prestataire+"','"+nom+"','"+longitude+"','"+latitude+"');";
+        String insert_Service="INSERT INTO service (id_service,id_prestataire,nom,longitude,latitude,current) VALUES ( '"+id_service+"','"+id_prestataire+"','"+nom+"','"+longitude+"','"+latitude+"','"+ current +"');";
         this.getWritableDatabase().execSQL(insert_Service);
     }
 
-    public ArrayList<Service> get_services(String id_prestataire){
+    public ArrayList<Service> get_services(){
 
         ArrayList<Service> u = new ArrayList<>();
         String strSql = "select * from service";
@@ -190,13 +197,40 @@ public class Data_Base extends SQLiteOpenHelper {
             Service service = new Service( cursor.getString( 0 ),cursor.getString( 1 ),cursor.getString( 2 ),
                     cursor.getString( 3 ), cursor.getInt( 4 ),cursor.getString( 5 ),cursor.getInt( 6 ),
                     cursor.getFloat( 7 ),cursor.getString( 8 ),cursor.getString( 9 ),cursor.getString( 10 ),
-                    cursor.getString( 11 ));
+                    cursor.getString( 11 ),cursor.getInt(12));
             u.add( service );
             cursor.moveToNext();
         }
         cursor.close();
 
         return u;
+    }
+
+
+    public void set_current_service(String id_service){
+
+        String insert_Service="UPDATE service set current = 1 WHERE id_service = '"+id_service+"';";
+        this.getWritableDatabase().execSQL(insert_Service);
+    }
+
+
+    public Service get_current_service(){
+
+        ArrayList<Service> u = new ArrayList<>();
+        String strSql = "select * from service WHERE current = 1 ";
+        Cursor cursor = this.getReadableDatabase().rawQuery( strSql, null );
+        cursor.moveToFirst();
+
+            Service service = new Service( cursor.getString( 0 ),cursor.getString( 1 ),cursor.getString( 2 ),
+                    cursor.getString( 3 ), cursor.getInt( 4 ),cursor.getString( 5 ),cursor.getInt( 6 ),
+                    cursor.getFloat( 7 ),cursor.getString( 8 ),cursor.getString( 9 ),cursor.getString( 10 ),
+                    cursor.getString( 11 ),cursor.getInt(12));
+            u.add( service );
+
+        cursor.close();
+
+        return service;
+
     }
 
     public void insertPrest(String id_user, String id_prest ){
@@ -225,7 +259,6 @@ public class Data_Base extends SQLiteOpenHelper {
         return u;
     }
 
-
     public void insertClient(String id_user, String id_client ){
 
         this.getWritableDatabase().execSQL("delete from client");
@@ -235,9 +268,6 @@ public class Data_Base extends SQLiteOpenHelper {
         this.getWritableDatabase().execSQL(insert_User);
     }
 
-
-
-
     public void insertCat(){
 
 
@@ -246,11 +276,11 @@ public class Data_Base extends SQLiteOpenHelper {
         ArrayList<String> cat =new ArrayList<>();
 
         cat.add("bla");
-        cat.add("bla");
-        cat.add("bla");
-        cat.add("bla");
-        cat.add("bla");
-        cat.add("bla");
+        cat.add("blo");
+        cat.add("blu");
+        cat.add("bli");
+        cat.add("ble");
+        cat.add("bly");
 
         int i=0;
 
@@ -263,7 +293,6 @@ public class Data_Base extends SQLiteOpenHelper {
 
 
     }
-
 
     public ArrayList<Category> getCategory(){
 
@@ -285,7 +314,6 @@ public class Data_Base extends SQLiteOpenHelper {
         return c;
     }
 
-
     public ArrayList<Prestataire> getPrest(){
 
         ArrayList<Prestataire> u = new ArrayList<>();
@@ -301,8 +329,6 @@ public class Data_Base extends SQLiteOpenHelper {
 
         return u;
     }
-
-
 
     public ArrayList<Client> getClient(){
 
@@ -321,4 +347,27 @@ public class Data_Base extends SQLiteOpenHelper {
     }
 
 
+    public void insertConversation(String id_client, String id_service, String time, String last_message,String nom_client, String nom_service){
+
+        String insert_conv="INSERT INTO conversation (id_client,id_service,time,last_message,nom_client,nom_service) VALUES ( '"+id_client+"','"+id_service+"','"+time+"','"+last_message+"','"+nom_client+"','"+nom_service+"');";
+        this.getWritableDatabase().execSQL(insert_conv);
+    }
+
+    public ArrayList<Conversation> getConversation(){
+
+        ArrayList<Conversation> u = new ArrayList<>();
+        String strSql = "select * from conversation";
+        Cursor cursor = this.getReadableDatabase().rawQuery( strSql, null );
+        cursor.moveToFirst();
+        while( ! cursor.isAfterLast() ) {
+            Conversation conversation = new Conversation( cursor.getString( 0 ),cursor.getString( 1 )
+                    ,cursor.getString( 2 ) ,cursor.getString( 3 ),cursor.getString( 4 )
+                    ,cursor.getString( 5 ));
+            u.add( conversation );
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return u;
+    }
 }

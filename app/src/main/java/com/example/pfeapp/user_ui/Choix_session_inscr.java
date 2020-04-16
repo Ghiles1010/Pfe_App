@@ -23,7 +23,6 @@ public class Choix_session_inscr extends AppCompatActivity {
 
 
     Button prest, client;
-
     Data_Base db;
 
 

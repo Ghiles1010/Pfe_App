@@ -21,6 +21,7 @@ import com.example.pfeapp.BD.Service;
 import com.example.pfeapp.BD.User;
 import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Background;
+import com.example.pfeapp.client_ui.Menu;
 import com.example.pfeapp.prest_ui.OnCardListener;
 import com.example.pfeapp.prest_ui.Prestaire_Menu;
 import com.google.android.material.button.MaterialButton;
@@ -33,14 +34,14 @@ import java.util.ArrayList;
 import static com.example.pfeapp.R.layout.choix_session_connexion;
 import static com.example.pfeapp.client_ui.Background.ip;
 
-public class Choix_session_connexion extends AppCompatActivity implements OnCardListener{
+public class Choix_session_connexion extends AppCompatActivity implements OnCardListener {
 
 
     MaterialButton terminer;
     RecyclerView recview;
     session_adapter adapter;
-    ArrayList<session_card>cards=new ArrayList<>();
-    Data_Base db=new Data_Base(this);
+    ArrayList<session_card> cards = new ArrayList<>();
+    Data_Base db = new Data_Base(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +51,12 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
 
         getListcards();
 
-        terminer=findViewById(R.id.terminer);
-        recview=findViewById(R.id.sessions);
+        terminer = findViewById(R.id.terminer);
+        recview = findViewById(R.id.sessions);
 
-        adapter=new session_adapter(this,cards,this);
+        adapter = new session_adapter(this, cards, this);
         recview.setAdapter(adapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this){
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -64,28 +65,39 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
         recview.setLayoutManager(layoutManager);
 
 
-
-
     }
 
-    void getListcards(){
+    void getListcards() {
 
 
         connect c = new connect(this);
         c.execute();
 
 
-
     }
 
     @Override
     public void onCardClick(int position) {
-        Intent intent =new Intent(this, Prestaire_Menu.class);
+        Intent intent;
+
+        if (cards.get(position).getType().equals("client")) {
+
+            intent = new Intent(this, Menu.class);
+
+        } else {
+
+            String id=cards.get(position).getId();
+
+            db.set_current_service(id);
+
+            intent = new Intent(this, Prestaire_Menu.class);
+        }
+
         startActivity(intent);
     }
 
 
-    public class session_adapter extends RecyclerView.Adapter<session_holder>{
+    public class session_adapter extends RecyclerView.Adapter<session_holder> {
 
 
         Choix_session_connexion cp;
@@ -97,16 +109,16 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
         public session_adapter(Choix_session_connexion cp, ArrayList<session_card> cards, OnCardListener onCardListener) {
             this.cp = cp;
             this.cards = cards;
-            this.onCardListener=onCardListener;
+            this.onCardListener = onCardListener;
         }
 
         @NonNull
         @Override
         public session_holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.session_card,null);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.session_card, null);
 
-            return new session_holder(view,onCardListener);
+            return new session_holder(view, onCardListener);
         }
 
         @Override
@@ -123,8 +135,6 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
 
 
     }
-
-
 
 
     public class connect extends AsyncTask<String, Void, String> {
@@ -144,14 +154,14 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
             Prestataire prestataire = new Prestataire();
             Client client = new Client();
 
-            Background b=new Background();
-            User user=db.getUser().get(0);
+            Background b = new Background();
+            User user = db.getUser().get(0);
 
-            String id_client=b.request("get_client",ip,"id_user",user.getId());
+            String id_client = b.request("get_client", ip, "id_user", user.getId());
 
-            if( ! id_client.equals("no_client") ) {
+            if (!id_client.equals("no_client")) {
 
-                result="client&";
+                result = "client&";
 
                 try {
 
@@ -167,23 +177,19 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
                 }
 
 
+                db.insertClient(client.getId_user(), client.getId_client());
 
-                db.insertClient(client.getId_user(),client.getId_client());
 
-
-            }
-            else{
-                result="no_client&";
+            } else {
+                result = "no_client&";
             }
 
 
+            String id_prest = b.request("get_prest", ip, "id_user", user.getId());
 
+            if (!id_prest.equals("no_prestataire")) {
 
-            String id_prest=b.request("get_prest",ip,"id_user",user.getId());
-
-            if( ! id_prest.equals("no_prestataire") ) {
-
-                result=result+"prest";
+                result = result + "prest";
 
                 try {
 
@@ -201,7 +207,7 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
 
                 db.insertPrest(prestataire.getId_user(), prestataire.getId_prestataire());
 
-                String services_json=b.request("get_services",ip,"id_prest",prestataire.getId_prestataire());
+                String services_json = b.request("get_services", ip, "id_prest", prestataire.getId_prestataire());
 
                 try {
 
@@ -212,7 +218,7 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
                     for (int j = 0; j < JA.length(); j++) {
                         JSONObject JO = (JSONObject) JA.get(j);
 
-                        serv= new Service();
+                        serv = new Service();
 
                         serv.setIDprestataire(JO.get("prestataire").toString());
                         serv.setIDservice(JO.get("id_service").toString());
@@ -228,16 +234,15 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
                         serv.setNom(JO.get("nom").toString());
                         serv.setVille(JO.get("ville").toString());
 
-                        db.insertService(serv.getIDservice(),serv.getIDprestataire(),serv.getNom(),serv.getLongitude(),serv.getLatitude());
+                        db.insertService(serv.getIDservice(), serv.getIDprestataire(), serv.getNom(), serv.getLongitude(), serv.getLatitude(),0);
 
                     }
                 } catch (org.json.JSONException e) {
                     e.printStackTrace();
                 }
 
-            }
-            else{
-                result=result+"no_prest";
+            } else {
+                result = result + "no_prest";
             }
 
 
@@ -247,30 +252,35 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
         @Override
         protected void onPostExecute(String result) {
 
-            String [] types=result.split("&");
+            String[] types = result.split("&");
 
-            if(types[0].equals("client")){
+            if (types[0].equals("client")) {
 
 
-                session_card sesion=new session_card();
+                session_card session = new session_card();
 
-                String u=db.getUser().get(0).getName();
+                String u = db.getUser().get(0).getName();
 
-                sesion.setNom_session(u);
+                session.setNom_session(u);
 
-                cards.add(sesion);
+                session.setType("client");
+
+                cards.add(session);
                 adapter.notifyDataSetChanged();
 
             }
 
-            if(types[1].equals("prest")){
+            if (types[1].equals("prest")) {
 
-                ArrayList <Service> services =db.get_services(db.getPrest().get(0).getId_prestataire());
+                ArrayList<Service> services = db.get_services();
 
-                for(Service s: services) {
+                for (Service s : services) {
+
 
                     session_card session = new session_card();
                     session.setNom_session(s.getNom());
+                    session.setId(s.getIDservice());
+                    session.setType("prestataire");
                     cards.add(session);
                 }
 
@@ -278,9 +288,6 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
                 adapter.notifyDataSetChanged();
 
             }
-
-
-
 
 
         }

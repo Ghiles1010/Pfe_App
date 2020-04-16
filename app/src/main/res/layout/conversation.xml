@@ -10,14 +10,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="10dp"
 
 
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+        app:strokeColor="@color/Navy"
+        app:strokeWidth="1px"
 
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -28,10 +30,10 @@
 
         <RelativeLayout
 
-            android:background="@drawable/rech_res_shape"
+
 
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
 
             <TextView
@@ -110,7 +112,7 @@
         </RelativeLayout>
 
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>
 
