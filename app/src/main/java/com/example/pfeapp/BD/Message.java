@@ -2,11 +2,32 @@ package com.example.pfeapp.BD;
 
 public class Message {
 
-    private String text;
+
     private String id_client;
     private String id_service;
+    private String time;
+    private String text;
     private String id_sender;
 
+
+    public Message() {
+    }
+
+    public Message(String id_client, String id_service, String time, String text, String id_sender) {
+        this.id_client = id_client;
+        this.id_service = id_service;
+        this.time = time;
+        this.text = text;
+        this.id_sender = id_sender;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getId_client() {
         return id_client;

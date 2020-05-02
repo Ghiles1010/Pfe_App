@@ -2,12 +2,11 @@ package com.example.pfeapp.prest_ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.example.pfeapp.BD.Data_Base;
 import com.example.pfeapp.BD.Message;
@@ -27,34 +26,42 @@ import com.example.pfeapp.R;
 import com.example.pfeapp.client_ui.Background;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okio.ByteString;
 
 import static com.example.pfeapp.client_ui.Background.ip;
+import static com.example.pfeapp.user_ui.Connexion.PREFERENCES;
 
 public class Discussion_prest extends AppCompatActivity {
 
-    private EditText message;
+    private EditText messageBox;
     private ImageButton send;
+
     private RecyclerView recview;
     Chat_adapter_prest adapter;
+    ArrayList<Message> cards = new ArrayList<>();
+    Data_Base db=new Data_Base(this);
+    private WebSocket webSocket;
 
-
-    String id_client;
-    String id_service;
-
-
+    private String id_service;
+    private String id_client;
 
     String last_message_time;
     String current_last_message_time;
 
-    Data_Base db = new Data_Base(this);
-
-    ArrayList<Message> cards = new ArrayList<>();
-
-    private thread looperThread = new thread();
-    private Handler mainHandler=new Handler();
+    public final static String MSG_LOADED = "messages loaded";
 
 
 
@@ -63,27 +70,34 @@ public class Discussion_prest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.discussion);
 
+        last_message_time = "2019-03-24 22:27:28";
+        current_last_message_time = "2019-03-24 22:27:28";
+
         Intent i = getIntent();
         id_client = (String) i.getSerializableExtra("id_client");
-
         id_service=db.get_current_service().getIDservice();
 
-
-
-        last_message_time="2019-03-24 22:27:28";
-        current_last_message_time="2019-03-24 22:27:28";
-
-        message=(EditText)findViewById(R.id.Message_To_send);
+        messageBox=(EditText)findViewById(R.id.Message_To_send);
         send=(ImageButton)findViewById(R.id.send);
 
-        recview=findViewById(R.id.recConvm);
-
-        getList("");
 
 
-        adapter=new Chat_adapter_prest(this,cards);
+        recview = findViewById(R.id.recConvm);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        boolean loaded = sharedPreferences.getBoolean(MSG_LOADED, false);
+
+        if (!loaded) {
+            getList();
 
 
+        } else {
+
+            getLocalList();
+
+        }
+
+        adapter = new Chat_adapter_prest(this, cards);
 
         recview.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -101,52 +115,97 @@ public class Discussion_prest extends AppCompatActivity {
 
         });
 
-        looperThread.start();
+        initWebSocket();
+
+    }
+
+    private void getLocalList() {
+
+
+        ArrayList<Message> m = db.get_messages();
+        current_last_message_time=db.getLastTimeMessage(id_client,id_service);
+        last_message_time=current_last_message_time;
+
+        for (Message i : m) {
+            cards.add(i);
+        }
 
 
     }
 
+    private void getList() {
 
 
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(MSG_LOADED, true);
+        editor.apply();
 
+        //entrez le chaine vide dans us pour afficher tout les user
+        //sinon specifier le ID du user
+
+
+        new getData().execute("get_message", id_service, current_last_message_time, id_client, "");
+
+    }
+
+    private void initWebSocket(){
+        OkHttpClient client = new OkHttpClient();
+
+
+        //replace x.x.x.x with your machine's IP Address
+        Request request = new Request.Builder().url("ws://"+ip+":8080").build();
+
+
+        SocketListener socketListener = new SocketListener(this);
+
+
+        webSocket = client.newWebSocket(request, socketListener);
+    }
 
 
     void sendMessage() {
 
-        Background background=new Background(this);
+        String message = messageBox.getText().toString();
 
-        if(InternetAvailable()) {
+        if (!message.isEmpty()) {
+
+            Background background =new Background(this);
+            JSONObject jsonObject = new JSONObject();
+
+            try {
 
 
+                jsonObject.put("message", message);
+                jsonObject.put("sender", id_service);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
+            webSocket.send(jsonObject.toString());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            String currentDateandTime = sdf.format(new Date());
+            background.execute("send_message", message, id_client, id_service, id_service,currentDateandTime);
 
 
-            Message c= new Message();
-            c.setText(message.getText().toString());
-            c.setId_sender(id_service);
-            cards.add(c);
-            recview.smoothScrollToPosition(cards.size());
+            db.insertMessage(id_client,id_service,currentDateandTime,message,id_service);
+            messageBox.setText("");
+
+            Message m = new Message();
+
+            m.setId_sender(id_service);
+            m.setText(message);
+            cards.add(m);
+
             adapter.notifyDataSetChanged();
-
-            String mes=message.getText().toString();
-            message.getText().clear();
-
-            String conv="conv";
-            String type = "send_message";
-            String res;
-            res=background.execute(type, mes,id_client,id_service,id_service).toString();
-
-
-
-        }
-        else{
-
-            Toast.makeText(Discussion_prest.this, "aucune connexion Internet", Toast.LENGTH_SHORT).show();
-
         }
 
     }
+
+
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -164,177 +223,94 @@ public class Discussion_prest extends AppCompatActivity {
     }
 
 
+    public class SocketListener extends WebSocketListener {
 
-    private void getList(String us){
-        //entrez le chaine vide dans us pour afficher tout les user
-        //sinon specifier le ID du user
-        new getData().execute("get_message",id_service,current_last_message_time,id_client,us);
 
-    }
+        public Discussion_prest activity;
 
 
 
-    private class getData extends AsyncTask<String, Void, String> {
+        public SocketListener(Discussion_prest activity) {
+            this.activity = activity;
+        }
 
-        String result;
+
 
         @Override
-        protected String doInBackground(String... voids) {
+        public void onOpen(WebSocket webSocket, Response response) {
 
 
-            Background b=new Background();
+            activity.runOnUiThread(new Runnable() {
 
-            result=b.request(voids[0],ip,"id_service",voids[1],"time",voids[2],"id_client",voids[3],"id_sender",voids[4]);
+                @Override
+                public void run() {
 
-
-                Message cg;
-
-
-
-
-                if(!result.equals("no messages")) {
-                    current_last_message_time = result.substring(0, 19);
-
-                    result = result.replaceFirst("\\d+(-\\d+){2} (\\d+:){2}\\d+", "");
-
-
-                    try {
-
-
-                        JSONArray JA = new JSONArray(result);
-
-                        for (int j = 0; j < JA.length(); j++) {
-                            JSONObject JO = (JSONObject) JA.get(j);
-
-                            cg = new Message();
-                            cg.setText(JO.get("text").toString());
-                            cg.setId_sender(JO.get("id_sender").toString());
-                            cg.setId_client(JO.get("client").toString());
-                            cg.setId_service(JO.get("service").toString());
-                            cards.add(cg);
-                        }
-                    } catch (org.json.JSONException e) {
-                        e.printStackTrace();
-                    }
-
+                    Toast.makeText(activity, "Connection Established!", Toast.LENGTH_LONG).show();
 
                 }
 
+            });
 
-            return result;
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        public void onMessage(WebSocket webSocket, final String text) {
 
-            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        protected void onPreExecute() {}
-
-        @Override
-        protected void onProgressUpdate(Void... values) {}
-    }
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
 
 
+                    Message message=new Message();
 
-    public class thread extends Thread {
+                    try {
 
+                        JSONObject jsonObject = new JSONObject(text);
 
-        @Override
-        public void run() {
-
-            while(true){
-
-
-
-                SystemClock.sleep(500);
-                String result = "";
-
-                Background b=new Background();
-                result=b.request("last_message",ip,"id_service",id_service,"id_client",id_client);
+                        message.setText(jsonObject.get("message").toString());
+                        message.setId_sender(jsonObject.get("sender").toString());
 
 
-
-                    if(!result.equals("")) {
-                        last_message_time = result.substring(0, 19);
-
-                        result = result.replaceFirst("\\d+(-\\d+){2} (\\d+:){2}\\d+", "");
-
-
-                        String current;
-                        String last;
-
-                        current = current_last_message_time.replaceAll("(-|:)", " ");
-                        last = last_message_time.replaceAll("(-|:)", " ");
-
-
-                        if (isAfter(last, current, 4)) { // ne change pas le numero 4, il represente le nombre de chiifre de l'annee
-
-
-                            mainHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-
-
-                                    getList(id_service);
-                                    current_last_message_time = last_message_time;
-                                    adapter.notifyDataSetChanged();
-                                    recview.smoothScrollToPosition(cards.size());
-
-                                }
-                            });
-
-                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
 
+                    cards.add(message);
+                    adapter.notifyDataSetChanged();
 
 
-
-
-            }//fin while
-
-
-
+                }
+            });
         }
 
 
 
-        public  boolean isAfter(String d1,String d2, int n){
-
-            int num1, num2;
-            String str1, str2;
-
-
-            str1=d1.substring(0, n);
+        @Override
+        public void onMessage(WebSocket webSocket, ByteString bytes) {
+            super.onMessage(webSocket, bytes);
+        }
 
 
-            str2=d2.substring(0, n);
+
+        @Override
+        public void onClosing(WebSocket webSocket, int code, String reason) {
+            super.onClosing(webSocket, code, reason);
+        }
 
 
-            num1=Integer.parseInt(str1);
-            num2=Integer.parseInt(str2);
 
-            if(num1>num2)
-                return true;
-            if(num1<num2)
-                return false;
-            else{
+        @Override
+        public void onClosed(WebSocket webSocket, int code, String reason) {
+            super.onClosed(webSocket, code, reason);
+        }
 
-                d1=d1.replaceFirst("\\d+ ?", "");
-                d2=d2.replaceFirst("\\d+ ?", "");
 
-                if(d1.isEmpty())
-                    return false;
-                else
-                    return isAfter(d1,d2,2);
 
-            }
+        @Override
+        public void onFailure(WebSocket webSocket, final Throwable t, @Nullable final Response response) {
+            super.onFailure(webSocket, t, response);
         }
     }
-
-
 
 
     public class Chat_adapter_prest extends RecyclerView.Adapter<Chat_Holder_prest> {
@@ -342,8 +318,8 @@ public class Discussion_prest extends AppCompatActivity {
         Discussion_prest c;
         ArrayList<Message> cards;
 
-        public static final int MSG_RIGHT=1;
-        public static final int MSG_LEFT=0;
+        public static final int MSG_RIGHT = 1;
+        public static final int MSG_LEFT = 0;
 
 
         public Chat_adapter_prest(Discussion_prest c, ArrayList<Message> cards) {
@@ -358,10 +334,9 @@ public class Discussion_prest extends AppCompatActivity {
         @Override
         public Chat_Holder_prest onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view;
-            if(viewType==MSG_RIGHT) {
+            if (viewType == MSG_RIGHT) {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_right, null);
-            }
-            else{
+            } else {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_left, null);
             }
             return new Chat_Holder_prest(view);
@@ -383,22 +358,78 @@ public class Discussion_prest extends AppCompatActivity {
         @Override
         public int getItemViewType(int position) {
 
-            String f=cards.get(position).getId_sender();
 
-            if(f.equals(id_service)){
+            if (cards.get(position).getId_sender().equals(id_service)) {
                 return MSG_RIGHT;
-            }
-
-            else{
-                return  MSG_LEFT;
+            } else {
+                return MSG_LEFT;
             }
         }
     }
 
+    private class getData extends AsyncTask<String, Void, String> {
+
+        String result;
+
+        @Override
+        protected String doInBackground(String... voids) {
 
 
+            Background b = new Background();
+
+            result = b.request(voids[0], ip, "id_service", voids[1], "time", voids[2], "id_client", voids[3], "id_sender", voids[4]);
 
 
+            Message cg;
 
+
+            if (!result.equals("no messages")) {
+                current_last_message_time = result.substring(0, 19);
+
+                result = result.replaceFirst("\\d+(-\\d+){2} (\\d+:){2}\\d+", "");
+
+
+                try {
+
+
+                    JSONArray JA = new JSONArray(result);
+
+                    for (int j = 0; j < JA.length(); j++) {
+                        JSONObject JO = (JSONObject) JA.get(j);
+
+                        cg = new Message();
+                        cg.setText(JO.get("text").toString());
+                        cg.setId_sender(JO.get("id_sender").toString());
+                        cg.setId_client(JO.get("client").toString());
+                        cg.setId_service(JO.get("service").toString());
+                        cg.setTime(JO.get("hour").toString());
+                        cards.add(cg);
+
+
+                        db.insertMessage(cg.getId_client(), cg.getId_service(), cg.getTime(), cg.getText(), cg.getId_sender());
+                    }
+                } catch (org.json.JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
 
 }

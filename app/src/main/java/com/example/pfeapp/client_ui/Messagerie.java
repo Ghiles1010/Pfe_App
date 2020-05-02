@@ -1,12 +1,12 @@
 package com.example.pfeapp.client_ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,6 +41,8 @@ public class Messagerie extends Fragment implements OnConvListener {
 
         return view;
     }
+
+
 
     private ArrayList<Conv_card> getList(){
          ArrayList<Conv_card> cards = new ArrayList<>();
@@ -168,9 +170,8 @@ public class Messagerie extends Fragment implements OnConvListener {
 
     @Override
     public void onConvClick(int position) {
+        Intent intent = new Intent(getContext(), Discussion.class);
+        startActivity(intent);
 
-        FragmentTransaction fr = getFragmentManager().beginTransaction();
-        fr.replace(R.id.Fragment_container, new ResRech());
-        fr.commit();
     }
 }

@@ -31,7 +31,7 @@ import static com.example.pfeapp.user_ui.Connexion.PREFERENCES;
 public class Messagerie_prest extends Fragment implements OnConvListener {
 
 
-    final static String CONV_LOADED = "conv_loaded";
+    public final static String CONV_LOADED = "conv_loaded";
 
     Conv_adapter_prest adapter;
     RecyclerView recview;
