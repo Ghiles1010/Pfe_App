@@ -154,7 +154,7 @@ public class Discussion_prest extends AppCompatActivity {
 
 
         //replace x.x.x.x with your machine's IP Address
-        Request request = new Request.Builder().url("ws://"+ip+":8080").build();
+        Request request = new Request.Builder().url("ws://"+ip+":8080/?IDuser="+id_service+"").build();
 
 
         SocketListener socketListener = new SocketListener(this);
@@ -178,6 +178,7 @@ public class Discussion_prest extends AppCompatActivity {
 
                 jsonObject.put("message", message);
                 jsonObject.put("sender", id_service);
+                jsonObject.put("id_dest","IDuser="+id_client);
 
             } catch (JSONException e) {
                 e.printStackTrace();
