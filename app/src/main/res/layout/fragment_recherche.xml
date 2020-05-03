@@ -1,32 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/background"
+    >
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="298dp"
-        app:layout_constraintGuide_percent="0.45" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="58dp"
-        app:layout_constraintGuide_percent="0.90" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+
         app:layout_constraintGuide_begin="170dp"
         app:layout_constraintGuide_percent="0.5" />
 
@@ -36,12 +28,13 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_gravity="center"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="44dp"
         android:gravity="center"
         android:text="@string/besoin_d_un_service_vous_ne_savez_pas_o_aller_n_nous_allons_vous_aider"
         android:textColor="@color/Black"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,77 +49,91 @@
         android:textColor="@color/Black"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/ajouterFiltre" />
-    
 
     <EditText
         android:id="@+id/SearchBar"
         android:layout_width="0dp"
-        android:layout_height="37dp"
+        android:layout_height="34dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/champs"
         android:drawableStart="@drawable/ic_search_black_24dp"
+        android:drawableTint="@color/Grey"
         android:ems="10"
         android:hint="Dites nous ce que vous cherchez"
         android:inputType="textPersonName"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        android:layout_marginRight="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/search"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/search"
+        android:layout_width="35dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        android:padding="0dp"
+        app:icon="@drawable/ic_search_black_24dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/SearchBar"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="@+id/SearchBar"
+        app:layout_constraintVertical_bias="0.0" />
+
+
     <TextView
+        android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="32dp"
+
+
         android:layout_marginTop="11dp"
-
-
-        android:textSize="12sp"
-        android:layout_marginBottom="33dp"
         android:text="Filtres: "
         android:textColor="@color/Navy"
-        app:layout_constraintBottom_toBottomOf="@+id/ajouterFiltre"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchBar"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/SearchBar" />
 
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/ajouterFiltre"
         android:layout_width="120dp"
         android:layout_height="32dp"
-        app:cornerRadius="10dp"
-        android:padding="0dp"
-        android:gravity="center"
-
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="44dp"
-
         android:background="@drawable/buttons"
-        android:paddingLeft="10dp"
-        android:textSize="12sp"
-        android:paddingRight="10dp"
+
+        android:gravity="center"
+        android:padding="0dp"
+
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         android:text="@string/ajouter_un_filtre"
         android:textAllCaps="false"
         android:textColor="@color/White"
+        android:textSize="12sp"
+        app:cornerRadius="10dp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/SearchBar" />
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecomRecView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -147,3 +154,5 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

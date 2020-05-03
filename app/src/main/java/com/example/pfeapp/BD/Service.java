@@ -1,8 +1,9 @@
 package com.example.pfeapp.BD;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Service {
+public class Service implements Serializable {
 
 
     private String IDservice;

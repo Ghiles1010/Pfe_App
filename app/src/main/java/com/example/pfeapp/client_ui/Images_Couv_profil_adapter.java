@@ -13,11 +13,11 @@ import java.util.ArrayList;
 
 public class Images_Couv_profil_adapter extends RecyclerView.Adapter<Images_Couv_profil_holder> {
 
-    Profil c;
+    Profile c;
     ArrayList<Images_Couv_profil_card> cards;
 
 
-    public Images_Couv_profil_adapter(Profil c, ArrayList<Images_Couv_profil_card> cards) {
+    public Images_Couv_profil_adapter(Profile c, ArrayList<Images_Couv_profil_card> cards) {
         this.c = c;
         this.cards = cards;
     }

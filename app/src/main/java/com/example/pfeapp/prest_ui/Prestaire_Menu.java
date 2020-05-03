@@ -72,7 +72,7 @@ public class Prestaire_Menu extends AppCompatActivity {
                             break;
 
                         case R.id.nav_param_prest:
-                            titreBar.setText("Paramètres");
+                            titreBar.setText("Parametres");
 
                             break;
 

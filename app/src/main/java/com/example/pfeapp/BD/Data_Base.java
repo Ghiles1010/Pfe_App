@@ -419,6 +419,23 @@ public class Data_Base extends SQLiteOpenHelper {
         return u;
     }
 
+    public ArrayList<Conversation> getConversationByID(String id_client, String id_service) {
+
+        ArrayList<Conversation> u = new ArrayList<>();
+        String strSql = "select * from conversation";
+        Cursor cursor = this.getReadableDatabase().rawQuery(strSql, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Conversation conversation = new Conversation(cursor.getString(0), cursor.getString(1)
+                    , cursor.getString(2), cursor.getString(3), cursor.getString(4)
+                    , cursor.getString(5));
+            u.add(conversation);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return u;
+    }
 
     public void clearTables(String... voids) {
 

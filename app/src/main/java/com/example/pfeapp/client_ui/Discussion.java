@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pfeapp.BD.Conversation;
 import com.example.pfeapp.BD.Data_Base;
 import com.example.pfeapp.BD.Message;
 import com.example.pfeapp.R;
@@ -79,7 +80,16 @@ public class Discussion extends AppCompatActivity {
         messageBox=(EditText)findViewById(R.id.Message_To_send);
         send=(ImageButton)findViewById(R.id.send);
 
+        ArrayList<Conversation> c ;
+        c=db.getConversationByID(id_client,id_service); //tu ne l'as pas encore implémenté
 
+        if(c.isEmpty()){
+            //créer une conversation en ligne si elle n'existe pas
+            Background background=new Background();
+
+            //si elle n'existe pas on la rajoute en local
+            background.execute("check_insert_conv",id_client,id_service);
+        }
 
         recview = findViewById(R.id.recConvm);
 

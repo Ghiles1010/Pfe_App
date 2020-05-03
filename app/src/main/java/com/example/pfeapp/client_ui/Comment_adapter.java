@@ -13,11 +13,11 @@ import java.util.ArrayList;
 
 public class Comment_adapter extends RecyclerView.Adapter<Comment_holder> {
 
-    Profil c;
+    Profile c;
     ArrayList<Comment_card> cards;
 
 
-    public Comment_adapter(Profil c, ArrayList<Comment_card> cards) {
+    public Comment_adapter(Profile c, ArrayList<Comment_card> cards) {
         this.c = c;
         this.cards = cards;
     }

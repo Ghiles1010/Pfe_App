@@ -52,6 +52,8 @@ public class Messagerie extends Fragment implements OnConvListener {
 
         id_client = db.getClient().get(0).getId_client();
 
+
+
         adapter = new Conv_adapter(this, cards, this);
         recview.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());

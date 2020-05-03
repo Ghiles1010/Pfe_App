@@ -1,7 +1,7 @@
 package com.example.pfeapp.client_ui;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -9,45 +9,41 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pfeapp.BD.Conversation;
+import com.example.pfeapp.BD.Data_Base;
+import com.example.pfeapp.BD.Service;
 import com.example.pfeapp.R;
+import com.example.pfeapp.prest_ui.OnCardListener;
 import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import static java.lang.Integer.parseInt;
+import static com.example.pfeapp.client_ui.Background.ip;
 
 
-public class ResRech extends Fragment {
+public class ResRech extends Fragment implements OnCardListener {
 
     private MaterialButton liste;
     private MaterialButton map;
     RecyclerView recview;
+    Data_Base db=new Data_Base(getContext());
     Res_resch_adapter adapter;
     String tokenSearch;
-    ArrayList<Res_resch_card> cards= new ArrayList<>();
+    ArrayList<Service> cards= new ArrayList<>();
 
     public ResRech(String token)  {
-       tokenSearch=token;
+
+        this.tokenSearch=token;
     }
     public ResRech(){}
 
@@ -63,7 +59,7 @@ public class ResRech extends Fragment {
 
 
        //need to add the progress bar
-        adapter=new Res_resch_adapter(this,cards);
+        adapter=new Res_resch_adapter(this,cards,this  );
         recview.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recview.setLayoutManager(layoutManager);
@@ -80,10 +76,6 @@ public class ResRech extends Fragment {
         map.setTextColor(getResources().getColor(R.color.Navy));
 
 
-
-
-
-
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,8 +84,6 @@ public class ResRech extends Fragment {
                 liste.setTextColor(getResources().getColor(R.color.Navy));
                 map.setBackgroundColor(getResources().getColor(R.color.Navy));
                 map.setTextColor(getResources().getColor(R.color.White));
-
-
                 FragmentTransaction fr= getFragmentManager().beginTransaction();
                 fr.replace(R.id.Fragment_container,new Map());
                 fr.commit();
@@ -104,6 +94,8 @@ public class ResRech extends Fragment {
 
             }
         });
+
+
         getList();
 
 
@@ -116,9 +108,83 @@ public class ResRech extends Fragment {
 
     private void getList(){
 
-        SearchBackground sb= new SearchBackground(getContext() );
-        sb.execute(tokenSearch);
+        GetServices c =new GetServices();
+        c.execute();
+
     }
+
+    private class GetServices extends AsyncTask<String, Void, String> {
+
+        String result;
+        Conversation conv;
+
+        @Override
+        protected String doInBackground(String... voids) {
+
+
+            Background b = new Background();
+
+
+
+            result = b.request("get_services_rech", ip);
+
+
+            if (!result.equals("no_services")) {
+
+                try {
+
+                    Service serv;
+
+                    JSONArray JA = new JSONArray(result);
+
+                    for (int j = 0; j < JA.length(); j++) {
+                        JSONObject JO = (JSONObject) JA.get(j);
+
+                        serv = new Service();
+
+                        serv.setIDprestataire(JO.get("prestataire").toString());
+                        serv.setIDservice(JO.get("id_service").toString());
+                        serv.setAddresse(JO.get("adresse").toString());
+                        serv.setAvg_stars(Float.parseFloat(JO.get("avrg_stars").toString()));
+                        serv.setDescription(JO.get("description").toString());
+                        serv.setDispo(Integer.parseInt(JO.get("disponibilite").toString()));
+                        serv.setIDprestataire(JO.get("prestataire").toString());
+                        serv.setIDservice(JO.get("id_service").toString());
+                        serv.setLatitude(JO.get("latitude").toString());
+                        serv.setLongitude(JO.get("longitude").toString());
+                        serv.setNb_views(Integer.parseInt(JO.get("nb_reviews").toString()));
+                        serv.setNom(JO.get("nom").toString());
+                        serv.setVille(JO.get("ville").toString());
+
+                        cards.add(serv);
+
+                    }
+                } catch (org.json.JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            adapter.notifyDataSetChanged();
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
+
 
 
 
@@ -136,111 +202,12 @@ public class ResRech extends Fragment {
         return connected;
     }
 
+    @Override
+    public void onCardClick(int position) {
+        Service service=cards.get(position);
 
-
-
-
-    public class SearchBackground extends AsyncTask<String,Void,String> {
-        //declaration de quoi recuperer
-        AlertDialog dialog;
-        String result = "";
-        String type = "search";
-        Context context;
-        Res_resch_card card;
-        String search_url = "http:/192.168.1.8/" + type + ".php";//go to commend prompt to know your local ip adress
-        public SearchBackground(Context context) { this.context = context; }
-
-
-
-
-
-        @Override
-        protected String doInBackground(String... voids){
-            try {
-                String token = voids[0];
-                URL url = new URL(search_url);
-                HttpURLConnection URLconn = (HttpURLConnection) url.openConnection();
-                URLconn.setRequestMethod("POST");//request to write on the server
-                URLconn.setDoInput(true);
-                URLconn.setDoOutput(true);
-
-                OutputStream ops = URLconn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(ops, "UTF8"));
-                String data = URLEncoder.encode("token", "UTF8") + "=" + URLEncoder.encode(token, "UTF8");
-
-                writer.write(data);//write on the buffer
-                writer.flush();
-                writer.close();//close the buffer
-
-                ops.close();
-
-                InputStream ips = URLconn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(ips, "ISO-8859-1"));
-
-
-                String line = "";
-                while ((line = reader.readLine()) != null)
-                {
-                    result += line;
-                }
-
-
-
-
-                try {
-                        JSONArray service = new JSONArray(result);
-                        if(service.length() != 0){
-                        for (int i=0; i<service.length();i++) {
-
-                            JSONObject serv =(JSONObject) service.get(i);
-                            card = new Res_resch_card();
-                            card.setTitre(serv.get("nom").toString());
-                            card.setDescription(serv.get("description").toString());
-
-                           try{ card.setImage(parseInt(serv.get("picture").toString()));}
-                           catch(NumberFormatException e){card.setImage(R.drawable.rest);}
-                            cards.add(card);
-                        }}
-                        else{
-                            Toast.makeText(getActivity(), "aucun resultat", Toast.LENGTH_SHORT).show();
-                        }
-
-
-                }catch (org.json.JSONException e){
-                        e.printStackTrace();
-                }
-
-
-
-
-
-
-                    reader.close();
-                    ips.close();
-                    URLconn.disconnect();
-
-
-
-                } catch (MalformedURLException e) {
-                    result = e.getMessage();
-                } catch (java.io.IOException e) {
-                    result = e.getMessage();
-                }
-                return result;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-
-
-
-        }
-
-
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-        }
+        Intent intent = new Intent(getContext(),Profile.class);
+        intent.putExtra("service", (Serializable) service);
+        startActivity(intent);
     }
 }

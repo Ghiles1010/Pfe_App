@@ -1,53 +1,97 @@
 package com.example.pfeapp.client_ui;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pfeapp.BD.Service;
 import com.example.pfeapp.R;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
-public class Profil extends Fragment {
+public class Profile extends AppCompatActivity {
 
     Comment_adapter adapter_comment;
     RecyclerView recview_comment;
 
     Images_Couv_profil_adapter adapter_images;
     RecyclerView recview_images;
-
-
-
+    Service service;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        View view=inflater.inflate(R.layout.profile_prest, container, false);
+        setContentView(R.layout.profile_prest);
 
-        recview_comment=view.findViewById(R.id.Comment_sec_prest);
+        service= (Service) getIntent().getSerializableExtra("service");
+
+        initRecviews();
+
+        MaterialButton message = findViewById(R.id.message);
+
+
+
+
+        message.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                if(InternetAvailable()) {
+                    goDiscussion();
+                }
+                else{
+                    Toast.makeText(Profile.this, "aucune connexion Internet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+    }
+
+    public boolean InternetAvailable() {
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
+        }  else{
+            connected = false;}
+
+        return connected;
+    }
+
+    void goDiscussion(){
+        Intent intent= new Intent(this,Discussion.class);
+        intent.putExtra("id_service",service.getIDservice());
+        startActivity(intent);
+    }
+
+    private  void initRecviews(){
+        recview_comment=findViewById(R.id.Comment_sec_prest);
         adapter_comment=new Comment_adapter(this,getList());
         recview_comment.setAdapter(adapter_comment);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recview_comment.setLayoutManager(layoutManager);
 
 
 
-        recview_images=view.findViewById(R.id.recImagesServices);
+        recview_images=findViewById(R.id.recImagesServices);
         adapter_images=new Images_Couv_profil_adapter( this,getListImages());
         recview_images.setAdapter(adapter_images);
-        RecyclerView.LayoutManager layoutManagerImages = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        RecyclerView.LayoutManager layoutManagerImages = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         recview_images.setLayoutManager(layoutManagerImages);
-
-
-        return view;
     }
-
 
 
     private ArrayList<Comment_card> getList(){

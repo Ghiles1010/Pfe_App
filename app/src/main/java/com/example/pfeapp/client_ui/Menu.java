@@ -64,7 +64,7 @@ public class Menu extends AppCompatActivity {
 
                         case R.id.nav_profil:
                             titreBar.setText("Profil");
-                            selectedFragment=new Profil();
+                           // selectedFragment=new Profil();
                             break;
 
 

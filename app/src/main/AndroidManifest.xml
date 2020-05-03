@@ -12,12 +12,14 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="ExtraText,GoogleAppIndexingWarning">
-        <activity android:name=".user_ui.Choix_session_connexion"></activity>
+        <activity android:name=".client_ui.Profile"></activity>
+        <activity android:name=".client_ui.Res_recherche" />
+        <activity android:name=".user_ui.Choix_session_connexion" />
         <activity android:name=".prest_ui.Inscription_prest" />
         <activity android:name=".user_ui.Choix_session_inscr" />
         <activity android:name=".prest_ui.Discussion_prest" />

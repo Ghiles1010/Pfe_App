@@ -41,6 +41,14 @@ public class Background extends AsyncTask<String, Void, String> {
 
         switch (s) {
 
+            case("Conversation_exists"):
+
+                break;
+
+            case("not_Conversation_exists"):
+
+                break;
+
             case ("success"):
 
                 break;
@@ -79,6 +87,12 @@ public class Background extends AsyncTask<String, Void, String> {
 
 
         switch (c) {
+
+            case "check_insert_conv":
+
+                result=request(c,ip,"id_client",voids[1],"id_service",voids[2]);
+
+                break;
 
 
 
