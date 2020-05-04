@@ -88,7 +88,7 @@ public class Background extends AsyncTask<String, Void, String> {
 
         switch (c) {
 
-            case "check_insert_conv":
+            case "insert_conv":
 
                 result=request(c,ip,"id_client",voids[1],"id_service",voids[2]);
 

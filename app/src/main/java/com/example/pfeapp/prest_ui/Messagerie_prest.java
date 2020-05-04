@@ -134,7 +134,7 @@ public class Messagerie_prest extends Fragment implements OnConvListener {
 
 
                         db.insertConversation(conv.getId_client(), conv.getId_service()
-                                , conv.getTime(), conv.getLast_message(), conv.getNom_client(), conv.getNom_service());
+                                , conv.getTime(), conv.getLast_message(), conv.getNom_client(), conv.getNom_service(),conv.getMessages_loaded(),conv.getConversation_loaded());
                     }
 
                     SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PREFERENCES, MODE_PRIVATE);

@@ -29,7 +29,7 @@ public class Data_Base extends SQLiteOpenHelper {
     public Data_Base(Context context) {
 
         super(context, DATABASE_NAME, null, Version);
-        this.context=context;
+        this.context = context;
     }
 
     @Override
@@ -112,6 +112,8 @@ public class Data_Base extends SQLiteOpenHelper {
                 + " last_message VARCHAR(255),"
                 + " nom_client VARCHAR(255),"
                 + " nom_service VARCHAR(255),"
+                + " messages_loaded int(2),"
+                + " conversation_loaded int(2),"
                 + " CONSTRAINT Fk_client FOREIGN KEY (id_client) references client(id_client),"
                 + " CONSTRAINT Fk_service FOREIGN KEY (id_service) references service(id_service),"
                 + " CONSTRAINT PK_conv PRIMARY KEY (id_client,id_service)"
@@ -167,12 +169,12 @@ public class Data_Base extends SQLiteOpenHelper {
 
     public void insertUser(String ID, String email, String psw, String name, String surname, String username) {
 
-        clearTables("message","conversation","client","category_service","service","prestataire","user");
+        clearTables("message", "conversation", "client", "category_service", "service", "prestataire", "user");
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(CONV_LOADED, false);
-        editor.putBoolean(MSG_LOADED,false);
+        editor.putBoolean(MSG_LOADED, false);
         editor.apply();
 
         String insert_User = "INSERT INTO user (id_user,mail,psw,username,name,surname) VALUES ( '" + ID + "','" + email + "','" + psw + "','" + username + "','" + name + "','" + surname + "');";
@@ -222,9 +224,9 @@ public class Data_Base extends SQLiteOpenHelper {
         this.getWritableDatabase().execSQL(insert_Service);
     }
 
-    public String getLastTimeMessage(String id_client,String id_service){
+    public String getLastTimeMessage(String id_client, String id_service) {
 
-        String strSql = "select max(time) from message where id_client like '"+id_client+"' and id_service like '"+id_service+"';";
+        String strSql = "select max(time) from message where id_client like '" + id_client + "' and id_service like '" + id_service + "';";
         Cursor cursor = this.getReadableDatabase().rawQuery(strSql, null);
         cursor.moveToFirst();
 
@@ -395,10 +397,29 @@ public class Data_Base extends SQLiteOpenHelper {
     }
 
 
-    public void insertConversation(String id_client, String id_service, String time, String last_message, String nom_client, String nom_service) {
+    public void insertConversation(String id_client, String id_service, String time, String last_message, String nom_client, String nom_service, int message_loaded, int conversation_loaded) {
 
-        String insert_conv = "INSERT INTO conversation (id_client,id_service,time,last_message,nom_client,nom_service) VALUES ( '" + id_client + "','" + id_service + "','" + time + "','" + last_message + "','" + nom_client + "','" + nom_service + "');";
+        String insert_conv = "INSERT INTO conversation (id_client,id_service,time,last_message,nom_client,nom_service,messages_loaded,conversation_loaded) VALUES ( '" + id_client + "','" + id_service + "','" + time + "','" + last_message + "','" + nom_client + "','" + nom_service + "','" + message_loaded + "','" + conversation_loaded + "');";
         this.getWritableDatabase().execSQL(insert_conv);
+    }
+
+
+    public boolean ConversationLoaded(String id_client, String id_service) {
+        String strSql = "select * from conversation id_client = '" + id_client + "' and id_service='" + id_service + "'";
+        Cursor cursor = this.getReadableDatabase().rawQuery(strSql, null);
+        cursor.moveToFirst();
+
+        Conversation conversation = new Conversation(cursor.getString(0), cursor.getString(1)
+                , cursor.getString(2), cursor.getString(3), cursor.getString(4)
+                , cursor.getString(5), cursor.getInt(6), cursor.getInt(7));
+
+        cursor.moveToNext();
+        cursor.close();
+        if (conversation != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public ArrayList<Conversation> getConversation() {
@@ -410,7 +431,7 @@ public class Data_Base extends SQLiteOpenHelper {
         while (!cursor.isAfterLast()) {
             Conversation conversation = new Conversation(cursor.getString(0), cursor.getString(1)
                     , cursor.getString(2), cursor.getString(3), cursor.getString(4)
-                    , cursor.getString(5));
+                    , cursor.getString(5), cursor.getInt(6), cursor.getInt(7));
             u.add(conversation);
             cursor.moveToNext();
         }
@@ -422,13 +443,13 @@ public class Data_Base extends SQLiteOpenHelper {
     public ArrayList<Conversation> getConversationByID(String id_client, String id_service) {
 
         ArrayList<Conversation> u = new ArrayList<>();
-        String strSql = "select * from conversation";
+        String strSql = "select * from conversation where id_client='" + id_client + "'and id_service='" + id_service + "';";
         Cursor cursor = this.getReadableDatabase().rawQuery(strSql, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             Conversation conversation = new Conversation(cursor.getString(0), cursor.getString(1)
                     , cursor.getString(2), cursor.getString(3), cursor.getString(4)
-                    , cursor.getString(5));
+                    , cursor.getString(5), cursor.getInt(6), cursor.getInt(7));
             u.add(conversation);
             cursor.moveToNext();
         }
@@ -437,11 +458,18 @@ public class Data_Base extends SQLiteOpenHelper {
         return u;
     }
 
+    public void setMessageLoadedStatus(String id_client, String id_service, int status) {
+
+        String stat = "UPDATE conversation set messages_loaded = " + status + " WHERE id_service = '" + id_service + "' and id_client = '" + id_client + "';";
+        this.getWritableDatabase().execSQL(stat);
+
+    }
+
     public void clearTables(String... voids) {
 
         for (int i = 0; i < voids.length; i++) {
 
-            this.getWritableDatabase().execSQL("delete from "+voids[i]+"");
+            this.getWritableDatabase().execSQL("delete from " + voids[i] + "");
         }
 
     }

@@ -49,20 +49,25 @@ public class Discussion extends AppCompatActivity {
     private EditText messageBox;
     private ImageButton send;
 
+    boolean asyncended = false;
+
     private RecyclerView recview;
     Chat_adapter adapter;
     ArrayList<Message> cards = new ArrayList<>();
-    Data_Base db=new Data_Base(this);
+    Data_Base db = new Data_Base(this);
     private WebSocket webSocket;
 
     private String id_service;
     private String id_client;
+
+    ArrayList<Conversation> c;
 
     String last_message_time;
     String current_last_message_time;
 
     public final static String MSG_LOADED = "messages loaded";
 
+    boolean firstContact = false;
 
 
     @Override
@@ -75,44 +80,13 @@ public class Discussion extends AppCompatActivity {
 
         Intent i = getIntent();
         id_service = (String) i.getSerializableExtra("id_service");
-        id_client=db.getClient().get(0).getId_client();
+        id_client = db.getClient().get(0).getId_client();
 
-        messageBox=(EditText)findViewById(R.id.Message_To_send);
-        send=(ImageButton)findViewById(R.id.send);
-
-        ArrayList<Conversation> c ;
-        c=db.getConversationByID(id_client,id_service); //tu ne l'as pas encore implémenté
-
-        if(c.isEmpty()){
-            //créer une conversation en ligne si elle n'existe pas
-            Background background=new Background();
-
-            //si elle n'existe pas on la rajoute en local
-            background.execute("check_insert_conv",id_client,id_service);
-        }
-
-        recview = findViewById(R.id.recConvm);
-
-        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
-        boolean loaded = sharedPreferences.getBoolean(MSG_LOADED, false);
-
-        if (!loaded) {
-            getList();
+        messageBox = (EditText) findViewById(R.id.Message_To_send);
+        send = (ImageButton) findViewById(R.id.send);
 
 
-        } else {
-
-            getLocalList();
-
-        }
-
-        adapter = new Chat_adapter(this, cards);
-
-        recview.setAdapter(adapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recview.setLayoutManager(layoutManager);
-
-        recview.smoothScrollToPosition(cards.size());
+        c = db.getConversationByID(id_client, id_service);
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +98,51 @@ public class Discussion extends AppCompatActivity {
 
         });
 
+
+        if (c.isEmpty()) {//conversation non en local donc on vient de profile
+            //le client est forcément en ligne car avant de venir ici on a testé dans le listener du boutom
+            //créer une conversation en ligne si elle n'existe pas
+            //si elle n'existe pas on la rajoute en local
+            Check_conv check_conv = new Check_conv();
+
+            check_conv.execute();
+
+
+
+
+        }
+
+        recview = findViewById(R.id.recConvm);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+        boolean loaded = sharedPreferences.getBoolean(MSG_LOADED, false);
+
+
+
+
+        adapter = new Chat_adapter(this, cards);
+
+        if (!c.isEmpty()) {
+            if (c.get(0).getMessages_loaded() == 0) {
+                getList();
+
+
+            } else {
+
+                getLocalList();
+
+            }
+        }
+
+
+
+        recview.setAdapter(adapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recview.setLayoutManager(layoutManager);
+
+        recview.smoothScrollToPosition(cards.size());
+
+
         initWebSocket();
 
     }
@@ -132,8 +151,8 @@ public class Discussion extends AppCompatActivity {
 
 
         ArrayList<Message> m = db.get_messages();
-        current_last_message_time=db.getLastTimeMessage(id_client,id_service);
-        last_message_time=current_last_message_time;
+        current_last_message_time = db.getLastTimeMessage(id_client, id_service);
+        last_message_time = current_last_message_time;
 
         for (Message i : m) {
             cards.add(i);
@@ -158,12 +177,12 @@ public class Discussion extends AppCompatActivity {
 
     }
 
-    private void initWebSocket(){
+    private void initWebSocket() {
         OkHttpClient client = new OkHttpClient();
 
 
         //replace x.x.x.x with your machine's IP Address
-        Request request = new Request.Builder().url("ws://"+ip+":8080/?IDuser="+id_client+"").build();
+        Request request = new Request.Builder().url("ws://" + ip + ":8080/?IDuser=" + id_client + "").build();
 
 
         SocketListener socketListener = new SocketListener(this);
@@ -179,7 +198,7 @@ public class Discussion extends AppCompatActivity {
 
         if (!message.isEmpty()) {
 
-            Background background =new Background(this);
+            Background background = new Background(this);
             JSONObject jsonObject = new JSONObject();
 
             try {
@@ -187,7 +206,7 @@ public class Discussion extends AppCompatActivity {
 
                 jsonObject.put("message", message);
                 jsonObject.put("sender", id_client);
-                jsonObject.put("id_dest","IDuser="+id_service);
+                jsonObject.put("id_dest", "IDuser=" + id_service);
 
 
             } catch (JSONException e) {
@@ -198,10 +217,10 @@ public class Discussion extends AppCompatActivity {
             webSocket.send(jsonObject.toString());
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             String currentDateandTime = sdf.format(new Date());
-            background.execute("send_message", message, id_client, id_service,id_client,currentDateandTime);
+            background.execute("send_message", message, id_client, id_service, id_client, currentDateandTime);
 
 
-            db.insertMessage(id_client,id_service,currentDateandTime,message,id_client);
+            db.insertMessage(id_client, id_service, currentDateandTime, message, id_client);
             messageBox.setText("");
 
             Message m = new Message();
@@ -216,8 +235,6 @@ public class Discussion extends AppCompatActivity {
     }
 
 
-
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public boolean InternetAvailable() {
@@ -227,8 +244,9 @@ public class Discussion extends AppCompatActivity {
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
             //we are connected to a network
             connected = true;
-        }  else{
-            connected = false;}
+        } else {
+            connected = false;
+        }
 
         return connected;
     }
@@ -240,11 +258,9 @@ public class Discussion extends AppCompatActivity {
         public Discussion activity;
 
 
-
         public SocketListener(Discussion activity) {
             this.activity = activity;
         }
-
 
 
         @Override
@@ -266,13 +282,13 @@ public class Discussion extends AppCompatActivity {
 
 
         @Override
-        public void   onMessage(WebSocket webSocket, final String text) {
+        public void onMessage(WebSocket webSocket, final String text) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
 
-                    Message message=new Message();
+                    Message message = new Message();
 
                     try {
 
@@ -295,12 +311,10 @@ public class Discussion extends AppCompatActivity {
         }
 
 
-
         @Override
         public void onMessage(WebSocket webSocket, ByteString bytes) {
             super.onMessage(webSocket, bytes);
         }
-
 
 
         @Override
@@ -309,12 +323,10 @@ public class Discussion extends AppCompatActivity {
         }
 
 
-
         @Override
         public void onClosed(WebSocket webSocket, int code, String reason) {
             super.onClosed(webSocket, code, reason);
         }
-
 
 
         @Override
@@ -418,6 +430,7 @@ public class Discussion extends AppCompatActivity {
 
 
                         db.insertMessage(cg.getId_client(), cg.getId_service(), cg.getTime(), cg.getText(), cg.getId_sender());
+                        db.setMessageLoadedStatus(id_client,id_service,1);
                     }
                 } catch (org.json.JSONException e) {
                     e.printStackTrace();
@@ -440,6 +453,177 @@ public class Discussion extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Void... values) {
+        }
+    }
+
+    void sendFirstMessage() {
+
+        Background background = new Background(this);
+        background.execute("insert_conv", id_client, id_service);
+
+
+        sendMessage();
+
+        restoreSendListener();
+
+    }
+
+    void restoreSendListener() {
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage();
+            }
+        });
+    }
+
+
+    void checkConv(){
+        String result = "";
+        Background b = new Background();
+
+        result = b.request("check_exist_conv", ip, "id_client", id_client, "id_service", id_service);
+
+        switch (result) {
+
+
+            case "not_exist":
+
+                firstContact = true;
+
+                send.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sendFirstMessage();
+
+                    }
+
+
+                });
+
+
+                break;
+
+            default:
+
+                firstContact = false;
+
+                try {
+
+                    JSONObject JO = new JSONObject(result);
+                    Conversation conv;
+
+                    conv = new Conversation();
+                    conv.setId_client(JO.get("client").toString());
+                    conv.setId_service(JO.get("service").toString());
+                    conv.setLast_message(JO.get("last_message").toString());
+                    conv.setTime(JO.get("time").toString());
+                    conv.setNom_client(JO.get("nom_client").toString());
+                    conv.setNom_service(JO.get("nom_service").toString());
+
+                    if(!db.ConversationLoaded(id_client,id_service)) {
+
+
+                        db.insertConversation(conv.getId_client(), conv.getId_service()
+                                , conv.getTime(), conv.getLast_message(), conv.getNom_client()
+                                , conv.getNom_service(), conv.getMessages_loaded(), conv.getConversation_loaded());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+
+
+        }
+
+        asyncended = true;
+
+
+    }
+
+
+    private class Check_conv extends AsyncTask<String, Void, String> {
+
+
+        String result = "";
+
+        @Override
+        protected String doInBackground(String... voids) {
+
+            Background b = new Background();
+
+            result = b.request("check_exist_conv", ip, "id_client", id_client, "id_service", id_service);
+
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            switch (result) {
+
+
+                case "not_exist":
+
+                    firstContact = true;
+
+                    send.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sendFirstMessage();
+
+                        }
+
+
+                    });
+
+
+                    break;
+
+                default:
+
+                    firstContact = false;
+
+                    try {
+
+                        JSONObject JO = new JSONObject(result);
+                        Conversation conv;
+
+                        conv = new Conversation();
+                        conv.setId_client(JO.get("client").toString());
+                        conv.setId_service(JO.get("service").toString());
+                        conv.setLast_message(JO.get("last_message").toString());
+                        conv.setTime(JO.get("time").toString());
+                        conv.setNom_client(JO.get("nom_client").toString());
+                        conv.setNom_service(JO.get("nom_service").toString());
+                        if(!db.ConversationLoaded(id_client,id_service)) {
+                            db.insertConversation(conv.getId_client(), conv.getId_service()
+                                    , conv.getTime(), conv.getLast_message(), conv.getNom_client()
+                                    , conv.getNom_service(), conv.getMessages_loaded(), conv.getConversation_loaded());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+
+
+            }
+
+            if (firstContact == false) {
+                if (c.get(0).getMessages_loaded() == 0) {
+                    getList();
+
+
+                } else {
+
+                    getLocalList();
+
+                }
+            }
+
         }
     }
 
