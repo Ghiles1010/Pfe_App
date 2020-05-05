@@ -73,7 +73,7 @@ public class Profile extends AppCompatActivity {
 
     void goDiscussion(){
         Intent intent= new Intent(this,Discussion.class);
-        intent.putExtra("id_service",service.getIDservice());
+        intent.putExtra("service",service);
         startActivity(intent);
     }
 

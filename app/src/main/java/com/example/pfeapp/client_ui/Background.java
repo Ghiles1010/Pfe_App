@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.example.pfeapp.BD.Data_Base;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -14,6 +16,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Background extends AsyncTask<String, Void, String> {
 
@@ -41,7 +46,9 @@ public class Background extends AsyncTask<String, Void, String> {
 
         switch (s) {
 
-            case("Conversation_exists"):
+            case("conv_inserted"):
+
+
 
                 break;
 
@@ -90,7 +97,15 @@ public class Background extends AsyncTask<String, Void, String> {
 
             case "insert_conv":
 
-                result=request(c,ip,"id_client",voids[1],"id_service",voids[2]);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                String currentDateandTime = sdf.format(new Date());
+
+                result=request(c,ip,"id_client",voids[1],"id_service",voids[2]
+                        ,"nom_client",voids[3],"nom_service",voids[4],"time",currentDateandTime);
+
+                Data_Base db =new Data_Base(context);
+
+                db.insertConversation(voids[1],voids[2],currentDateandTime,voids[5],voids[3],voids[4],1,0);
 
                 break;
 

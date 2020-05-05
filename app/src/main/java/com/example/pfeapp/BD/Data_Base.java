@@ -200,10 +200,10 @@ public class Data_Base extends SQLiteOpenHelper {
         this.getWritableDatabase().execSQL(insert_Service);
     }
 
-    public ArrayList<Message> get_messages() {
+    public ArrayList<Message> get_messages(String id_client, String id_service) {
 
         ArrayList<Message> u = new ArrayList<>();
-        String strSql = "select * from message";
+        String strSql = "select * from message WHERE id_client ='"+id_client+"' and id_service = '"+id_service+"'";
         Cursor cursor = this.getReadableDatabase().rawQuery(strSql, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -405,17 +405,14 @@ public class Data_Base extends SQLiteOpenHelper {
 
 
     public boolean ConversationLoaded(String id_client, String id_service) {
-        String strSql = "select * from conversation id_client = '" + id_client + "' and id_service='" + id_service + "'";
+        String strSql = "select count(*) from conversation WHERE id_client = '" + id_client + "' and id_service='" + id_service + "'";
         Cursor cursor = this.getReadableDatabase().rawQuery(strSql, null);
         cursor.moveToFirst();
 
-        Conversation conversation = new Conversation(cursor.getString(0), cursor.getString(1)
-                , cursor.getString(2), cursor.getString(3), cursor.getString(4)
-                , cursor.getString(5), cursor.getInt(6), cursor.getInt(7));
+        int count = cursor.getInt(0);
 
-        cursor.moveToNext();
         cursor.close();
-        if (conversation != null) {
+        if (count!= 0) {
             return true;
         } else {
             return false;

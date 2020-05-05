@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pfeapp.BD.Conversation;
 import com.example.pfeapp.BD.Data_Base;
 import com.example.pfeapp.BD.Message;
+import com.example.pfeapp.BD.Service;
 import com.example.pfeapp.R;
 
 import org.json.JSONArray;
@@ -60,6 +61,8 @@ public class Discussion extends AppCompatActivity {
     private String id_service;
     private String id_client;
 
+    Service service;
+
     ArrayList<Conversation> c;
 
     String last_message_time;
@@ -79,7 +82,11 @@ public class Discussion extends AppCompatActivity {
         current_last_message_time = "2019-03-24 22:27:28";
 
         Intent i = getIntent();
-        id_service = (String) i.getSerializableExtra("id_service");
+
+        service=(Service) i.getSerializableExtra("service");
+
+
+        id_service = service.getIDservice();
         id_client = db.getClient().get(0).getId_client();
 
         messageBox = (EditText) findViewById(R.id.Message_To_send);
@@ -150,7 +157,7 @@ public class Discussion extends AppCompatActivity {
     private void getLocalList() {
 
 
-        ArrayList<Message> m = db.get_messages();
+        ArrayList<Message> m = db.get_messages(id_client,id_service);
         current_last_message_time = db.getLastTimeMessage(id_client, id_service);
         last_message_time = current_last_message_time;
 
@@ -459,7 +466,7 @@ public class Discussion extends AppCompatActivity {
     void sendFirstMessage() {
 
         Background background = new Background(this);
-        background.execute("insert_conv", id_client, id_service);
+        background.execute("insert_conv", id_client, id_service,db.getUser().get(0).getName(),service.getNom(),messageBox.getText().toString());
 
 
         sendMessage();
@@ -585,11 +592,10 @@ public class Discussion extends AppCompatActivity {
                 default:
 
                     firstContact = false;
-
+                    Conversation conv;
                     try {
-
-                        JSONObject JO = new JSONObject(result);
-                        Conversation conv;
+                        JSONArray JA = new JSONArray(result);
+                        JSONObject JO = (JSONObject) JA.get(0);
 
                         conv = new Conversation();
                         conv.setId_client(JO.get("client").toString());
@@ -601,8 +607,12 @@ public class Discussion extends AppCompatActivity {
                         if(!db.ConversationLoaded(id_client,id_service)) {
                             db.insertConversation(conv.getId_client(), conv.getId_service()
                                     , conv.getTime(), conv.getLast_message(), conv.getNom_client()
-                                    , conv.getNom_service(), conv.getMessages_loaded(), conv.getConversation_loaded());
+                                    , conv.getNom_service(), conv.getMessages_loaded(),
+                                    conv.getConversation_loaded());
+
+
                         }
+                        c.add(conv);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

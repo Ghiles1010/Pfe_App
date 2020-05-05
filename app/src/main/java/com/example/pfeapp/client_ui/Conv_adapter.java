@@ -38,7 +38,7 @@ public class Conv_adapter extends RecyclerView.Adapter<Conv_Holder> {
 
     @Override
     public void onBindViewHolder(@NonNull Conv_Holder holder, int position) {
-        holder.mUserName.setText(cards.get(position).getNom_client());
+        holder.mUserName.setText(cards.get(position).getNom_service());
         holder.mMessage.setText(cards.get(position).getLast_message());
         holder.mTime.setText(cards.get(position).getTime());
         holder.mImageView.setImageResource(R.drawable.body);

@@ -122,7 +122,7 @@ public class Discussion_prest extends AppCompatActivity {
     private void getLocalList() {
 
 
-        ArrayList<Message> m = db.get_messages();
+        ArrayList<Message> m = db.get_messages(id_client,id_service);
         current_last_message_time=db.getLastTimeMessage(id_client,id_service);
         last_message_time=current_last_message_time;
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pfeapp.BD.Conversation;
 import com.example.pfeapp.BD.Data_Base;
+import com.example.pfeapp.BD.Service;
 import com.example.pfeapp.R;
 
 import org.json.JSONArray;
@@ -37,8 +38,6 @@ public class Messagerie extends Fragment implements OnConvListener {
     String id_client;
 
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,7 +50,6 @@ public class Messagerie extends Fragment implements OnConvListener {
         db = new Data_Base(getActivity());
 
         id_client = db.getClient().get(0).getId_client();
-
 
 
         adapter = new Conv_adapter(this, cards, this);
@@ -75,9 +73,9 @@ public class Messagerie extends Fragment implements OnConvListener {
             getConv.execute();
         } else {
 
-            ArrayList<Conversation>c=db.getConversation();
+            ArrayList<Conversation> c = db.getConversation();
 
-            for(Conversation i:c){
+            for (Conversation i : c) {
 
                 cards.add(i);
             }
@@ -91,10 +89,12 @@ public class Messagerie extends Fragment implements OnConvListener {
     @Override
     public void onConvClick(int position) {
 
-        String id = cards.get(position).getId_service();
+        Service service=new Service();
+        service.setIDservice( cards.get(position).getId_service());
+
 
         Intent intent = new Intent(getActivity(), Discussion.class);
-        intent.putExtra("id_service", id);
+        intent.putExtra("service", service);
         startActivity(intent);
     }
 
@@ -109,7 +109,6 @@ public class Messagerie extends Fragment implements OnConvListener {
 
 
             Background b = new Background();
-
 
 
             result = b.request("get_conv_client", ip, "id_client", id_client);
@@ -133,9 +132,10 @@ public class Messagerie extends Fragment implements OnConvListener {
                         conv.setNom_client(JO.get("nom_client").toString());
                         conv.setNom_service(JO.get("nom_service").toString());
 
-
-                        db.insertConversation(conv.getId_client(), conv.getId_service()
-                                , conv.getTime(), conv.getLast_message(), conv.getNom_client(), conv.getNom_service(),conv.getMessages_loaded(),conv.getConversation_loaded());
+                        if (!db.ConversationLoaded(conv.getId_client(), conv.getId_service())) {
+                            db.insertConversation(conv.getId_client(), conv.getId_service()
+                                    , conv.getTime(), conv.getLast_message(), conv.getNom_client(), conv.getNom_service(), conv.getMessages_loaded(), conv.getConversation_loaded());
+                        }
                     }
 
                     SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PREFERENCES, MODE_PRIVATE);
