@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/time"
         android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:orientation="horizontal">
 
         <TextView
@@ -35,11 +35,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/dd"
         android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/time"
         android:orientation="horizontal"
-        android:background="@color/White">
+
+        android:background="@drawable/rdv_card">
 
         <TextView
 
