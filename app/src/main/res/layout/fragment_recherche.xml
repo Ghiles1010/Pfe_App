@@ -43,15 +43,15 @@
         android:layout_width="0dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="100dp"
         android:gravity="center"
         android:text="@string/si_jamais_vous_ne_savez_pas_o_aller_nous_vous_recommendons_les_adresses_suivantes"
         android:textColor="@color/Black"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/ajouterFiltre" />
+        app:layout_constraintTop_toBottomOf="@+id/SearchBar" />
 
     <EditText
         android:id="@+id/SearchBar"
@@ -90,39 +90,6 @@
         app:layout_constraintTop_toTopOf="@+id/SearchBar"
         app:layout_constraintVertical_bias="0.0" />
 
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-
-
-        android:layout_marginTop="11dp"
-        android:text="Filtres: "
-        android:textColor="@color/Navy"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchBar" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/ajouterFiltre"
-        android:layout_width="120dp"
-        android:layout_height="32dp"
-        android:background="@drawable/buttons"
-
-        android:gravity="center"
-        android:padding="0dp"
-
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="@string/ajouter_un_filtre"
-        android:textAllCaps="false"
-        android:textColor="@color/White"
-        android:textSize="12sp"
-        app:cornerRadius="10dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecomRecView"

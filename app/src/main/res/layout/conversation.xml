@@ -87,19 +87,22 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
-                android:background="@drawable/rech_res_shape"
                 android:layout_marginBottom="5dp"
-                app:cardCornerRadius="20dp">
+                app:strokeColor="@color/Navy"
+                app:strokeWidth="1px"
+                app:cardCornerRadius="5dp">
 
 
                 <ImageView
 
-
+                    app:strokeColor="@color/Navy"
+                    app:strokeWidth="1px"
                     android:id="@+id/ImageUser"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    tools:srcCompat="@drawable/rest"
+                    tools:srcCompat="@drawable/person"
+
 
 
                     />

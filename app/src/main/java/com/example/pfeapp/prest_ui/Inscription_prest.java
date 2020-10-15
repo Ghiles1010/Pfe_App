@@ -36,7 +36,7 @@ import static com.example.pfeapp.client_ui.Background.ip;
 
 public class Inscription_prest extends AppCompatActivity implements AdapterView.OnItemSelectedListener, OnCardListener {
 
-    String[] categories = {"Santé & Médecine", "Restauration", "Autres"};
+    String[] categories = {"Restauration", "Santé & Médecine", "PLombier", "Avocat", "Artisan", "Autres"};
     Spinner spinner;
     RecyclerView recview;
     cat_adapter adapter;
@@ -114,7 +114,38 @@ public class Inscription_prest extends AppCompatActivity implements AdapterView.
 
 
     void getList() {
-        cards=db.getCategory();
+
+        Category c = new Category();
+        c.setCategorie("Vegan");
+        cards.add(c);
+
+        c = new Category();
+        c.setCategorie("Traditionnel");
+        cards.add(c);
+
+        c = new Category();
+        c.setCategorie("Algérois");
+        cards.add(c);
+
+        c = new Category();
+        c.setCategorie("Kabyle");
+        cards.add(c);
+
+        c = new Category();
+        c.setCategorie("Moderne");
+        cards.add(c);
+
+        c = new Category();
+        c.setCategorie("Chinois");
+        cards.add(c);
+
+        c = new Category();
+        c.setCategorie("Sushi");
+        cards.add(c);
+
+
+
+
     }
 
     int id_chip(String s){

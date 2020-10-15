@@ -1,7 +1,6 @@
 package com.example.pfeapp.prest_ui;
 
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,28 +8,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pfeapp.BD.RDV;
 import com.example.pfeapp.R;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class Agenda_prest extends Fragment implements OnCardListener {
 
 
     RecyclerView recview_tasks;
-    Task_adapter_prest adapter;
+    RDV_adapter_prest adapter;
 
     Dialog rdv;
     Dialog pop_time;
     MaterialButton done;
+
+    ArrayList<RDV> cards;
 
     final String[] heure = new String[1];
 
@@ -45,21 +45,23 @@ public class Agenda_prest extends Fragment implements OnCardListener {
 
         recview_tasks = view.findViewById(R.id.RecViewTasks);
 
-        adapter= new Task_adapter_prest(this,getList(),this  );
+
+        cards=getList();
+        adapter= new RDV_adapter_prest(this,cards,this  );
 
         recview_tasks.setAdapter(adapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recview_tasks.setLayoutManager(layoutManager);
 
-        rdv=new Dialog(getActivity());
+        rdv = new Dialog(getActivity());
         return view;
     }
 
 
-    private ArrayList<Task_card_prest> getList(){
-        ArrayList<Task_card_prest> cards = new ArrayList<>();
+    private ArrayList<RDV> getList(){
+        ArrayList<RDV> cards = new ArrayList<>();
 
-        Task_card_prest c;
+        RDV c;
 
         String matin=" AM";
         String soir=" PM";
@@ -83,7 +85,7 @@ public class Agenda_prest extends Fragment implements OnCardListener {
 
 
 
-                c= new Task_card_prest();
+                c= new RDV();
                 c.setTime(hour);
                 c.setDescription("");
                 cards.add(c);
@@ -108,7 +110,7 @@ public class Agenda_prest extends Fragment implements OnCardListener {
 
 
 
-                c= new Task_card_prest();
+                c= new RDV();
                 c.setTime(hour);
                 c.setDescription("");
                 cards.add(c);
@@ -125,97 +127,53 @@ public class Agenda_prest extends Fragment implements OnCardListener {
     }
 
 
+
+
     @Override
-    public void onCardClick(int position) {
+    public void onCardClick(final int position) {
 
-        final MaterialButton close,time,done; //done button needs to be global because of the ontime set
-        EditText titre, desctiption;
-
-        final int a=1;
-
-        rdv.setContentView(R.layout.rdv_popup);
-
-        final MaterialButton donem=(MaterialButton)rdv.findViewById(R.id.done);
-
-        time=(MaterialButton)rdv.findViewById(R.id.timep);
+        final MaterialButton close, confirm; //done button needs to be global because of the ontime set
+        final EditText text;
+        rdv.setContentView(R.layout.prise_rdv_pop);
+        rdv.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        rdv.show();
 
 
+        confirm = rdv.findViewById(R.id.confirme_rdv);
+        close = rdv.findViewById(R.id.cancel);
+        text = rdv.findViewById(R.id.description);
 
-        close=(MaterialButton)rdv.findViewById(R.id.cancel);
-
-        close.setOnClickListener(new View.OnClickListener() {
+        close.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rdv.dismiss();
             }
         });
-
-        time.setOnClickListener(new View.OnClickListener(){
+        confirm.setOnClickListener( new View.OnClickListener(){
 
             @Override
-            public void onClick(View v) {
-
-                final int b=2;
-                Calendar calendar=Calendar.getInstance();
-                int hour= calendar.get(Calendar.HOUR);
-                int minute=calendar.get(Calendar.MINUTE);
-
-
-                CustomTimePickerDialog timePickerDialog =new CustomTimePickerDialog(getActivity(),
-                        android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                        new TimePickerDialog.OnTimeSetListener(){
-
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                                String amORpm=" AM";
-                                String min=Integer.toString(minute);
-
-                                if (minute==0){
-                                    min=min+"0";
-                                }
-
-                                if(hourOfDay>12){
-                                    hourOfDay=hourOfDay-12;
-                                    amORpm=" PM";
-                                }
-
-                                String buf=Integer.toString(hourOfDay)+":"+ min +amORpm;
-                                time.setText(buf);
-                            }
-
-                        } ,hour,minute, false);
-
-
-
-
-
-                timePickerDialog.show();
-                timePickerDialog.getButton(timePickerDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.Navy));
-                timePickerDialog.getButton(timePickerDialog.BUTTON_NEGATIVE).setBackgroundColor(Color.WHITE);
-                timePickerDialog.getButton(timePickerDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.Navy));
-                timePickerDialog.getButton(timePickerDialog.BUTTON_POSITIVE).setBackgroundColor(Color.WHITE);
-
-
+            public void onClick(View v){
+                String desc = text.getText().toString();
+                cards.get(position).setDescription(desc);
+                adapter.notifyDataSetChanged();
+                rdv.dismiss();
             }
-        } );
+        });
 
-        rdv.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        rdv.show();
 
     }
 
 
 
 
-    public class Task_adapter_prest extends RecyclerView.Adapter<Task_holder_prest>{
+    public class RDV_adapter_prest extends RecyclerView.Adapter<RDV_holder_prest>{
 
 
         Agenda_prest c;
-        ArrayList <Task_card_prest> cards;
+        ArrayList <RDV> cards;
         OnCardListener onCardListener;
 
-        public Task_adapter_prest(Agenda_prest c, ArrayList<Task_card_prest> cards,OnCardListener onCardListener) {
+        public RDV_adapter_prest(Agenda_prest c, ArrayList<RDV> cards,OnCardListener onCardListener) {
             this.c = c;
             this.cards = cards;
             this.onCardListener=onCardListener;
@@ -223,7 +181,7 @@ public class Agenda_prest extends Fragment implements OnCardListener {
 
         @NonNull
         @Override
-        public Task_holder_prest onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public RDV_holder_prest onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
             View view;
 
@@ -232,11 +190,11 @@ public class Agenda_prest extends Fragment implements OnCardListener {
 
 
 
-            return new Task_holder_prest(view,onCardListener);
+            return new RDV_holder_prest(view,onCardListener);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull Task_holder_prest holder, int position) {
+        public void onBindViewHolder(@NonNull RDV_holder_prest holder, int position) {
             holder.description.setText(cards.get(position).getDescription());
             holder.time.setText(cards.get(position).getTime());
         }
@@ -255,26 +213,6 @@ public class Agenda_prest extends Fragment implements OnCardListener {
 
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -125,6 +125,7 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
         public void onBindViewHolder(@NonNull session_holder holder, int position) {
 
             holder.session.setText(cards.get(position).getNom_session());
+            holder.image.setImageResource(cards.get(position).getImage());
 
         }
 
@@ -230,9 +231,7 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
                         serv.setIDservice(JO.get("id_service").toString());
                         serv.setLatitude(JO.get("latitude").toString());
                         serv.setLongitude(JO.get("longitude").toString());
-                        serv.setNb_views(Integer.parseInt(JO.get("nb_reviews").toString()));
                         serv.setNom(JO.get("nom").toString());
-                        serv.setVille(JO.get("ville").toString());
 
                         db.insertService(serv.getIDservice(), serv.getIDprestataire(), serv.getNom(), serv.getLongitude(), serv.getLatitude(),0);
 
@@ -264,6 +263,7 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
                 session.setNom_session(u);
 
                 session.setType("client");
+                session.setImage(R.drawable.person);
 
                 cards.add(session);
                 adapter.notifyDataSetChanged();
@@ -281,6 +281,7 @@ public class Choix_session_connexion extends AppCompatActivity implements OnCard
                     session.setNom_session(s.getNom());
                     session.setId(s.getIDservice());
                     session.setType("prestataire");
+                    session.setImage(R.drawable.restor);
                     cards.add(session);
                 }
 

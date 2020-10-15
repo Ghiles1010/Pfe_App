@@ -9,7 +9,7 @@
     app:umanoScrollableView="@id/RecViewTasks"
     android:layout_gravity="bottom"
     android:gravity="bottom"
-    app:umanoPanelHeight="150dp"
+    app:umanoPanelHeight="100dp"
     app:umanoOverlay="true"
     app:umanoParallaxOffset="150dp"
     app:umanoShadowHeight="4dp">
@@ -19,22 +19,18 @@
         android:layout_height="match_parent">
 
         <CalendarView
-            android:background="@color/White"
-
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/dem_RDV"
+            android:layout_marginTop="13dp"
+            android:background="@color/White"
+            android:backgroundTint="@color/White"
+            android:firstDayOfWeek="7"
             android:focusedMonthDateColor="@color/Navy"
             android:selectedWeekBackgroundColor="@color/Navy"
-            android:backgroundTint="@color/White"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
             android:unfocusedMonthDateColor="@color/Navy"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
-            android:firstDayOfWeek="7" />
+            tools:ignore="UnknownId" />
 
     </RelativeLayout>
 
@@ -43,6 +39,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/dragview"
         android:clickable="true"
+        android:layout_marginTop="100dp"
         android:background="@color/White"
         android:focusable="false"
         android:orientation="vertical">

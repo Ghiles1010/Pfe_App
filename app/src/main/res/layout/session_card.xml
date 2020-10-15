@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:cropToPadding="true"
                     android:scaleType="centerCrop"
-                    tools:src="@drawable/body" />
+                    tools:src="@drawable/restor" />
 
             </com.google.android.material.card.MaterialCardView>
 

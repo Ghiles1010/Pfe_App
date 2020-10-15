@@ -22,10 +22,8 @@ public class Profile extends AppCompatActivity {
 
     Comment_adapter adapter_comment;
     RecyclerView recview_comment;
-
-    Images_Couv_profil_adapter adapter_images;
-    RecyclerView recview_images;
     Service service;
+    MaterialButton message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +35,7 @@ public class Profile extends AppCompatActivity {
 
         initRecviews();
 
-        MaterialButton message = findViewById(R.id.message);
-
+        message = findViewById(R.id.message);
 
 
 
@@ -77,6 +74,12 @@ public class Profile extends AppCompatActivity {
         startActivity(intent);
     }
 
+    void goRdv(){
+        Intent intent= new Intent(this, Prise_rdv.class);
+        intent.putExtra("service",service);
+        startActivity(intent);
+    }
+
     private  void initRecviews(){
         recview_comment=findViewById(R.id.Comment_sec_prest);
         adapter_comment=new Comment_adapter(this,getList());
@@ -84,13 +87,6 @@ public class Profile extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recview_comment.setLayoutManager(layoutManager);
 
-
-
-        recview_images=findViewById(R.id.recImagesServices);
-        adapter_images=new Images_Couv_profil_adapter( this,getListImages());
-        recview_images.setAdapter(adapter_images);
-        RecyclerView.LayoutManager layoutManagerImages = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
-        recview_images.setLayoutManager(layoutManagerImages);
     }
 
 
@@ -99,98 +95,41 @@ public class Profile extends AppCompatActivity {
 
         Comment_card c= new Comment_card();
         c.setTitre("Trés bon service!");
-        c.setText("du bla blabllbalba aded ohs  sdfih idhf si fw fsoiduh dsv  csyf skygc sdfh sug csagnxsd ygcniss syg csiuc bsd ciu sdic siucsuc sidys ciydsfn  h.");
+        c.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin volutpat sit amet leo in viverra. Suspendisse at purus lectus. Aliquam ut sagittis mauris. Cras pharetra sapien eu sem maximus suscipit.");
         c.setImage(R.drawable.body);
         cards.add(c);
 
         c= new Comment_card();
         c.setTitre("Trés bon service!");
-        c.setText("du bla blabllbalba aded ohs  sdfih idhf si fw fsoiduh dsv  csyf skygc sdfh sug csagnxsd ygcniss syg csiuc bsd ciu sdic siucsuc sidys ciydsfn  h.");
+        c.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin volutpat sit amet leo in viverra. Suspendisse at purus lectus. Aliquam ut sagittis mauris. Cras pharetra sapien eu sem maximus suscipit.");
         c.setImage(R.drawable.body);
         cards.add(c);
 
         c= new Comment_card();
         c.setTitre("Trés bon service!");
-        c.setText("du bla blabllbalba aded ohs  sdfih idhf si fw fsoiduh dsv  csyf skygc sdfh sug csagnxsd ygcniss syg csiuc bsd ciu sdic siucsuc sidys ciydsfn  h.");
+        c.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin volutpat sit amet leo in viverra. Suspendisse at purus lectus. Aliquam ut sagittis mauris. Cras pharetra sapien eu sem maximus suscipit.");
         c.setImage(R.drawable.body);
         cards.add(c);
 
         c= new Comment_card();
         c.setTitre("Trés bon service!");
-        c.setText("du bla blabllbalba aded ohs  sdfih idhf si fw fsoiduh dsv  csyf skygc sdfh sug csagnxsd ygcniss syg csiuc bsd ciu sdic siucsuc sidys ciydsfn  h.");
+        c.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin volutpat sit amet leo in viverra. Suspendisse at purus lectus. Aliquam ut sagittis mauris. Cras pharetra sapien eu sem maximus suscipit.");
         c.setImage(R.drawable.body);
         cards.add(c);
 
         c= new Comment_card();
         c.setTitre("Trés bon service!");
-        c.setText("du bla blabllbalba aded ohs  sdfih idhf si fw fsoiduh dsv  csyf skygc sdfh sug csagnxsd ygcniss syg csiuc bsd ciu sdic siucsuc sidys ciydsfn  h.");
+        c.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin volutpat sit amet leo in viverra. Suspendisse at purus lectus. Aliquam ut sagittis mauris. Cras pharetra sapien eu sem maximus suscipit.");
         c.setImage(R.drawable.body);
         cards.add(c);
 
         c= new Comment_card();
         c.setTitre("Trés bon service!");
-        c.setText("du bla blabllbalba aded ohs  sdfih idhf si fw fsoiduh dsv  csyf skygc sdfh sug csagnxsd ygcniss syg csiuc bsd ciu sdic siucsuc sidys ciydsfn  h.");
+        c.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin volutpat sit amet leo in viverra. Suspendisse at purus lectus. Aliquam ut sagittis mauris. Cras pharetra sapien eu sem maximus suscipit.");
         c.setImage(R.drawable.body);
         cards.add(c);
 
 
-        c= new Comment_card();
-        c.setTitre("Trés bon service!");
-        c.setText("du bla blabllbalba aded ohs  sdfih idhf si fw fsoiduh dsv  csyf skygc sdfh sug csagnxsd ygcniss syg csiuc bsd ciu sdic siucsuc sidys ciydsfn  h.");
-        c.setImage(R.drawable.body);
-        cards.add(c);
-
-
-        c= new Comment_card();
-        c.setTitre("Trés bon service!");
-        c.setText("du bla blabllbalba aded ohs  sdfih idhf si fw fsoiduh dsv  csyf skygc sdfh sug csagnxsd ygcniss syg csiuc bsd ciu sdic siucsuc sidys ciydsfn  h.");
-        c.setImage(R.drawable.body);
-        cards.add(c);
-
-        c= new Comment_card();
-        c.setTitre("Trés bon service!");
-        c.setText("du bla blabllbalba aded ohs  sdfih idhf si fw fsoiduh dsv  csyf skygc sdfh sug csagnxsd ygcniss syg csiuc bsd ciu sdic siucsuc sidys ciydsfn  h.");
-        c.setImage(R.drawable.body);
-        cards.add(c);
-
-
-        return cards;
-    }
-
-
-
-
-
-    private ArrayList<Images_Couv_profil_card> getListImages(){
-        ArrayList<Images_Couv_profil_card> cards = new ArrayList<>();
-
-        Images_Couv_profil_card c= new Images_Couv_profil_card();
-        c.setImage(R.drawable.rest);
-        cards.add(c);
-
-        c= new Images_Couv_profil_card();
-        c.setImage(R.drawable.rest);
-        cards.add(c);
-
-        c= new Images_Couv_profil_card();
-        c.setImage(R.drawable.rest);
-        cards.add(c);
-
-        c= new Images_Couv_profil_card();
-        c.setImage(R.drawable.rest);
-        cards.add(c);
-
-        c= new Images_Couv_profil_card();
-        c.setImage(R.drawable.rest);
-        cards.add(c);
-
-        c= new Images_Couv_profil_card();
-        c.setImage(R.drawable.rest);
-        cards.add(c);
-
-        c= new Images_Couv_profil_card();
-        c.setImage(R.drawable.rest);
-        cards.add(c);
         return cards;
     }
 

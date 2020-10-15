@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pfeapp.R;
 
-public class Task_holder_prest extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class RDV_holder_prest extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     TextView description;
     TextView time;
     OnCardListener onCardListener;
 
 
-    public Task_holder_prest(@NonNull View itemView, OnCardListener onCardListener) {
+    public RDV_holder_prest(@NonNull View itemView, OnCardListener onCardListener) {
         super(itemView);
         this.description=itemView.findViewById(R.id.eventDescription);
         this.time=itemView.findViewById(R.id.taskTime);

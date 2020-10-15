@@ -152,9 +152,7 @@ public class ResRech extends Fragment implements OnCardListener {
                         serv.setIDservice(JO.get("id_service").toString());
                         serv.setLatitude(JO.get("latitude").toString());
                         serv.setLongitude(JO.get("longitude").toString());
-                        serv.setNb_views(Integer.parseInt(JO.get("nb_reviews").toString()));
-                        serv.setNom(JO.get("nom").toString());
-                        serv.setVille(JO.get("ville").toString());
+                        serv.setNom("Restaurant " + Integer.toString(j+1));
 
                         cards.add(serv);
 

@@ -24,7 +24,7 @@ public class Background extends AsyncTask<String, Void, String> {
 
     AlertDialog dialog;
     Context context;
-    public static final String ip ="192.168.1.3";
+    public static final String ip ="192.168.1.5";
 
     public Background(Context context) {
         this.context = context;
@@ -128,6 +128,11 @@ public class Background extends AsyncTask<String, Void, String> {
                 result=request(c,ip,"message",voids[1],"id_client",voids[2],"id_service",voids[3],"id_sender",voids[4],"time",voids[5]);
 
 
+
+                break;
+            case "ask_rdv":
+
+                result=request(c,ip,"description",voids[1],"time",voids[2],"id_client",voids[3],"id_service",voids[4]);
 
                 break;
 

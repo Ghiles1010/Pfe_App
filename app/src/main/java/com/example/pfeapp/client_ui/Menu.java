@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.pfeapp.R;
+import com.example.pfeapp.prest_ui.Agenda_prest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Menu extends AppCompatActivity {
@@ -45,7 +46,6 @@ public class Menu extends AppCompatActivity {
 
                         case R.id.nav_cherche:
 
-
                             titreBar.setText("Recherche");
                             selectedFragment= new Recherche();
 
@@ -62,9 +62,9 @@ public class Menu extends AppCompatActivity {
                             selectedFragment= new ResRech() ;
                             break;
 
-                        case R.id.nav_profil:
-                            titreBar.setText("Profil");
-                           // selectedFragment=new Profil();
+                        case R.id.nav_agenda:
+                            titreBar.setText("Agenda");
+                            selectedFragment= new Agenda_prest() ;
                             break;
 
 

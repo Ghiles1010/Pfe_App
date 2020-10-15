@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
+
+
+
+<com.google.android.material.card.MaterialCardView
+android:id="@+id/card_dem"
+
+
+android:layout_width="match_parent"
+android:layout_height="65dp"
+
+android:padding="5dp">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+
+        android:id="@+id/profil_pic"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/body" />
+
+    <TextView
+        android:id="@+id/nom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="9dp"
+        android:layout_toEndOf="@+id/profil_pic"
+        android:text="Nom_client"
+        android:textAllCaps="false"
+        android:textColor="@color/Black" />
+
+    <TextView
+        android:id="@+id/descr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_below="@+id/nom"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/profil_pic"
+        android:text="Description..." />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/accept"
+        app:icon="@drawable/ic_check_black_24dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="4dp" />
+
+    <com.google.android.material.button.MaterialButton
+        app:icon="@drawable/ic_close_black_24dp"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/accept" />
+
+</RelativeLayout>
+
+
+</com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>

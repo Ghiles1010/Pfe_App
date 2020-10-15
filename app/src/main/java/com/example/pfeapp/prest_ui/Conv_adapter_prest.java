@@ -41,7 +41,7 @@ public class Conv_adapter_prest extends RecyclerView.Adapter<Conv_Holder_prest> 
         holder.mUserName.setText(cards.get(position).getNom_client());
         holder.mMessage.setText(cards.get(position).getLast_message());
         holder.mTime.setText(cards.get(position).getTime());
-        holder.mImageView.setImageResource(R.drawable.body);
+        holder.mImageView.setImageResource(R.drawable.person);
     }
 
     @Override

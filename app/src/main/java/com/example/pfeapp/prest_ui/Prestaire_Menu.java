@@ -68,6 +68,7 @@ public class Prestaire_Menu extends AppCompatActivity {
 
                         case R.id.nav_stats_prest:
                             titreBar.setText("Statistiques");
+                            selectedFragment = new stats();
 
                             break;
 

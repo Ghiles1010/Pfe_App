@@ -76,13 +76,13 @@ public class Recherche extends Fragment {
         cards.add(c);
 
         c = new Recom_card();
-        c.setImage(R.drawable.rest);
-        c.setNom("Restaurant Alger");
+        c.setImage(R.drawable.cardiol);
+        c.setNom("Cardiologue");
         cards.add(c);
 
         c = new Recom_card();
-        c.setImage(R.drawable.rest);
-        c.setNom("Restaurant Alger");
+        c.setImage(R.drawable.coiffeur);
+        c.setNom("Coiffeur");
         cards.add(c);
 
         c = new Recom_card();

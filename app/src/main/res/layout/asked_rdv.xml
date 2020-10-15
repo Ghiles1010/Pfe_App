@@ -39,8 +39,9 @@
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/time"
         android:orientation="horizontal"
+        app:cardBackgroundColor="@color/Yellow"
         app:cardCornerRadius="25dp"
-        app:cardBackgroundColor="@color/light_grey">
+        >
 
         <TextView
 
@@ -51,6 +52,9 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:text="Attente de confirmation"
+            android:gravity="center"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

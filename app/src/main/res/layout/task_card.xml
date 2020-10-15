@@ -29,13 +29,17 @@
     </RelativeLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dd"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/time"
         android:orientation="horizontal"
-        android:background="@color/Grey">
+        app:cardBackgroundColor="@color/light_grey"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="25dp"
+        tools:ignore="InvalidId">
 
         <TextView
             android:id="@+id/eventDescription"
@@ -51,7 +55,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 
 </RelativeLayout>

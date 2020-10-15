@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="ExtraText,GoogleAppIndexingWarning">
-        <activity android:name=".client_ui.Profile"></activity>
+        <activity android:name=".client_ui.Prise_rdv"></activity>
+        <activity android:name=".client_ui.Profile" />
         <activity android:name=".client_ui.Res_recherche" />
         <activity android:name=".user_ui.Choix_session_connexion" />
         <activity android:name=".prest_ui.Inscription_prest" />
